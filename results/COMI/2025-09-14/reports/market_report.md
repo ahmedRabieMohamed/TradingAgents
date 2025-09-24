@@ -1,0 +1,3 @@
+It appears that there is no available stock price data for the symbol "COMI" between the specified date range of September 1, 2025, and September 14, 2025. This could be due to a few reasons, such as the stock not being listed or it being a non-trading day for that particular stock.
+
+To proceed, I can check for a broader date range or verify if the ticker symbol is correct. Would you like to try a different date range or confirm the ticker?

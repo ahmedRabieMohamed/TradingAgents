@@ -4,6 +4,7 @@ from .yfin_utils import *
 from .stockstats_utils import *
 from .googlenews_utils import *
 from .finnhub_utils import get_data_in_range
+from .egyptian_utils import EgyptianStockUtils, EgyptianStockStatsUtils
 from dateutil.relativedelta import relativedelta
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -14,6 +15,7 @@ from tqdm import tqdm
 import yfinance as yf
 from openai import OpenAI
 from .config import get_config, set_config, DATA_DIR
+from ..egyptian_config import EGYPTIAN_CONFIG, get_egyptian_stock_info, is_egyptian_trading_day
 
 
 def get_finnhub_news(

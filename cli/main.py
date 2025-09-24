@@ -21,8 +21,10 @@ from rich.align import Align
 from rich.rule import Rule
 
 from tradingagents.graph.trading_graph import TradingAgentsGraph
+from tradingagents.graph.egyptian_trading_graph import EgyptianTradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
-from cli.models import AnalystType
+from tradingagents.egyptian_config import EGYPTIAN_CONFIG
+from cli.models import AnalystType, MarketType
 from cli.utils import *
 
 console = Console()
@@ -36,40 +38,69 @@ app = typer.Typer(
 
 # Create a deque to store recent messages with a maximum length
 class MessageBuffer:
-    def __init__(self, max_length=100):
+    def __init__(self, max_length=100, market_type=MarketType.US):
         self.messages = deque(maxlen=max_length)
         self.tool_calls = deque(maxlen=max_length)
         self.current_report = None
         self.final_report = None  # Store the complete final report
-        self.agent_status = {
-            # Analyst Team
-            "Market Analyst": "pending",
-            "Social Analyst": "pending",
-            "News Analyst": "pending",
-            "Fundamentals Analyst": "pending",
-            # Research Team
-            "Bull Researcher": "pending",
-            "Bear Researcher": "pending",
-            "Research Manager": "pending",
-            # Trading Team
-            "Trader": "pending",
-            # Risk Management Team
-            "Risky Analyst": "pending",
-            "Neutral Analyst": "pending",
-            "Safe Analyst": "pending",
-            # Portfolio Management Team
-            "Portfolio Manager": "pending",
-        }
-        self.current_agent = None
-        self.report_sections = {
-            "market_report": None,
-            "sentiment_report": None,
-            "news_report": None,
-            "fundamentals_report": None,
-            "investment_plan": None,
-            "trader_investment_plan": None,
-            "final_trade_decision": None,
-        }
+        self.market_type = market_type
+        
+        if market_type == MarketType.EGYPTIAN:
+            self.agent_status = {
+                # Egyptian Analyst Team
+                "Egyptian Market Analyst": "pending",
+                "Egyptian News Analyst": "pending",
+                "Egyptian Fundamentals Analyst": "pending",
+                # Research Team
+                "Bull Researcher": "pending",
+                "Bear Researcher": "pending",
+                "Research Manager": "pending",
+                # Trading Team
+                "Trader": "pending",
+                # Risk Management Team
+                "Risky Analyst": "pending",
+                "Neutral Analyst": "pending",
+                "Safe Analyst": "pending",
+                # Portfolio Management Team
+                "Portfolio Manager": "pending",
+            }
+            self.report_sections = {
+                "egyptian_market_report": None,
+                "egyptian_news_report": None,
+                "egyptian_fundamentals_report": None,
+                "investment_plan": None,
+                "trader_investment_plan": None,
+                "final_trade_decision": None,
+            }
+        else:
+            self.agent_status = {
+                # US Analyst Team
+                "Market Analyst": "pending",
+                "Social Analyst": "pending",
+                "News Analyst": "pending",
+                "Fundamentals Analyst": "pending",
+                # Research Team
+                "Bull Researcher": "pending",
+                "Bear Researcher": "pending",
+                "Research Manager": "pending",
+                # Trading Team
+                "Trader": "pending",
+                # Risk Management Team
+                "Risky Analyst": "pending",
+                "Neutral Analyst": "pending",
+                "Safe Analyst": "pending",
+                # Portfolio Management Team
+                "Portfolio Manager": "pending",
+            }
+            self.report_sections = {
+                "market_report": None,
+                "sentiment_report": None,
+                "news_report": None,
+                "fundamentals_report": None,
+                "investment_plan": None,
+                "trader_investment_plan": None,
+                "final_trade_decision": None,
+            }
 
     def add_message(self, message_type, content):
         timestamp = datetime.datetime.now().strftime("%H:%M:%S")
@@ -122,32 +153,57 @@ class MessageBuffer:
         report_parts = []
 
         # Analyst Team Reports
-        if any(
-            self.report_sections[section]
-            for section in [
-                "market_report",
-                "sentiment_report",
-                "news_report",
-                "fundamentals_report",
-            ]
-        ):
-            report_parts.append("## Analyst Team Reports")
-            if self.report_sections["market_report"]:
-                report_parts.append(
-                    f"### Market Analysis\n{self.report_sections['market_report']}"
-                )
-            if self.report_sections["sentiment_report"]:
-                report_parts.append(
-                    f"### Social Sentiment\n{self.report_sections['sentiment_report']}"
-                )
-            if self.report_sections["news_report"]:
-                report_parts.append(
-                    f"### News Analysis\n{self.report_sections['news_report']}"
-                )
-            if self.report_sections["fundamentals_report"]:
-                report_parts.append(
-                    f"### Fundamentals Analysis\n{self.report_sections['fundamentals_report']}"
-                )
+        if self.market_type == MarketType.EGYPTIAN:
+            # Egyptian Market Reports
+            if any(
+                self.report_sections[section]
+                for section in [
+                    "egyptian_market_report",
+                    "egyptian_news_report",
+                    "egyptian_fundamentals_report",
+                ]
+            ):
+                report_parts.append("## Egyptian Analyst Team Reports")
+                if self.report_sections["egyptian_market_report"]:
+                    report_parts.append(
+                        f"### Egyptian Market Analysis\n{self.report_sections['egyptian_market_report']}"
+                    )
+                if self.report_sections["egyptian_news_report"]:
+                    report_parts.append(
+                        f"### Egyptian News Analysis\n{self.report_sections['egyptian_news_report']}"
+                    )
+                if self.report_sections["egyptian_fundamentals_report"]:
+                    report_parts.append(
+                        f"### Egyptian Fundamentals Analysis\n{self.report_sections['egyptian_fundamentals_report']}"
+                    )
+        else:
+            # US Market Reports
+            if any(
+                self.report_sections[section]
+                for section in [
+                    "market_report",
+                    "sentiment_report",
+                    "news_report",
+                    "fundamentals_report",
+                ]
+            ):
+                report_parts.append("## Analyst Team Reports")
+                if self.report_sections["market_report"]:
+                    report_parts.append(
+                        f"### Market Analysis\n{self.report_sections['market_report']}"
+                    )
+                if self.report_sections["sentiment_report"]:
+                    report_parts.append(
+                        f"### Social Sentiment\n{self.report_sections['sentiment_report']}"
+                    )
+                if self.report_sections["news_report"]:
+                    report_parts.append(
+                        f"### News Analysis\n{self.report_sections['news_report']}"
+                    )
+                if self.report_sections["fundamentals_report"]:
+                    report_parts.append(
+                        f"### Fundamentals Analysis\n{self.report_sections['fundamentals_report']}"
+                    )
 
         # Research Team Reports
         if self.report_sections["investment_plan"]:
@@ -167,7 +223,7 @@ class MessageBuffer:
         self.final_report = "\n\n".join(report_parts) if report_parts else None
 
 
-message_buffer = MessageBuffer()
+# MessageBuffer will be initialized dynamically in run_analysis()
 
 
 def create_layout():
@@ -186,7 +242,7 @@ def create_layout():
     return layout
 
 
-def update_display(layout, spinner_text=None):
+def update_display(layout, message_buffer, spinner_text=None):
     # Header with welcome message
     layout["header"].update(
         Panel(
@@ -213,19 +269,32 @@ def update_display(layout, spinner_text=None):
     progress_table.add_column("Agent", style="green", justify="center", width=20)
     progress_table.add_column("Status", style="yellow", justify="center", width=20)
 
-    # Group agents by team
-    teams = {
-        "Analyst Team": [
-            "Market Analyst",
-            "Social Analyst",
-            "News Analyst",
-            "Fundamentals Analyst",
-        ],
-        "Research Team": ["Bull Researcher", "Bear Researcher", "Research Manager"],
-        "Trading Team": ["Trader"],
-        "Risk Management": ["Risky Analyst", "Neutral Analyst", "Safe Analyst"],
-        "Portfolio Management": ["Portfolio Manager"],
-    }
+    # Group agents by team based on market type
+    if message_buffer.market_type == MarketType.EGYPTIAN:
+        teams = {
+            "Egyptian Analyst Team": [
+                "Egyptian Market Analyst",
+                "Egyptian News Analyst",
+                "Egyptian Fundamentals Analyst",
+            ],
+            "Research Team": ["Bull Researcher", "Bear Researcher", "Research Manager"],
+            "Trading Team": ["Trader"],
+            "Risk Management": ["Risky Analyst", "Neutral Analyst", "Safe Analyst"],
+            "Portfolio Management": ["Portfolio Manager"],
+        }
+    else:
+        teams = {
+            "Analyst Team": [
+                "Market Analyst",
+                "Social Analyst",
+                "News Analyst",
+                "Fundamentals Analyst",
+            ],
+            "Research Team": ["Bull Researcher", "Bear Researcher", "Research Manager"],
+            "Trading Team": ["Trader"],
+            "Risk Management": ["Risky Analyst", "Neutral Analyst", "Safe Analyst"],
+            "Portfolio Management": ["Portfolio Manager"],
+        }
 
     for team, agents in teams.items():
         # Add first agent with team name
@@ -425,13 +494,29 @@ def get_user_selections():
             box_content += f"\n[dim]Default: {default}[/dim]"
         return Panel(box_content, border_style="blue", padding=(1, 2))
 
-    # Step 1: Ticker symbol
+    # Step 0: Market Selection
     console.print(
         create_question_box(
-            "Step 1: Ticker Symbol", "Enter the ticker symbol to analyze", "SPY"
+            "Step 0: Market Selection", "Choose the market you want to analyze", "US Market"
         )
     )
-    selected_ticker = get_ticker()
+    selected_market = get_market_selection()
+    console.print(f"[green]Selected market:[/green] {selected_market.value}")
+
+    # Step 1: Ticker symbol
+    if selected_market == MarketType.EGYPTIAN:
+        console.print(
+            create_question_box(
+                "Step 1: Egyptian Stock Selection", "Select an Egyptian stock to analyze", "COMI"
+            )
+        )
+    else:
+        console.print(
+            create_question_box(
+                "Step 1: Ticker Symbol", "Enter the ticker symbol to analyze", "SPY"
+            )
+        )
+    selected_ticker = get_ticker(selected_market)
 
     # Step 2: Analysis date
     default_date = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -445,12 +530,19 @@ def get_user_selections():
     analysis_date = get_analysis_date()
 
     # Step 3: Select analysts
-    console.print(
-        create_question_box(
-            "Step 3: Analysts Team", "Select your LLM analyst agents for the analysis"
+    if selected_market == MarketType.EGYPTIAN:
+        console.print(
+            create_question_box(
+                "Step 3: Egyptian Analysts Team", "Select your Egyptian LLM analyst agents for the analysis"
+            )
         )
-    )
-    selected_analysts = select_analysts()
+    else:
+        console.print(
+            create_question_box(
+                "Step 3: Analysts Team", "Select your LLM analyst agents for the analysis"
+            )
+        )
+    selected_analysts = select_analysts(selected_market)
     console.print(
         f"[green]Selected analysts:[/green] {', '.join(analyst.value for analyst in selected_analysts)}"
     )
@@ -481,6 +573,7 @@ def get_user_selections():
     selected_deep_thinker = select_deep_thinking_agent(selected_llm_provider)
 
     return {
+        "market": selected_market,
         "ticker": selected_ticker,
         "analysis_date": analysis_date,
         "analysts": selected_analysts,
@@ -492,9 +585,7 @@ def get_user_selections():
     }
 
 
-def get_ticker():
-    """Get ticker symbol from user input."""
-    return typer.prompt("", default="SPY")
+# get_ticker function is imported from utils.py
 
 
 def get_analysis_date():
@@ -706,7 +797,7 @@ def display_complete_report(final_state):
             )
 
 
-def update_research_team_status(status):
+def update_research_team_status(message_buffer, status):
     """Update status for all research team members and trader."""
     research_team = ["Bull Researcher", "Bear Researcher", "Research Manager", "Trader"]
     for agent in research_team:
@@ -736,7 +827,12 @@ def run_analysis():
     selections = get_user_selections()
 
     # Create config with selected research depth
-    config = DEFAULT_CONFIG.copy()
+    if selections["market"] == MarketType.EGYPTIAN:
+        config = EGYPTIAN_CONFIG.copy()
+        config.update(DEFAULT_CONFIG.copy())  # Overlay with default LLM settings
+    else:
+        config = DEFAULT_CONFIG.copy()
+    
     config["max_debate_rounds"] = selections["research_depth"]
     config["max_risk_discuss_rounds"] = selections["research_depth"]
     config["quick_think_llm"] = selections["shallow_thinker"]
@@ -744,13 +840,20 @@ def run_analysis():
     config["backend_url"] = selections["backend_url"]
     config["llm_provider"] = selections["llm_provider"].lower()
 
-    # Initialize the graph
-    graph = TradingAgentsGraph(
-        [analyst.value for analyst in selections["analysts"]], config=config, debug=True
-    )
-
-    # Create result directory
-    results_dir = Path(config["results_dir"]) / selections["ticker"] / selections["analysis_date"]
+    # Initialize the appropriate graph based on market selection
+    if selections["market"] == MarketType.EGYPTIAN:
+        graph = EgyptianTradingAgentsGraph(
+            [analyst.value for analyst in selections["analysts"]], config=config, debug=True
+        )
+        # Create Egyptian result directory
+        results_dir = Path("egyptian_results") / selections["ticker"] / selections["analysis_date"]
+    else:
+        graph = TradingAgentsGraph(
+            [analyst.value for analyst in selections["analysts"]], config=config, debug=True
+        )
+        # Create US result directory
+        results_dir = Path(config["results_dir"]) / selections["ticker"] / selections["analysis_date"]
+    
     results_dir.mkdir(parents=True, exist_ok=True)
     report_dir = results_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -792,6 +895,9 @@ def run_analysis():
                         f.write(content)
         return wrapper
 
+    # Initialize message buffer with market type
+    message_buffer = MessageBuffer(market_type=selections["market"])
+    
     message_buffer.add_message = save_message_decorator(message_buffer, "add_message")
     message_buffer.add_tool_call = save_tool_call_decorator(message_buffer, "add_tool_call")
     message_buffer.update_report_section = save_report_section_decorator(message_buffer, "update_report_section")
@@ -801,7 +907,7 @@ def run_analysis():
 
     with Live(layout, refresh_per_second=4) as live:
         # Initial display
-        update_display(layout)
+        update_display(layout, message_buffer)
 
         # Add initial messages
         message_buffer.add_message("System", f"Selected ticker: {selections['ticker']}")
@@ -812,7 +918,7 @@ def run_analysis():
             "System",
             f"Selected analysts: {', '.join(analyst.value for analyst in selections['analysts'])}",
         )
-        update_display(layout)
+        update_display(layout, message_buffer)
 
         # Reset agent statuses
         for agent in message_buffer.agent_status:
@@ -825,15 +931,18 @@ def run_analysis():
         message_buffer.final_report = None
 
         # Update agent status to in_progress for the first analyst
-        first_analyst = f"{selections['analysts'][0].value.capitalize()} Analyst"
+        if selections["market"] == MarketType.EGYPTIAN:
+            first_analyst = f"Egyptian {selections['analysts'][0].value.replace('egyptian_', '').capitalize()} Analyst"
+        else:
+            first_analyst = f"{selections['analysts'][0].value.capitalize()} Analyst"
         message_buffer.update_agent_status(first_analyst, "in_progress")
-        update_display(layout)
+        update_display(layout, message_buffer)
 
         # Create spinner text
         spinner_text = (
             f"Analyzing {selections['ticker']} on {selections['analysis_date']}..."
         )
-        update_display(layout, spinner_text)
+        update_display(layout, message_buffer, spinner_text)
 
         # Initialize state and get graph args
         init_agent_state = graph.propagator.create_initial_state(
@@ -872,48 +981,81 @@ def run_analysis():
 
                 # Update reports and agent status based on chunk content
                 # Analyst Team Reports
-                if "market_report" in chunk and chunk["market_report"]:
-                    message_buffer.update_report_section(
-                        "market_report", chunk["market_report"]
-                    )
-                    message_buffer.update_agent_status("Market Analyst", "completed")
-                    # Set next analyst to in_progress
-                    if "social" in selections["analysts"]:
-                        message_buffer.update_agent_status(
-                            "Social Analyst", "in_progress"
+                if selections["market"] == MarketType.EGYPTIAN:
+                    # Egyptian Market Reports
+                    if "egyptian_market_report" in chunk and chunk["egyptian_market_report"]:
+                        message_buffer.update_report_section(
+                            "egyptian_market_report", chunk["egyptian_market_report"]
                         )
+                        message_buffer.update_agent_status("Egyptian Market Analyst", "completed")
+                        # Set next analyst to in_progress
+                        if any("egyptian_news" in str(analyst) for analyst in selections["analysts"]):
+                            message_buffer.update_agent_status(
+                                "Egyptian News Analyst", "in_progress"
+                            )
 
-                if "sentiment_report" in chunk and chunk["sentiment_report"]:
-                    message_buffer.update_report_section(
-                        "sentiment_report", chunk["sentiment_report"]
-                    )
-                    message_buffer.update_agent_status("Social Analyst", "completed")
-                    # Set next analyst to in_progress
-                    if "news" in selections["analysts"]:
-                        message_buffer.update_agent_status(
-                            "News Analyst", "in_progress"
+                    if "egyptian_news_report" in chunk and chunk["egyptian_news_report"]:
+                        message_buffer.update_report_section(
+                            "egyptian_news_report", chunk["egyptian_news_report"]
                         )
+                        message_buffer.update_agent_status("Egyptian News Analyst", "completed")
+                        # Set next analyst to in_progress
+                        if any("egyptian_fundamentals" in str(analyst) for analyst in selections["analysts"]):
+                            message_buffer.update_agent_status(
+                                "Egyptian Fundamentals Analyst", "in_progress"
+                            )
 
-                if "news_report" in chunk and chunk["news_report"]:
-                    message_buffer.update_report_section(
-                        "news_report", chunk["news_report"]
-                    )
-                    message_buffer.update_agent_status("News Analyst", "completed")
-                    # Set next analyst to in_progress
-                    if "fundamentals" in selections["analysts"]:
-                        message_buffer.update_agent_status(
-                            "Fundamentals Analyst", "in_progress"
+                    if "egyptian_fundamentals_report" in chunk and chunk["egyptian_fundamentals_report"]:
+                        message_buffer.update_report_section(
+                            "egyptian_fundamentals_report", chunk["egyptian_fundamentals_report"]
                         )
+                        message_buffer.update_agent_status("Egyptian Fundamentals Analyst", "completed")
+                else:
+                    # US Market Reports
+                    if "market_report" in chunk and chunk["market_report"]:
+                        message_buffer.update_report_section(
+                            "market_report", chunk["market_report"]
+                        )
+                        message_buffer.update_agent_status("Market Analyst", "completed")
+                        # Set next analyst to in_progress
+                        if any("social" in str(analyst) for analyst in selections["analysts"]):
+                            message_buffer.update_agent_status(
+                                "Social Analyst", "in_progress"
+                            )
 
-                if "fundamentals_report" in chunk and chunk["fundamentals_report"]:
-                    message_buffer.update_report_section(
-                        "fundamentals_report", chunk["fundamentals_report"]
-                    )
-                    message_buffer.update_agent_status(
-                        "Fundamentals Analyst", "completed"
-                    )
-                    # Set all research team members to in_progress
-                    update_research_team_status("in_progress")
+                    if "sentiment_report" in chunk and chunk["sentiment_report"]:
+                        message_buffer.update_report_section(
+                            "sentiment_report", chunk["sentiment_report"]
+                        )
+                        message_buffer.update_agent_status("Social Analyst", "completed")
+                        # Set next analyst to in_progress
+                        if any("news" in str(analyst) for analyst in selections["analysts"]):
+                            message_buffer.update_agent_status(
+                                "News Analyst", "in_progress"
+                            )
+
+                # Handle news and fundamentals reports for US market
+                if selections["market"] == MarketType.US:
+                    if "news_report" in chunk and chunk["news_report"]:
+                        message_buffer.update_report_section(
+                            "news_report", chunk["news_report"]
+                        )
+                        message_buffer.update_agent_status("News Analyst", "completed")
+                        # Set next analyst to in_progress
+                        if any("fundamentals" in str(analyst) for analyst in selections["analysts"]):
+                            message_buffer.update_agent_status(
+                                "Fundamentals Analyst", "in_progress"
+                            )
+
+                    if "fundamentals_report" in chunk and chunk["fundamentals_report"]:
+                        message_buffer.update_report_section(
+                            "fundamentals_report", chunk["fundamentals_report"]
+                        )
+                        message_buffer.update_agent_status(
+                            "Fundamentals Analyst", "completed"
+                        )
+                        # Set all research team members to in_progress
+                        update_research_team_status(message_buffer, "in_progress")
 
                 # Research Team - Handle Investment Debate State
                 if (
@@ -925,7 +1067,7 @@ def run_analysis():
                     # Update Bull Researcher status and report
                     if "bull_history" in debate_state and debate_state["bull_history"]:
                         # Keep all research team members in progress
-                        update_research_team_status("in_progress")
+                        update_research_team_status(message_buffer, "in_progress")
                         # Extract latest bull response
                         bull_responses = debate_state["bull_history"].split("\n")
                         latest_bull = bull_responses[-1] if bull_responses else ""
@@ -940,7 +1082,7 @@ def run_analysis():
                     # Update Bear Researcher status and report
                     if "bear_history" in debate_state and debate_state["bear_history"]:
                         # Keep all research team members in progress
-                        update_research_team_status("in_progress")
+                        update_research_team_status(message_buffer, "in_progress")
                         # Extract latest bear response
                         bear_responses = debate_state["bear_history"].split("\n")
                         latest_bear = bear_responses[-1] if bear_responses else ""
@@ -958,7 +1100,7 @@ def run_analysis():
                         and debate_state["judge_decision"]
                     ):
                         # Keep all research team members in progress until final decision
-                        update_research_team_status("in_progress")
+                        update_research_team_status(message_buffer, "in_progress")
                         message_buffer.add_message(
                             "Reasoning",
                             f"Research Manager: {debate_state['judge_decision']}",
@@ -969,7 +1111,7 @@ def run_analysis():
                             f"{message_buffer.report_sections['investment_plan']}\n\n### Research Manager Decision\n{debate_state['judge_decision']}",
                         )
                         # Mark all research team members as completed
-                        update_research_team_status("completed")
+                        update_research_team_status(message_buffer, "completed")
                         # Set first risk analyst to in_progress
                         message_buffer.update_agent_status(
                             "Risky Analyst", "in_progress"
@@ -1069,7 +1211,7 @@ def run_analysis():
                         )
 
                 # Update the display
-                update_display(layout)
+                update_display(layout, message_buffer)
 
             trace.append(chunk)
 
@@ -1093,13 +1235,19 @@ def run_analysis():
         # Display the complete final report
         display_complete_report(final_state)
 
-        update_display(layout)
+        update_display(layout, message_buffer)
 
 
 @app.command()
 def analyze():
+    """Analyze stocks using the multi-agent framework."""
+    run_analysis()
+
+
+def main():
+    """Main entry point for the CLI."""
     run_analysis()
 
 
 if __name__ == "__main__":
-    app()
+    main()

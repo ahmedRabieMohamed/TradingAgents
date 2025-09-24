@@ -1,0 +1,121 @@
+21:25:05 [System] Selected ticker: ABUK
+21:25:05 [System] Analysis date: 2025-09-23
+21:25:05 [System] Selected analysts: egyptian_market, egyptian_news, egyptian_fundamentals
+21:25:05 [Reasoning] ABUK
+21:25:05 [Reasoning] ABUK
+21:25:08 [Reasoning] 
+21:25:08 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:08 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:08 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:11 [Reasoning] 
+21:25:11 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:11 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:11 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:13 [Reasoning] 
+21:25:13 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:13 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:13 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:16 [Reasoning] 
+21:25:16 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:16 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:16 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:18 [Reasoning] 
+21:25:18 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:18 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:18 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:21 [Reasoning] 
+21:25:21 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:21 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:21 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:24 [Reasoning] 
+21:25:24 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:24 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:24 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:27 [Reasoning] 
+21:25:27 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:27 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:27 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:30 [Reasoning] 
+21:25:30 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:30 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:30 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:33 [Reasoning] 
+21:25:33 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:33 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:33 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:36 [Reasoning] 
+21:25:36 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:36 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:36 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:39 [Reasoning] 
+21:25:39 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:39 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:39 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:43 [Reasoning] 
+21:25:43 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:43 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:43 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:46 [Reasoning] 
+21:25:46 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:46 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:46 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:50 [Reasoning] 
+21:25:50 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:50 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:50 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:53 [Reasoning] 
+21:25:53 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:53 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:53 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:56 [Reasoning] 
+21:25:56 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:56 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:56 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:25:59 [Reasoning] 
+21:25:59 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:25:59 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:25:59 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:01 [Reasoning] 
+21:26:01 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:01 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:01 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:05 [Reasoning] 
+21:26:05 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:05 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:05 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:08 [Reasoning] 
+21:26:08 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:08 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:08 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:11 [Reasoning] 
+21:26:11 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:11 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:11 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:14 [Reasoning] 
+21:26:14 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:14 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:14 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:18 [Reasoning] 
+21:26:18 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:18 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:18 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:21 [Reasoning] 
+21:26:21 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:21 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:21 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:24 [Reasoning] 
+21:26:24 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:24 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:24 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:27 [Reasoning] 
+21:26:27 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:27 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:27 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:29 [Reasoning] 
+21:26:29 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:29 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:29 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].
+21:26:31 [Reasoning] 
+21:26:31 [Tool Call] get_egyptian_stock_data_online(symbol=ABUK, start_date=2025-01-01, end_date=2025-09-23)
+21:26:31 [Tool Call] get_egyptian_stock_indicators_report_online(symbol=ABUK, curr_date=2025-09-23, look_back_days=30)
+21:26:31 [Reasoning] Error: get_egyptian_stock_indicators_report_online is not a valid tool, try one of [get_egyptian_stock_data, get_egyptian_stock_indicators_report].

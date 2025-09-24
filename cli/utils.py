@@ -1,21 +1,34 @@
 import questionary
 from typing import List, Optional, Tuple, Dict
+from rich.console import Console
 
-from cli.models import AnalystType
+from cli.models import AnalystType, MarketType
 
-ANALYST_ORDER = [
+console = Console()
+
+# US Market Analysts
+US_ANALYST_ORDER = [
     ("Market Analyst", AnalystType.MARKET),
     ("Social Media Analyst", AnalystType.SOCIAL),
     ("News Analyst", AnalystType.NEWS),
     ("Fundamentals Analyst", AnalystType.FUNDAMENTALS),
 ]
 
+# Egyptian Market Analysts
+EGYPTIAN_ANALYST_ORDER = [
+    ("Egyptian Market Analyst", AnalystType.EGYPTIAN_MARKET),
+    ("Egyptian News Analyst", AnalystType.EGYPTIAN_NEWS),
+    ("Egyptian Fundamentals Analyst", AnalystType.EGYPTIAN_FUNDAMENTALS),
+]
 
-def get_ticker() -> str:
-    """Prompt the user to enter a ticker symbol."""
-    ticker = questionary.text(
-        "Enter the ticker symbol to analyze:",
-        validate=lambda x: len(x.strip()) > 0 or "Please enter a valid ticker symbol.",
+def get_market_selection() -> MarketType:
+    """Prompt the user to select between US and Egyptian markets."""
+    market_choice = questionary.select(
+        "Select the market you want to analyze:",
+        choices=[
+            questionary.Choice("🇺🇸 US Market (NYSE, NASDAQ)", MarketType.US),
+            questionary.Choice("🇪🇬 Egyptian Market (EGX)", MarketType.EGYPTIAN),
+        ],
         style=questionary.Style(
             [
                 ("text", "fg:green"),
@@ -24,11 +37,77 @@ def get_ticker() -> str:
         ),
     ).ask()
 
-    if not ticker:
-        console.print("\n[red]No ticker symbol provided. Exiting...[/red]")
+    if not market_choice:
+        console.print("\n[red]No market selected. Exiting...[/red]")
         exit(1)
 
-    return ticker.strip().upper()
+    return market_choice
+
+
+def get_ticker(market_type: MarketType = MarketType.US) -> str:
+    """Prompt the user to enter a ticker symbol."""
+    if market_type == MarketType.EGYPTIAN:
+        # Show Egyptian stocks as options
+        egyptian_stocks = [
+            ("COMI - Commercial International Bank", "COMI"),
+            ("ORAS - Orascom Construction", "ORAS"),
+            ("EFID - EFG Hermes", "EFID"),
+            ("EGBE - Egyptian Bank", "EGBE"),
+            ("SWDY - El Sewedy Electric", "SWDY"),
+            ("OCIC - Orascom Investment", "OCIC"),
+            ("FWRY - Fawry", "FWRY"),
+            ("RAPH - Raya Holding", "RAPH"),
+            ("ABUK - Abu Qir Fertilizers", "ABUK"),
+            ("EGTS - Egyptian Tourism", "EGTS"),
+            ("Custom ticker", "CUSTOM"),
+        ]
+        
+        choice = questionary.select(
+            "Select an Egyptian stock to analyze:",
+            choices=[questionary.Choice(display, value) for display, value in egyptian_stocks],
+            style=questionary.Style(
+                [
+                    ("text", "fg:green"),
+                    ("highlighted", "noinherit"),
+                ]
+            ),
+        ).ask()
+        
+        if choice == "CUSTOM":
+            ticker = questionary.text(
+                "Enter the Egyptian ticker symbol to analyze:",
+                validate=lambda x: len(x.strip()) > 0 or "Please enter a valid ticker symbol.",
+                style=questionary.Style(
+                    [
+                        ("text", "fg:green"),
+                        ("highlighted", "noinherit"),
+                    ]
+                ),
+            ).ask()
+            if not ticker:
+                console.print("\n[red]No ticker symbol provided. Exiting...[/red]")
+                exit(1)
+            return ticker.strip().upper()
+        else:
+            return choice
+    else:
+        # US market - original behavior
+        ticker = questionary.text(
+            "Enter the ticker symbol to analyze:",
+            validate=lambda x: len(x.strip()) > 0 or "Please enter a valid ticker symbol.",
+            style=questionary.Style(
+                [
+                    ("text", "fg:green"),
+                    ("highlighted", "noinherit"),
+                ]
+            ),
+        ).ask()
+
+        if not ticker:
+            console.print("\n[red]No ticker symbol provided. Exiting...[/red]")
+            exit(1)
+
+        return ticker.strip().upper()
 
 
 def get_analysis_date() -> str:
@@ -64,12 +143,19 @@ def get_analysis_date() -> str:
     return date.strip()
 
 
-def select_analysts() -> List[AnalystType]:
+def select_analysts(market_type: MarketType = MarketType.US) -> List[AnalystType]:
     """Select analysts using an interactive checkbox."""
+    if market_type == MarketType.EGYPTIAN:
+        analyst_order = EGYPTIAN_ANALYST_ORDER
+        title = "Select Your [Egyptian Analyst Team]:"
+    else:
+        analyst_order = US_ANALYST_ORDER
+        title = "Select Your [Analysts Team]:"
+    
     choices = questionary.checkbox(
-        "Select Your [Analysts Team]:",
+        title,
         choices=[
-            questionary.Choice(display, value=value) for display, value in ANALYST_ORDER
+            questionary.Choice(display, value=value) for display, value in analyst_order
         ],
         instruction="\n- Press Space to select/unselect analysts\n- Press 'a' to select/unselect all\n- Press Enter when done",
         validate=lambda x: len(x) > 0 or "You must select at least one analyst.",

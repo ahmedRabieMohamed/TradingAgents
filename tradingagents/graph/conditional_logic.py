@@ -15,7 +15,7 @@ class ConditionalLogic:
         """Determine if market analysis should continue."""
         messages = state["messages"]
         last_message = messages[-1]
-        if last_message.tool_calls:
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
             return "tools_market"
         return "Msg Clear Market"
 
@@ -23,7 +23,7 @@ class ConditionalLogic:
         """Determine if social media analysis should continue."""
         messages = state["messages"]
         last_message = messages[-1]
-        if last_message.tool_calls:
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
             return "tools_social"
         return "Msg Clear Social"
 
@@ -31,7 +31,7 @@ class ConditionalLogic:
         """Determine if news analysis should continue."""
         messages = state["messages"]
         last_message = messages[-1]
-        if last_message.tool_calls:
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
             return "tools_news"
         return "Msg Clear News"
 
@@ -39,7 +39,7 @@ class ConditionalLogic:
         """Determine if fundamentals analysis should continue."""
         messages = state["messages"]
         last_message = messages[-1]
-        if last_message.tool_calls:
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
             return "tools_fundamentals"
         return "Msg Clear Fundamentals"
 
@@ -65,3 +65,28 @@ class ConditionalLogic:
         if state["risk_debate_state"]["latest_speaker"].startswith("Safe"):
             return "Neutral Analyst"
         return "Risky Analyst"
+
+    # Egyptian Market Conditional Logic
+    def should_continue_egyptian_market(self, state: AgentState):
+        """Determine if Egyptian market analysis should continue."""
+        messages = state["messages"]
+        last_message = messages[-1]
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+            return "tools_egyptian_market"
+        return "Msg Clear Market"
+
+    def should_continue_egyptian_news(self, state: AgentState):
+        """Determine if Egyptian news analysis should continue."""
+        messages = state["messages"]
+        last_message = messages[-1]
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+            return "tools_egyptian_news"
+        return "Msg Clear News"
+
+    def should_continue_egyptian_fundamentals(self, state: AgentState):
+        """Determine if Egyptian fundamentals analysis should continue."""
+        messages = state["messages"]
+        last_message = messages[-1]
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+            return "tools_egyptian_fundamentals"
+        return "Msg Clear Fundamentals"
