@@ -125,6 +125,11 @@ class EgyptianTradingAgentsGraph:
                     self.toolkit.get_egyptian_stock_indicators_report_online,
                 ]
             ),
+            "egyptian_social": ToolNode(
+                [
+                    self.toolkit.get_egyptian_social_sentiment_openai,
+                ]
+            ),
             "egyptian_news": ToolNode(
                 [
                     self.toolkit.get_egyptian_news,
@@ -179,6 +184,7 @@ class EgyptianTradingAgentsGraph:
             "company_of_interest": final_state["company_of_interest"],
             "trade_date": final_state["trade_date"],
             "egyptian_market_report": final_state.get("egyptian_market_report"),
+            "sentiment_report": final_state.get("sentiment_report"),
             "egyptian_news_report": final_state.get("egyptian_news_report"),
             "egyptian_fundamentals_report": final_state.get("egyptian_fundamentals_report"),
             "investment_debate_state": {
@@ -285,6 +291,7 @@ class EgyptianGraphSetup:
         from tradingagents.agents.analysts.egyptian_market_analyst import create_egyptian_market_analyst
         from tradingagents.agents.analysts.egyptian_news_analyst import create_egyptian_news_analyst
         from tradingagents.agents.analysts.egyptian_fundamentals_analyst import create_egyptian_fundamentals_analyst
+        from tradingagents.agents.analysts.egyptian_social_analyst import create_egyptian_social_analyst
 
         # Create analyst nodes
         analyst_nodes = {}
@@ -297,6 +304,13 @@ class EgyptianGraphSetup:
             )
             delete_nodes["market"] = create_msg_delete()
             tool_nodes["market"] = self.tool_nodes["egyptian_market"]
+
+        if "egyptian_social" in selected_analysts:
+            analyst_nodes["social"] = create_egyptian_social_analyst(
+                self.quick_thinking_llm, self.toolkit
+            )
+            delete_nodes["social"] = create_msg_delete()
+            tool_nodes["social"] = self.tool_nodes["egyptian_social"]
 
         if "egyptian_news" in selected_analysts:
             analyst_nodes["news"] = create_egyptian_news_analyst(
@@ -343,6 +357,7 @@ class EgyptianGraphSetup:
         # Map Egyptian analysts to standard names for compatibility
         analyst_mapping = {
             "egyptian_market": "market",
+            "egyptian_social": "social",
             "egyptian_news": "news", 
             "egyptian_fundamentals": "fundamentals"
         }
@@ -471,8 +486,9 @@ def create_egyptian_state_mapper():
         if "egyptian_fundamentals_report" in state and state["egyptian_fundamentals_report"]:
             mapped_state["fundamentals_report"] = state["egyptian_fundamentals_report"]
         
-        # Set empty sentiment report for Egyptian market (no social media analysis)
-        mapped_state["sentiment_report"] = "No social media analysis available for Egyptian market."
+        # Only map sentiment report if provided by analysts
+        if "sentiment_report" in state and state["sentiment_report"]:
+            mapped_state["sentiment_report"] = state["sentiment_report"]
         
         return mapped_state
     

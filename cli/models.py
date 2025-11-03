@@ -15,5 +15,6 @@ class AnalystType(str, Enum):
     FUNDAMENTALS = "fundamentals"
     # Egyptian analysts
     EGYPTIAN_MARKET = "egyptian_market"
+    EGYPTIAN_SOCIAL = "egyptian_social"
     EGYPTIAN_NEWS = "egyptian_news"
     EGYPTIAN_FUNDAMENTALS = "egyptian_fundamentals"

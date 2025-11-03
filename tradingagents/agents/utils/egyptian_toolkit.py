@@ -246,6 +246,17 @@ class EgyptianToolkit:
 
     @staticmethod
     @tool
+    def get_egyptian_social_sentiment_openai(
+        symbol: Annotated[str, "Egyptian stock symbol"],
+        curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
+    ) -> str:
+        """
+        Get Egyptian stock social media sentiment using OpenAI web search.
+        """
+        return egyptian_interface.get_egyptian_social_sentiment_openai(symbol, curr_date)
+
+    @staticmethod
+    @tool
     def get_egyptian_trading_calendar(
         year: Annotated[int, "Year for trading calendar"] = 2025
     ) -> str:

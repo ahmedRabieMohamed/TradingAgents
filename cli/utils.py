@@ -17,6 +17,7 @@ US_ANALYST_ORDER = [
 # Egyptian Market Analysts
 EGYPTIAN_ANALYST_ORDER = [
     ("Egyptian Market Analyst", AnalystType.EGYPTIAN_MARKET),
+    ("Egyptian Social Media Analyst", AnalystType.EGYPTIAN_SOCIAL),
     ("Egyptian News Analyst", AnalystType.EGYPTIAN_NEWS),
     ("Egyptian Fundamentals Analyst", AnalystType.EGYPTIAN_FUNDAMENTALS),
 ]

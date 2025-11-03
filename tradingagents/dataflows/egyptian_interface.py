@@ -366,6 +366,77 @@ def get_egyptian_fundamentals_openai(
         return f"Error fetching Egyptian stock fundamentals for {symbol}: {str(e)}"
 
 
+def get_egyptian_social_sentiment_openai(
+    symbol: Annotated[str, "Egyptian stock symbol"],
+    curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
+) -> str:
+    """
+    Get Egyptian stock social media sentiment using OpenAI web search tools
+    across social sources (Twitter/X, Reddit, Facebook pages, LinkedIn posts, forums).
+
+    Returns a concise sentiment report with sources and a summary table.
+    """
+    try:
+        stock_info = get_egyptian_stock_info(symbol)
+        if not stock_info:
+            return f"Error: Unknown Egyptian stock symbol '{symbol}'"
+
+        config = get_config()
+        client = OpenAI(base_url=config["backend_url"])
+
+        prompt = f"""
+        Collect social media and forum mentions related to {symbol} ({stock_info['name']})
+        in Egypt within the 14 days up to {curr_date}. Prefer Arabic and English sources.
+        Focus on:
+        - Twitter/X posts, Reddit threads, LinkedIn posts, Facebook pages, local forums
+        - Investor/consumer sentiment (bullish/bearish/neutral) and key themes
+        - Any viral events, product issues, regulatory rumors, outages, or notable PR
+        - Volume/engagement context (likes, reposts, comments) when visible
+
+        Produce:
+        1) A short narrative analysis (~6-10 bullets) for traders.
+        2) A Markdown table with columns: Source | Date | Post Title/Snippet | Sentiment | Link.
+        Only include posts detectable in the time window.
+        """
+
+        response = client.responses.create(
+            model=config["quick_think_llm"],
+            input=[
+                {
+                    "role": "system",
+                    "content": [
+                        {"type": "input_text", "text": prompt}
+                    ],
+                }
+            ],
+            text={"format": {"type": "text"}},
+            reasoning={},
+            tools=[
+                {
+                    "type": "web_search_preview",
+                    "user_location": {"type": "approximate"},
+                    "search_context_size": "medium",
+                }
+            ],
+            temperature=0.5,
+            max_output_tokens=3000,
+            top_p=1,
+            store=True,
+        )
+
+        result = response.output[1].content[0].text
+
+        header = f"## Egyptian Social Sentiment Report for {symbol} ({stock_info['name']})\n\n"
+        header += f"**Market**: {EGYPTIAN_CONFIG['market_name']} (EGX)\n"
+        header += f"**Currency**: {EGYPTIAN_CONFIG['currency']}\n"
+        header += f"**Period**: 14 days ending {curr_date}\n\n"
+
+        return header + result
+
+    except Exception as e:
+        return f"Error fetching Egyptian social sentiment for {symbol}: {str(e)}"
+
+
 def get_egyptian_stock_info_summary(
     symbol: Annotated[str, "Egyptian stock symbol"],
 ) -> str:
