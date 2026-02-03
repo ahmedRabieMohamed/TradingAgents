@@ -2,25 +2,41 @@
 
 from __future__ import annotations
 
-import json
 from datetime import date, datetime, time, timedelta
-from pathlib import Path
 from zoneinfo import ZoneInfo
 
-
-_MARKETS_PATH = Path(__file__).resolve().parents[1] / "data" / "markets.json"
-
-
-def _load_markets() -> list[dict]:
-    with _MARKETS_PATH.open("r", encoding="utf-8") as handle:
-        payload = json.load(handle)
-    if not isinstance(payload, list):
-        raise ValueError("markets.json must contain a list of markets")
-    return payload
+from tradingagents.api.services.eodhd_cache import load_cached_payload
+from tradingagents.api.services.eodhd_client import EodhdClient
 
 
-_MARKETS = _load_markets()
-_MARKET_INDEX = {market["market_id"].upper(): market for market in _MARKETS}
+_MARKET_EXCHANGES = {
+    "US": "US",
+    "EGX": "EGX",
+}
+
+_MARKET_SCHEDULES = {
+    "US": {
+        "timezone": "America/New_York",
+        "session_open": "09:30",
+        "session_close": "16:00",
+        "trading_days": [0, 1, 2, 3, 4],
+        "data_delay_minutes": 15,
+        "realtime_available": True,
+    },
+    "EGX": {
+        "timezone": "Africa/Cairo",
+        "session_open": "10:00",
+        "session_close": "14:30",
+        "trading_days": [0, 1, 2, 3, 4],
+        "data_delay_minutes": 15,
+        "realtime_available": False,
+    },
+}
+
+_MARKET_METADATA_DEFAULTS = {
+    "US": {"name": "United States", "mic": "XNYS", "currency": "USD"},
+    "EGX": {"name": "Egypt", "mic": "XCAI", "currency": "EGP"},
+}
 
 
 def _parse_time(value: str) -> time:
@@ -70,6 +86,70 @@ def _compute_session_status(market: dict) -> dict[str, datetime | str]:
     }
 
 
+def _extract_detail(
+    details: dict, *keys: str, default: str | None = None
+) -> str | None:
+    for key in keys:
+        if key in details and details[key] not in (None, ""):
+            return str(details[key])
+    lowered = {str(key).lower(): value for key, value in details.items()}
+    for key in keys:
+        value = lowered.get(key.lower())
+        if value not in (None, ""):
+            return str(value)
+    return default
+
+
+def _load_cached_exchange_details(exchange_code: str) -> dict | None:
+    cache_key = f"exchange_details_{exchange_code}"
+    cached = load_cached_payload(cache_key, ttl_seconds=60 * 60 * 24 * 365 * 10)
+    if isinstance(cached, dict):
+        return cached
+    return None
+
+
+def _fetch_exchange_details(exchange_code: str) -> dict:
+    client = EodhdClient()
+    try:
+        payload = client.get_exchange_details(exchange_code)
+    except Exception as exc:  # pragma: no cover - network failure fallback
+        cached = _load_cached_exchange_details(exchange_code)
+        if cached is not None:
+            return cached
+        raise ValueError(
+            f"Unable to fetch exchange details for {exchange_code}; no cached data available."
+        ) from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"Exchange details for {exchange_code} must be a dictionary")
+    return payload
+
+
+def _build_market(market_id: str) -> dict:
+    exchange_code = _MARKET_EXCHANGES[market_id]
+    schedule = _MARKET_SCHEDULES[market_id].copy()
+    defaults = _MARKET_METADATA_DEFAULTS[market_id]
+    details = _fetch_exchange_details(exchange_code)
+    name = _extract_detail(details, "Name", "name", default=defaults["name"])
+    mic = _extract_detail(
+        details, "MIC", "Mic", "mic", "Exchange", "exchange", default=defaults["mic"]
+    )
+    currency = _extract_detail(
+        details, "Currency", "currency", default=defaults["currency"]
+    )
+    return {
+        "market_id": market_id,
+        "name": name,
+        "mic": mic,
+        "timezone": schedule["timezone"],
+        "currency": currency,
+        "session_open": schedule["session_open"],
+        "session_close": schedule["session_close"],
+        "trading_days": schedule["trading_days"],
+        "data_delay_minutes": schedule["data_delay_minutes"],
+        "realtime_available": schedule["realtime_available"],
+    }
+
+
 def _serialize_market(market: dict) -> dict:
     session = _compute_session_status(market)
     payload = {**market}
@@ -84,11 +164,13 @@ def _serialize_market(market: dict) -> dict:
 
 
 def list_markets() -> list[dict]:
-    return [_serialize_market(market) for market in _MARKETS]
+    markets = [_build_market(market_id) for market_id in _MARKET_EXCHANGES]
+    return [_serialize_market(market) for market in markets]
 
 
 def get_market(market_id: str) -> dict | None:
-    market = _MARKET_INDEX.get(market_id.upper())
-    if not market:
+    market_key = market_id.upper()
+    if market_key not in _MARKET_EXCHANGES:
         return None
+    market = _build_market(market_key)
     return _serialize_market(market)
