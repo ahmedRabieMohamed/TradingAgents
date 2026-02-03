@@ -33,8 +33,8 @@
 
 **tradingagents/api/**
 - Purpose: FastAPI API layer for Market Access & Discovery endpoints.
-- Contains: Routers, dependencies, schemas, auth services, settings.
-- Key files: `tradingagents/api/app.py`, `tradingagents/api/routers/auth.py`, `tradingagents/api/services/auth_tokens.py`.
+- Contains: Routers, dependencies, schemas, services, settings, and seed data.
+- Key files: `tradingagents/api/app.py`, `tradingagents/api/routers/auth.py`, `tradingagents/api/services/auth_tokens.py`, `tradingagents/api/data/markets.json`.
 
 **tradingagents/graph/**
 - Purpose: LangGraph workflow definitions and execution helpers.
