@@ -9,13 +9,20 @@ except ImportError:  # pragma: no cover - fallback for pydantic v1
 
 
 class Settings(BaseSettings):
+    app_env: str = "dev"
     api_prefix: str = "/api/v1"
     api_title: str = "TradingAgents Market Access API"
     api_version: str = "0.1.0"
 
+    jwt_secret: str = "dev-jwt-secret"
     jwt_algorithm: str = "HS256"
     access_token_ttl_minutes: int = 15
     refresh_token_ttl_days: int = 30
+
+    api_clients_json: Optional[str] = None
+    dev_client_id: str = "demo-client"
+    dev_client_secret: str = "demo-secret"
+    refresh_token_salt: Optional[str] = None
 
     redis_url: Optional[str] = None
 
