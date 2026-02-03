@@ -1,0 +1,92 @@
+[
+  {
+    "ticker": "AAPL",
+    "name": "Apple Inc.",
+    "sector": "Technology",
+    "market_cap": 2700000000000,
+    "avg_volume_1w": 61000000,
+    "price_change_pct_1w": 1.8,
+    "currency": "USD"
+  },
+  {
+    "ticker": "MSFT",
+    "name": "Microsoft Corporation",
+    "sector": "Technology",
+    "market_cap": 3100000000000,
+    "avg_volume_1w": 33000000,
+    "price_change_pct_1w": 2.4,
+    "currency": "USD"
+  },
+  {
+    "ticker": "AMZN",
+    "name": "Amazon.com, Inc.",
+    "sector": "Consumer Discretionary",
+    "market_cap": 1800000000000,
+    "avg_volume_1w": 52000000,
+    "price_change_pct_1w": -0.7,
+    "currency": "USD"
+  },
+  {
+    "ticker": "GOOGL",
+    "name": "Alphabet Inc.",
+    "sector": "Communication Services",
+    "market_cap": 1900000000000,
+    "avg_volume_1w": 29000000,
+    "price_change_pct_1w": 1.1,
+    "currency": "USD"
+  },
+  {
+    "ticker": "NVDA",
+    "name": "NVIDIA Corporation",
+    "sector": "Technology",
+    "market_cap": 2200000000000,
+    "avg_volume_1w": 48000000,
+    "price_change_pct_1w": 3.9,
+    "currency": "USD"
+  },
+  {
+    "ticker": "TSLA",
+    "name": "Tesla, Inc.",
+    "sector": "Consumer Discretionary",
+    "market_cap": 700000000000,
+    "avg_volume_1w": 85000000,
+    "price_change_pct_1w": -2.2,
+    "currency": "USD"
+  },
+  {
+    "ticker": "JPM",
+    "name": "JPMorgan Chase & Co.",
+    "sector": "Financials",
+    "market_cap": 520000000000,
+    "avg_volume_1w": 12000000,
+    "price_change_pct_1w": 0.6,
+    "currency": "USD"
+  },
+  {
+    "ticker": "XOM",
+    "name": "Exxon Mobil Corporation",
+    "sector": "Energy",
+    "market_cap": 430000000000,
+    "avg_volume_1w": 16000000,
+    "price_change_pct_1w": 1.4,
+    "currency": "USD"
+  },
+  {
+    "ticker": "UNH",
+    "name": "UnitedHealth Group Incorporated",
+    "sector": "Health Care",
+    "market_cap": 450000000000,
+    "avg_volume_1w": 3400000,
+    "price_change_pct_1w": -0.3,
+    "currency": "USD"
+  },
+  {
+    "ticker": "META",
+    "name": "Meta Platforms, Inc.",
+    "sector": "Communication Services",
+    "market_cap": 1200000000000,
+    "avg_volume_1w": 24000000,
+    "price_change_pct_1w": 2.9,
+    "currency": "USD"
+  }
+]

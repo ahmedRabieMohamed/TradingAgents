@@ -1,0 +1,92 @@
+[
+  {
+    "ticker": "COMI",
+    "name": "Commercial International Bank",
+    "sector": "Financials",
+    "market_cap": 210000000000,
+    "avg_volume_1w": 6500000,
+    "price_change_pct_1w": 1.2,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "ETEL",
+    "name": "Telecom Egypt",
+    "sector": "Communication Services",
+    "market_cap": 56000000000,
+    "avg_volume_1w": 2800000,
+    "price_change_pct_1w": -0.9,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "HRHO",
+    "name": "EFG Holding",
+    "sector": "Financials",
+    "market_cap": 61000000000,
+    "avg_volume_1w": 5200000,
+    "price_change_pct_1w": 2.4,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "SWDY",
+    "name": "Elsewedy Electric",
+    "sector": "Industrials",
+    "market_cap": 78000000000,
+    "avg_volume_1w": 1900000,
+    "price_change_pct_1w": 0.7,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "ABUK",
+    "name": "Abu Qir Fertilizers",
+    "sector": "Materials",
+    "market_cap": 73000000000,
+    "avg_volume_1w": 2400000,
+    "price_change_pct_1w": -1.4,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "PHDC",
+    "name": "Palm Hills Developments",
+    "sector": "Real Estate",
+    "market_cap": 56000000000,
+    "avg_volume_1w": 4100000,
+    "price_change_pct_1w": 1.8,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "EGCH",
+    "name": "Egyptian Chemical Industries",
+    "sector": "Materials",
+    "market_cap": 12000000000,
+    "avg_volume_1w": 1500000,
+    "price_change_pct_1w": 0.3,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "ORWE",
+    "name": "Oriental Weavers",
+    "sector": "Consumer Discretionary",
+    "market_cap": 11000000000,
+    "avg_volume_1w": 980000,
+    "price_change_pct_1w": -0.5,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "EAST",
+    "name": "Eastern Company",
+    "sector": "Consumer Staples",
+    "market_cap": 54000000000,
+    "avg_volume_1w": 3200000,
+    "price_change_pct_1w": 0.9,
+    "currency": "EGP"
+  },
+  {
+    "ticker": "TMGH",
+    "name": "Talaat Moustafa Group",
+    "sector": "Real Estate",
+    "market_cap": 85000000000,
+    "avg_volume_1w": 3600000,
+    "price_change_pct_1w": 2.1,
+    "currency": "EGP"
+  }
+]
