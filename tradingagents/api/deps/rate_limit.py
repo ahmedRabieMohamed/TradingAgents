@@ -5,8 +5,12 @@ from typing import Iterable, Optional
 from fastapi import Request, Response
 
 try:
+    from fastapi_limiter import FastAPILimiter
     from fastapi_limiter.depends import RateLimiter
+    import redis.asyncio as redis
 except ImportError:  # pragma: no cover - fastapi-limiter optional at import time
+    FastAPILimiter = None
+    redis = None
 
     class RateLimiter:  # type: ignore[no-redef]
         def __init__(self, *_: object, **__: object) -> None:
@@ -40,7 +44,21 @@ async def _apply_limiters(limiters: Iterable[RateLimiter], request: Request) -> 
         await limiter(request, response)
 
 
+async def _ensure_limiter_initialized() -> None:
+    if FastAPILimiter is None or redis is None:
+        raise RuntimeError("fastapi-limiter is required for rate limiting.")
+    if FastAPILimiter.redis is not None:
+        return
+    if not settings.redis_url:
+        raise RuntimeError("REDIS_URL is required to initialize rate limiting.")
+    redis_client = redis.from_url(
+        settings.redis_url, encoding="utf-8", decode_responses=True
+    )
+    await FastAPILimiter.init(redis_client, identifier=limiter_identifier)
+
+
 async def enforce_rate_limits(request: Request, is_authenticated: bool) -> None:
+    await _ensure_limiter_initialized()
     if is_authenticated:
         await _apply_limiters([auth_per_minute_limiter, auth_per_day_limiter], request)
         return
