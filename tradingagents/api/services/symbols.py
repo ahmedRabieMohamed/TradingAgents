@@ -75,59 +75,12 @@ def _parse_series_date(item: dict[str, Any]) -> date:
         return date.min
 
 
-def _compute_metrics_from_series(
-    exchange_code: str,
-    symbol_code: str,
-) -> tuple[float, float]:
-    client = EodhdClient()
-    end_date = date.today()
-    start_date = end_date - timedelta(days=7)
-    try:
-        series = client.get_eod_series(
-            symbol_code,
-            exchange_code,
-            start_date.isoformat(),
-            end_date.isoformat(),
-        )
-    except Exception:  # pragma: no cover - network failure fallback
-        return 0.0, 0.0
-    if not series:
-        return 0.0, 0.0
-    sorted_series = sorted(series, key=_parse_series_date)
-    volumes = [
-        _coerce_float(item.get("volume") or item.get("Volume"), default=0.0)
-        for item in sorted_series
-    ]
-    valid_volumes = [volume for volume in volumes if volume is not None]
-    avg_volume = sum(valid_volumes) / len(valid_volumes) if valid_volumes else 0.0
-
-    first_close = None
-    last_close = None
-    for item in sorted_series:
-        close_value = _coerce_float(
-            item.get("close") or item.get("Close"), default=None
-        )
-        if close_value is not None:
-            first_close = close_value
-            break
-    for item in reversed(sorted_series):
-        close_value = _coerce_float(
-            item.get("close") or item.get("Close"), default=None
-        )
-        if close_value is not None:
-            last_close = close_value
-            break
-    if not first_close or not last_close:
-        return avg_volume, 0.0
-    change_pct = ((last_close - first_close) / first_close) * 100
-    return avg_volume, change_pct
-
-
 def _get_metrics(
     market_id: str,
     exchange_code: str,
     symbol_code: str,
     payload: dict[str, Any],
+    allow_series: bool = False,
 ) -> dict[str, float]:
     cache_key = (market_id, symbol_code.upper())
     cached = _METRICS_CACHE.get(cache_key)
@@ -143,14 +96,59 @@ def _get_metrics(
     avg_volume = _coerce_float(provider_volume, default=None)
     change_pct = _coerce_float(provider_change, default=None)
 
-    if avg_volume is None or change_pct is None:
-        computed_volume, computed_change = _compute_metrics_from_series(
-            exchange_code, symbol_code
-        )
-        if avg_volume is None:
-            avg_volume = computed_volume
-        if change_pct is None:
-            change_pct = computed_change
+    if (avg_volume is None or change_pct is None) and allow_series:
+        client = EodhdClient()
+        end_date = date.today()
+        start_date = end_date - timedelta(days=7)
+        try:
+            series = client.get_eod_series(
+                symbol_code,
+                exchange_code,
+                start_date.isoformat(),
+                end_date.isoformat(),
+            )
+        except Exception:  # pragma: no cover - network failure fallback
+            series = []
+        if series:
+            sorted_series = sorted(series, key=_parse_series_date)
+            volumes = [
+                _coerce_float(item.get("volume") or item.get("Volume"), default=0.0)
+                for item in sorted_series
+            ]
+            valid_volumes = [volume for volume in volumes if volume is not None]
+            computed_volume = (
+                sum(valid_volumes) / len(valid_volumes) if valid_volumes else 0.0
+            )
+            first_close = None
+            last_close = None
+            for item in sorted_series:
+                close_value = _coerce_float(
+                    item.get("close") or item.get("Close"), default=None
+                )
+                if close_value is not None:
+                    first_close = close_value
+                    break
+            for item in reversed(sorted_series):
+                close_value = _coerce_float(
+                    item.get("close") or item.get("Close"), default=None
+                )
+                if close_value is not None:
+                    last_close = close_value
+                    break
+            computed_change = (
+                ((last_close - first_close) / first_close) * 100
+                if first_close and last_close
+                else 0.0
+            )
+            if avg_volume is None:
+                avg_volume = computed_volume
+            if change_pct is None:
+                change_pct = computed_change
+
+    if avg_volume is None:
+        avg_volume = 0.0
+    if change_pct is None:
+        change_pct = 0.0
 
     metrics = {
         "avg_volume_1w": float(avg_volume or 0.0),
@@ -190,7 +188,13 @@ def load_symbol_data(market_id: str) -> list[dict[str, Any]]:
             "capitalization",
         )
         market_cap = _coerce_float(market_cap_value, default=0.0) or 0.0
-        metrics = _get_metrics(market_key, exchange_code, symbol_key, raw)
+        metrics = _get_metrics(
+            market_key,
+            exchange_code,
+            symbol_key,
+            raw,
+            allow_series=False,
+        )
         symbols.append(
             {
                 "ticker": symbol_key,
