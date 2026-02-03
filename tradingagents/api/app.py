@@ -4,6 +4,17 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException
+
+from tradingagents.api.deps.errors import (
+    ApiError,
+    api_error_handler,
+    http_exception_handler,
+    limiter_exception_class,
+    rate_limit_exception_handler,
+    validation_exception_handler,
+)
 from tradingagents.api.deps.rate_limit import limiter_identifier
 from tradingagents.api.routers import api_router
 from tradingagents.api.settings import settings
@@ -30,5 +41,12 @@ app = FastAPI(
     version=settings.api_version,
     lifespan=lifespan,
 )
+
+app.add_exception_handler(ApiError, api_error_handler)
+app.add_exception_handler(HTTPException, http_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+limiter_exception = limiter_exception_class()
+if limiter_exception is not None:
+    app.add_exception_handler(limiter_exception, rate_limit_exception_handler)
 
 app.include_router(api_router, prefix=settings.api_prefix)
