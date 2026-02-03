@@ -32,10 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 4 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — FastAPI foundation, settings, error model, rate-limit init
-- [ ] 01-02-PLAN.md — JWT auth + refresh rotation + auth dependencies
-- [ ] 01-03-PLAN.md — Market registry + /markets endpoints
-- [ ] 01-04-PLAN.md — Symbol search/filter + most-active/trending endpoints
+- [x] 01-01-PLAN.md — FastAPI foundation, settings, error model, rate-limit init
+- [x] 01-02-PLAN.md — JWT auth + refresh rotation + auth dependencies
+- [x] 01-03-PLAN.md — Market registry + /markets endpoints
+- [x] 01-04-PLAN.md — Symbol search/filter + most-active/trending endpoints
 
 ### Phase 2: Snapshot Quotes & Freshness
 **Goal**: Users receive sub‑1s snapshot quotes with session status and freshness/entitlement signals.
@@ -97,7 +97,7 @@ Phases execute in numeric order: 2 → 2.1 → 2.2 → 3 → 3.1 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Market Access & Discovery API | 3/4 | In progress | - |
+| 1. Market Access & Discovery API | 4/4 | Complete | 2026-02-03 |
 | 2. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
 | 3. Historical Data Access | 0/TBD | Not started | - |
 | 4. Async Analytics Reports | 0/TBD | Not started | - |
