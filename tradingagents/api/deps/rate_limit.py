@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover - fastapi-limiter optional at import tim
 from tradingagents.api.settings import settings
 
 
-def limiter_identifier(request: Request) -> Optional[str]:
+async def limiter_identifier(request: Request) -> Optional[str]:
     limiter_id = getattr(request.state, "limiter_id", None)
     if limiter_id:
         return str(limiter_id)
