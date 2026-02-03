@@ -26,6 +26,11 @@ class Settings(BaseSettings):
 
     redis_url: Optional[str] = None
 
+    eodhd_api_key: Optional[str] = None
+    eodhd_base_url: str = "https://eodhd.com/api"
+    eodhd_cache_dir: str = "tradingagents/api/data_cache"
+    eodhd_cache_ttl_seconds: int = 3600
+
     auth_per_minute: int = 60
     auth_per_day: int = 20000
     anon_per_minute: int = 10
