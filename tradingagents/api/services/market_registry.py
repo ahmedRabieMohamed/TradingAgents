@@ -5,10 +5,6 @@ from __future__ import annotations
 from datetime import date, datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
-from tradingagents.api.services.eodhd_cache import load_cached_payload
-from tradingagents.api.services.eodhd_client import EodhdClient
-
-
 _MARKET_EXCHANGES = {
     "US": "US",
     "EGX": "EGX",
@@ -86,56 +82,12 @@ def _compute_session_status(market: dict) -> dict[str, datetime | str]:
     }
 
 
-def _extract_detail(
-    details: dict, *keys: str, default: str | None = None
-) -> str | None:
-    for key in keys:
-        if key in details and details[key] not in (None, ""):
-            return str(details[key])
-    lowered = {str(key).lower(): value for key, value in details.items()}
-    for key in keys:
-        value = lowered.get(key.lower())
-        if value not in (None, ""):
-            return str(value)
-    return default
-
-
-def _load_cached_exchange_details(exchange_code: str) -> dict | None:
-    cache_key = f"exchange_details_{exchange_code}"
-    cached = load_cached_payload(cache_key, ttl_seconds=60 * 60 * 24 * 365 * 10)
-    if isinstance(cached, dict):
-        return cached
-    return None
-
-
-def _fetch_exchange_details(exchange_code: str) -> dict:
-    client = EodhdClient()
-    try:
-        payload = client.get_exchange_details(exchange_code)
-    except Exception as exc:  # pragma: no cover - network failure fallback
-        cached = _load_cached_exchange_details(exchange_code)
-        if cached is not None:
-            return cached
-        raise ValueError(
-            f"Unable to fetch exchange details for {exchange_code}; no cached data available."
-        ) from exc
-    if not isinstance(payload, dict):
-        raise ValueError(f"Exchange details for {exchange_code} must be a dictionary")
-    return payload
-
-
 def _build_market(market_id: str) -> dict:
-    exchange_code = _MARKET_EXCHANGES[market_id]
     schedule = _MARKET_SCHEDULES[market_id].copy()
     defaults = _MARKET_METADATA_DEFAULTS[market_id]
-    details = _fetch_exchange_details(exchange_code)
-    name = _extract_detail(details, "Name", "name", default=defaults["name"])
-    mic = _extract_detail(
-        details, "MIC", "Mic", "mic", "Exchange", "exchange", default=defaults["mic"]
-    )
-    currency = _extract_detail(
-        details, "Currency", "currency", default=defaults["currency"]
-    )
+    name = defaults["name"]
+    mic = defaults["mic"]
+    currency = defaults["currency"]
     return {
         "market_id": market_id,
         "name": name,
