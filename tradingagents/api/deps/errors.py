@@ -65,6 +65,7 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
         status.HTTP_401_UNAUTHORIZED: "AUTH_REQUIRED",
         status.HTTP_403_FORBIDDEN: "AUTH_INVALID",
         status.HTTP_404_NOT_FOUND: "NOT_FOUND",
+        status.HTTP_429_TOO_MANY_REQUESTS: "RATE_LIMIT_EXCEEDED",
     }
     code = code_map.get(exc.status_code, "INTERNAL_ERROR")
     message = exc.detail if isinstance(exc.detail, str) else "Request failed"
