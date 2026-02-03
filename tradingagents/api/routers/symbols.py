@@ -29,21 +29,43 @@ def _validate_market(market_id: str) -> str:
     return market_key
 
 
+def _resolve_search_query(query: Optional[str], q: Optional[str]) -> str:
+    if query:
+        return query
+    if q:
+        return q
+    raise ApiError(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        code="VALIDATION_ERROR",
+        message="Validation failed",
+        details=[
+            {
+                "type": "missing",
+                "loc": ["query", "query"],
+                "msg": "Field required",
+                "input": None,
+            }
+        ],
+    )
+
+
 @router.get("/search", response_model=SymbolListResponse)
 async def search_symbols(
     request: Request,
     market_id: str = Query(...),
-    q: str = Query(..., min_length=1),
+    query: Optional[str] = Query(None, alias="query", min_length=1),
+    q: Optional[str] = Query(None, min_length=1),
     limit: int = Query(25, ge=1, le=100),
     offset: int = Query(0, ge=0),
     _: Optional[dict[str, Optional[str]]] = Depends(optional_current_account),
 ) -> SymbolListResponse:
     _validate_market(market_id)
+    search_term = _resolve_search_query(query, q)
     await rate_limit.enforce_rate_limits(
         request, is_authenticated=bool(getattr(request.state, "account_id", None))
     )
     items, total, next_offset = symbols_service.search_symbols(
-        market_id, q, limit=limit, offset=offset
+        market_id, search_term, limit=limit, offset=offset
     )
     return SymbolListResponse(count=total, items=items, next_offset=next_offset)
 
