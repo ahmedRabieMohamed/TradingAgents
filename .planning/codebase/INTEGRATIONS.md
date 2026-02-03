@@ -23,6 +23,9 @@
 - EODHD - backup data source for Egyptian stocks (`tradingagents/dataflows/egyptian_utils.py`)
   - SDK/Client: direct HTTP via `requests`
   - Auth: API token configured in `EGYPTIAN_CONFIG` (`tradingagents/egyptian_config.py`)
+- EODHD - market/symbol discovery and EOD series (`tradingagents/api/services/eodhd_client.py`)
+  - SDK/Client: direct HTTP via `requests`
+  - Auth: `EODHD_API_KEY` (settings in `tradingagents/api/settings.py`)
 - Finnhub - used via cached JSON datasets (not live API calls) (`tradingagents/dataflows/finnhub_utils.py`, `tradingagents/dataflows/interface.py`)
   - SDK/Client: local JSON reads
   - Auth: `FINNHUB_API_KEY` documented for data acquisition (`README.md`)
@@ -81,6 +84,7 @@
 **Required env vars:**
 - `OPENAI_API_KEY` (LLM + web search) (`README.md`)
 - `FINNHUB_API_KEY` (data acquisition for Finnhub datasets) (`README.md`)
+- `EODHD_API_KEY` (market/symbol discovery via EODHD) (`tradingagents/api/settings.py`)
 - `TRADINGAGENTS_RESULTS_DIR` (optional results path override) (`tradingagents/default_config.py`, `tradingagents/egyptian_config.py`)
 
 **Secrets location:**
