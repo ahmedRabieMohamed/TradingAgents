@@ -24,3 +24,9 @@ rich
 questionary
 langchain_anthropic
 langchain-google-genai
+fastapi
+uvicorn
+pyjwt
+pwdlib[argon2]
+fastapi-limiter
+pydantic-settings

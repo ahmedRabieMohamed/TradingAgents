@@ -25,6 +25,13 @@ setup(
         "typer>=0.9.0",
         "rich>=13.0.0",
         "questionary>=2.0.1",
+        "fastapi>=0.110.0",
+        "uvicorn>=0.27.0",
+        "pyjwt>=2.8.0",
+        "pwdlib[argon2]>=0.2.1",
+        "fastapi-limiter>=0.1.6",
+        "redis>=5.0.0",
+        "pydantic-settings>=2.1.0",
     ],
     python_requires=">=3.10",
     entry_points={
