@@ -132,6 +132,27 @@ python -m cli.main
 ```
 You will see a screen where you can select your desired tickers, date, LLMs, research depth, etc.
 
+### Multi-Agent Core Validation Runner
+
+Use the validation runner to smoke-test US and EGX multi-agent flows and capture a JSON summary.
+
+**US-only:**
+```bash
+python scripts/validate_multi_agent_core.py --markets us --symbols NVDA --trade-dates 2024-05-10 --output eval_results/validation/us_summary.json
+```
+
+**EGX-only:**
+```bash
+python scripts/validate_multi_agent_core.py --markets egx --symbols COMI --trade-dates 2024-05-10 --output eval_results/validation/egx_summary.json
+```
+
+**US + EGX combined:**
+```bash
+python scripts/validate_multi_agent_core.py --markets us egx --us-symbols NVDA --egx-symbols COMI --trade-dates 2024-05-10 --output eval_results/validation/summary.json
+```
+
+The JSON summary is written to the path provided with `--output` (directories are created automatically if missing).
+
 <p align="center">
   <img src="assets/cli/cli_init.png" width="100%" style="display: inline-block; margin: 0 2%;">
 </p>
