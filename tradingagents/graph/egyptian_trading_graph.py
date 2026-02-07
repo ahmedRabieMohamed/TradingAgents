@@ -40,7 +40,12 @@ class EgyptianTradingAgentsGraph:
 
     def __init__(
         self,
-        selected_analysts=["egyptian_market", "egyptian_news", "egyptian_fundamentals"],
+        selected_analysts=[
+            "egyptian_market",
+            "egyptian_news",
+            "egyptian_fundamentals",
+            "egyptian_social",
+        ],
         debug=False,
         config: Dict[str, Any] = None,
     ):
@@ -208,14 +213,26 @@ class EgyptianTradingAgentsGraph:
 
     def _log_state(self, trade_date, final_state):
         """Log the final state to a JSON file for Egyptian market."""
+
+        def _fallback_report(egyptian_key, standard_key):
+            egyptian_value = final_state.get(egyptian_key)
+            if egyptian_value:
+                return egyptian_value
+            standard_value = final_state.get(standard_key)
+            return standard_value if standard_value else egyptian_value
+
         self.log_states_dict[str(trade_date)] = {
             "company_of_interest": final_state["company_of_interest"],
             "trade_date": final_state["trade_date"],
-            "egyptian_market_report": final_state.get("egyptian_market_report"),
+            "egyptian_market_report": _fallback_report(
+                "egyptian_market_report", "market_report"
+            ),
             "sentiment_report": final_state.get("sentiment_report"),
-            "egyptian_news_report": final_state.get("egyptian_news_report"),
-            "egyptian_fundamentals_report": final_state.get(
-                "egyptian_fundamentals_report"
+            "egyptian_news_report": _fallback_report(
+                "egyptian_news_report", "news_report"
+            ),
+            "egyptian_fundamentals_report": _fallback_report(
+                "egyptian_fundamentals_report", "fundamentals_report"
             ),
             "investment_debate_state": {
                 "bull_history": final_state["investment_debate_state"]["bull_history"],
@@ -314,7 +331,12 @@ class EgyptianGraphSetup:
 
     def setup_graph(
         self,
-        selected_analysts=["egyptian_market", "egyptian_news", "egyptian_fundamentals"],
+        selected_analysts=[
+            "egyptian_market",
+            "egyptian_news",
+            "egyptian_fundamentals",
+            "egyptian_social",
+        ],
     ):
         """Set up and compile the Egyptian agent workflow graph - exactly like US structure."""
         if len(selected_analysts) == 0:
