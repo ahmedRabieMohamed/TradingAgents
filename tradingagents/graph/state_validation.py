@@ -1,5 +1,6 @@
 """State validation helpers for multi-agent graph runs."""
 
+import re
 from typing import Any, Dict, List, Optional
 
 
@@ -61,9 +62,20 @@ def _is_empty(value: Any) -> bool:
 def normalize_trade_decision(decision: Any) -> DecisionValue:
     if decision is None:
         return None
-    text = str(decision).strip().lower()
-    if not text:
+    raw_text = str(decision).strip()
+    if not raw_text:
         return None
+
+    explicit_match = re.search(
+        r"(?:^|\b)(?:decision|final\s+transaction\s+proposal)\s*:\s*\**\s*"
+        r"(buy|sell|hold)\b",
+        raw_text,
+        re.IGNORECASE,
+    )
+    if explicit_match:
+        return explicit_match.group(1).upper()
+
+    text = raw_text.lower()
 
     tokens = set()
     if "buy" in text:
