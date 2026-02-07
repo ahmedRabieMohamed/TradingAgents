@@ -69,6 +69,8 @@ def _run_graph(
     market: str,
     symbol: str,
     trade_date: str,
+    trace: bool = False,
+    trace_output: Optional[Path] = None,
 ) -> RunResult:
     result = RunResult(
         market=market,
@@ -78,7 +80,11 @@ def _run_graph(
         validation_errors=[],
     )
     try:
-        final_state, decision = graph.propagate(symbol, trade_date)
+        if trace:
+            final_state = _stream_graph(graph, market, symbol, trade_date, trace_output)
+            decision = graph.process_signal(final_state["final_trade_decision"])
+        else:
+            final_state, decision = graph.propagate(symbol, trade_date)
         result.decision = decision
         validation_errors = validate_agent_state(final_state, market=market)
         if validation_errors:
@@ -141,6 +147,16 @@ def _build_parser() -> argparse.ArgumentParser:
         "--output",
         default="eval_results/validation/summary.json",
         help="Path to write JSON summary (default: eval_results/validation/summary.json)",
+    )
+
+    parser.add_argument(
+        "--trace",
+        action="store_true",
+        help="Stream agent messages to the console (chat-style).",
+    )
+    parser.add_argument(
+        "--trace-output",
+        help="Optional file to append streamed messages for later review.",
     )
 
     parser.add_argument("--llm-provider", help="Override LLM provider")
@@ -213,18 +229,37 @@ def main() -> int:
 
     runs: List[RunResult] = []
     started_at = datetime.utcnow().isoformat() + "Z"
+    trace_output_path = Path(args.trace_output) if args.trace_output else None
 
     if "us" in args.markets:
         us_config = _apply_overrides(DEFAULT_CONFIG, overrides)
         us_graph = TradingAgentsGraph(config=us_config, debug=False)
         for symbol, trade_date in _iter_runs(us_symbols, us_trade_dates):
-            runs.append(_run_graph(us_graph, "us", symbol, trade_date))
+            runs.append(
+                _run_graph(
+                    us_graph,
+                    "us",
+                    symbol,
+                    trade_date,
+                    trace=args.trace,
+                    trace_output=trace_output_path,
+                )
+            )
 
     if "egx" in args.markets:
         egx_config = _apply_overrides(EGYPTIAN_CONFIG, overrides)
         egx_graph = EgyptianTradingAgentsGraph(config=egx_config, debug=False)
         for symbol, trade_date in _iter_runs(egx_symbols, egx_trade_dates):
-            runs.append(_run_graph(egx_graph, "egx", symbol, trade_date))
+            runs.append(
+                _run_graph(
+                    egx_graph,
+                    "egx",
+                    symbol,
+                    trade_date,
+                    trace=args.trace,
+                    trace_output=trace_output_path,
+                )
+            )
 
     passed = sum(1 for run in runs if run.status == "passed")
     failed = sum(1 for run in runs if run.status != "passed")
@@ -262,6 +297,71 @@ def main() -> int:
     )
 
     return 1 if failed else 0
+
+
+def _format_message(message: Any) -> str:
+    role = None
+    content = None
+    if hasattr(message, "type"):
+        role = message.type
+    elif hasattr(message, "role"):
+        role = message.role
+    elif isinstance(message, tuple) and len(message) >= 2:
+        role = message[0]
+        content = message[1]
+
+    if content is None:
+        content = getattr(message, "content", None)
+    if content is None:
+        content = str(message)
+    if role is None:
+        role = "message"
+
+    return f"[{role}] {content}"
+
+
+def _stream_graph(
+    graph: Any,
+    market: str,
+    symbol: str,
+    trade_date: str,
+    trace_output: Optional[Path],
+) -> Dict[str, Any]:
+    init_agent_state = graph.propagator.create_initial_state(symbol, trade_date)
+    args = graph.propagator.get_graph_args()
+
+    final_state = None
+    log_handle = None
+    if trace_output:
+        trace_output.parent.mkdir(parents=True, exist_ok=True)
+        log_handle = trace_output.open("a")
+        log_handle.write(f"=== {market.upper()} {symbol} {trade_date} ===\n")
+
+    try:
+        for chunk in graph.graph.stream(init_agent_state, **args):
+            messages = chunk.get("messages", [])
+            if messages:
+                line = _format_message(messages[-1])
+                print(line)
+                if log_handle:
+                    log_handle.write(line + "\n")
+            final_state = chunk
+    finally:
+        if log_handle:
+            log_handle.write("\n")
+            log_handle.close()
+
+    if final_state is None:
+        raise RuntimeError("Streaming produced no final state.")
+
+    graph.curr_state = final_state
+    if graph.config.get("validate_state", True):
+        errors = validate_agent_state(final_state, market=market)
+        if errors:
+            raise ValueError(format_validation_errors(errors))
+    graph._log_state(trade_date, final_state)
+
+    return final_state
 
 
 if __name__ == "__main__":
