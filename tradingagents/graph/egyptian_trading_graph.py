@@ -32,6 +32,7 @@ from .setup import GraphSetup
 from .propagation import Propagator
 from .reflection import Reflector
 from .signal_processing import SignalProcessor
+from .state_validation import validate_agent_state, format_validation_errors
 
 
 class EgyptianTradingAgentsGraph:
@@ -63,26 +64,48 @@ class EgyptianTradingAgentsGraph:
         )
 
         # Initialize LLMs
-        if self.config["llm_provider"].lower() == "openai" or self.config["llm_provider"] == "ollama" or self.config["llm_provider"] == "openrouter":
-            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+        if (
+            self.config["llm_provider"].lower() == "openai"
+            or self.config["llm_provider"] == "ollama"
+            or self.config["llm_provider"] == "openrouter"
+        ):
+            self.deep_thinking_llm = ChatOpenAI(
+                model=self.config["deep_think_llm"], base_url=self.config["backend_url"]
+            )
+            self.quick_thinking_llm = ChatOpenAI(
+                model=self.config["quick_think_llm"],
+                base_url=self.config["backend_url"],
+            )
         elif self.config["llm_provider"].lower() == "anthropic":
-            self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+            self.deep_thinking_llm = ChatAnthropic(
+                model=self.config["deep_think_llm"], base_url=self.config["backend_url"]
+            )
+            self.quick_thinking_llm = ChatAnthropic(
+                model=self.config["quick_think_llm"],
+                base_url=self.config["backend_url"],
+            )
         elif self.config["llm_provider"].lower() == "google":
-            self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"])
-            self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"])
+            self.deep_thinking_llm = ChatGoogleGenerativeAI(
+                model=self.config["deep_think_llm"]
+            )
+            self.quick_thinking_llm = ChatGoogleGenerativeAI(
+                model=self.config["quick_think_llm"]
+            )
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
-        
+
         self.toolkit = EgyptianToolkit(config=self.config)
 
         # Initialize memories
         self.bull_memory = FinancialSituationMemory("bull_memory", self.config)
         self.bear_memory = FinancialSituationMemory("bear_memory", self.config)
         self.trader_memory = FinancialSituationMemory("trader_memory", self.config)
-        self.invest_judge_memory = FinancialSituationMemory("invest_judge_memory", self.config)
-        self.risk_manager_memory = FinancialSituationMemory("risk_manager_memory", self.config)
+        self.invest_judge_memory = FinancialSituationMemory(
+            "invest_judge_memory", self.config
+        )
+        self.risk_manager_memory = FinancialSituationMemory(
+            "risk_manager_memory", self.config
+        )
 
         # Create tool nodes
         self.tool_nodes = self._create_tool_nodes()
@@ -172,6 +195,11 @@ class EgyptianTradingAgentsGraph:
         # Store current state for reflection
         self.curr_state = final_state
 
+        if self.config.get("validate_state", True):
+            errors = validate_agent_state(final_state, market="egx")
+            if errors:
+                raise ValueError(format_validation_errors(errors))
+
         # Log state
         self._log_state(trade_date, final_state)
 
@@ -186,7 +214,9 @@ class EgyptianTradingAgentsGraph:
             "egyptian_market_report": final_state.get("egyptian_market_report"),
             "sentiment_report": final_state.get("sentiment_report"),
             "egyptian_news_report": final_state.get("egyptian_news_report"),
-            "egyptian_fundamentals_report": final_state.get("egyptian_fundamentals_report"),
+            "egyptian_fundamentals_report": final_state.get(
+                "egyptian_fundamentals_report"
+            ),
             "investment_debate_state": {
                 "bull_history": final_state["investment_debate_state"]["bull_history"],
                 "bear_history": final_state["investment_debate_state"]["bear_history"],
@@ -257,7 +287,7 @@ class EgyptianTradingAgentsGraph:
 
 class EgyptianGraphSetup:
     """Egyptian graph setup class that mimics the US GraphSetup exactly."""
-    
+
     def __init__(
         self,
         quick_thinking_llm,
@@ -282,16 +312,29 @@ class EgyptianGraphSetup:
         self.risk_manager_memory = risk_manager_memory
         self.conditional_logic = conditional_logic
 
-    def setup_graph(self, selected_analysts=["egyptian_market", "egyptian_news", "egyptian_fundamentals"]):
+    def setup_graph(
+        self,
+        selected_analysts=["egyptian_market", "egyptian_news", "egyptian_fundamentals"],
+    ):
         """Set up and compile the Egyptian agent workflow graph - exactly like US structure."""
         if len(selected_analysts) == 0:
-            raise ValueError("Egyptian Trading Agents Graph Setup Error: no analysts selected!")
+            raise ValueError(
+                "Egyptian Trading Agents Graph Setup Error: no analysts selected!"
+            )
 
         # Import Egyptian analysts
-        from tradingagents.agents.analysts.egyptian_market_analyst import create_egyptian_market_analyst
-        from tradingagents.agents.analysts.egyptian_news_analyst import create_egyptian_news_analyst
-        from tradingagents.agents.analysts.egyptian_fundamentals_analyst import create_egyptian_fundamentals_analyst
-        from tradingagents.agents.analysts.egyptian_social_analyst import create_egyptian_social_analyst
+        from tradingagents.agents.analysts.egyptian_market_analyst import (
+            create_egyptian_market_analyst,
+        )
+        from tradingagents.agents.analysts.egyptian_news_analyst import (
+            create_egyptian_news_analyst,
+        )
+        from tradingagents.agents.analysts.egyptian_fundamentals_analyst import (
+            create_egyptian_fundamentals_analyst,
+        )
+        from tradingagents.agents.analysts.egyptian_social_analyst import (
+            create_egyptian_social_analyst,
+        )
 
         # Create analyst nodes
         analyst_nodes = {}
@@ -326,7 +369,6 @@ class EgyptianGraphSetup:
             delete_nodes["fundamentals"] = create_msg_delete()
             tool_nodes["fundamentals"] = self.tool_nodes["egyptian_fundamentals"]
 
-
         # Create researcher and manager nodes (same as US)
         bull_researcher_node = create_bull_researcher(
             self.quick_thinking_llm, self.bull_memory
@@ -349,6 +391,7 @@ class EgyptianGraphSetup:
 
         # Create workflow
         from langgraph.graph import StateGraph, END, START
+
         workflow = StateGraph(AgentState)
 
         # Add state mapping node first
@@ -358,19 +401,28 @@ class EgyptianGraphSetup:
         analyst_mapping = {
             "egyptian_market": "market",
             "egyptian_social": "social",
-            "egyptian_news": "news", 
-            "egyptian_fundamentals": "fundamentals"
+            "egyptian_news": "news",
+            "egyptian_fundamentals": "fundamentals",
         }
 
         # Convert selected_analysts to standard names
-        standard_analysts = [analyst_mapping.get(analyst, analyst) for analyst in selected_analysts]
+        standard_analysts = [
+            analyst_mapping.get(analyst, analyst) for analyst in selected_analysts
+        ]
 
         # Add analyst nodes to the graph (using standard names)
         for analyst_type in standard_analysts:
             if analyst_type in analyst_nodes:
-                workflow.add_node(f"{analyst_type.capitalize()} Analyst", analyst_nodes[analyst_type])
-                workflow.add_node(f"Msg Clear {analyst_type.capitalize()}", delete_nodes[analyst_type])
-                workflow.add_node(f"tools_{analyst_type}", tool_nodes.get(analyst_type, self._create_empty_tool_node()))
+                workflow.add_node(
+                    f"{analyst_type.capitalize()} Analyst", analyst_nodes[analyst_type]
+                )
+                workflow.add_node(
+                    f"Msg Clear {analyst_type.capitalize()}", delete_nodes[analyst_type]
+                )
+                workflow.add_node(
+                    f"tools_{analyst_type}",
+                    tool_nodes.get(analyst_type, self._create_empty_tool_node()),
+                )
 
         # Add other nodes (same as US)
         workflow.add_node("Bull Researcher", bull_researcher_node)
@@ -385,7 +437,7 @@ class EgyptianGraphSetup:
         # Define edges (same structure as US)
         # Start with state mapping
         workflow.add_edge(START, "state_mapper")
-        
+
         # From state mapper to first analyst
         first_analyst = standard_analysts[0]
         workflow.add_edge("state_mapper", f"{first_analyst.capitalize()} Analyst")
@@ -406,7 +458,7 @@ class EgyptianGraphSetup:
 
             # Connect to next analyst or to Bull Researcher if this is the last analyst
             if i < len(standard_analysts) - 1:
-                next_analyst = f"{standard_analysts[i+1].capitalize()} Analyst"
+                next_analyst = f"{standard_analysts[i + 1].capitalize()} Analyst"
                 workflow.add_edge(current_clear, next_analyst)
             else:
                 workflow.add_edge(current_clear, "Bull Researcher")
@@ -460,36 +512,40 @@ class EgyptianGraphSetup:
         # Compile and return
         return workflow.compile()
 
-
     def _create_empty_tool_node(self):
         """Create an empty tool node."""
         from langgraph.prebuilt import ToolNode
+
         return ToolNode([])
 
 
 def create_egyptian_state_mapper():
     """Create state mapping function to convert Egyptian reports to standard format"""
+
     def map_state(state):
         """Map Egyptian reports to standard state structure for compatibility with existing agents"""
         # Map Egyptian reports to standard format
         mapped_state = state.copy()
-        
+
         # Map Egyptian market report to standard market report
         if "egyptian_market_report" in state and state["egyptian_market_report"]:
             mapped_state["market_report"] = state["egyptian_market_report"]
-        
+
         # Map Egyptian news report to standard news report
         if "egyptian_news_report" in state and state["egyptian_news_report"]:
             mapped_state["news_report"] = state["egyptian_news_report"]
-        
+
         # Map Egyptian fundamentals report to standard fundamentals report
-        if "egyptian_fundamentals_report" in state and state["egyptian_fundamentals_report"]:
+        if (
+            "egyptian_fundamentals_report" in state
+            and state["egyptian_fundamentals_report"]
+        ):
             mapped_state["fundamentals_report"] = state["egyptian_fundamentals_report"]
-        
+
         # Only map sentiment report if provided by analysts
         if "sentiment_report" in state and state["sentiment_report"]:
             mapped_state["sentiment_report"] = state["sentiment_report"]
-        
+
         return mapped_state
-    
+
     return map_state
