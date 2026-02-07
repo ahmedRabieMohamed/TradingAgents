@@ -33,7 +33,7 @@ Plans:
 - [x] 01-01-PLAN.md — Add state validation guardrails to US/EGX graphs
 - [x] 01-02-PLAN.md — Provide a validation runner and documentation
 - [x] 01-03-PLAN.md — Normalize final trade decision outputs
-- [ ] 01-04-PLAN.md — Normalize EGX report inputs and final state
+- [x] 01-04-PLAN.md — Map EGX reports to standard fields
 
 **Details:**
 Establish a shared state validation layer for both graphs and add a repeatable runner that reports pass/fail diagnostics for US and EGX flows.
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Validate multi-agent core | 3/4 | In progress | - |
+| 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
 | 2. Market Access & Discovery API | 8/9 | In progress | - |
 | 3. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
 | 4. Historical Data Access | 0/TBD | Not started | - |
