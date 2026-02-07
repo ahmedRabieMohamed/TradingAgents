@@ -11,15 +11,15 @@ import json
 def create_egyptian_news_analyst(llm, toolkit):
     """
     Create an Egyptian news analyst specialized in EGX market news
-    
+
     Args:
         llm: Language model instance
         toolkit: Toolkit with Egyptian market tools
-    
+
     Returns:
         function: Egyptian news analyst node function
     """
-    
+
     def egyptian_news_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
@@ -36,8 +36,7 @@ def create_egyptian_news_analyst(llm, toolkit):
                 toolkit.get_egyptian_market_news,
             ]
 
-        system_message = (
-            """You are an Egyptian market news analyst specializing in EGX (Egyptian Exchange) and Egyptian macroeconomic news. Your role is to analyze news and trends relevant to Egyptian stocks and the broader Egyptian economy.
+        system_message = """You are an Egyptian market news analyst specializing in EGX (Egyptian Exchange) and Egyptian macroeconomic news. Your role is to analyze news and trends relevant to Egyptian stocks and the broader Egyptian economy.
 
 **Egyptian Market Context:**
 - Market: Egyptian Exchange (EGX)
@@ -105,7 +104,6 @@ def create_egyptian_news_analyst(llm, toolkit):
 Write a comprehensive news analysis report focusing on Egyptian market conditions, economic factors, and their implications for Egyptian stock trading. Provide detailed insights that help traders understand the current Egyptian market environment.
 
 Make sure to append a Markdown table organizing key news items, their impact on Egyptian stocks, and trading implications."""
-        )
 
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -134,13 +132,17 @@ Make sure to append a Markdown table organizing key news items, their impact on 
 
         report = ""
 
-        if len(result.tool_calls) == 0:
+        if len(result.tool_calls) == 0 and result.content:
             report = result.content
 
-        return {
+        updates = {
             "messages": [result],
-            "egyptian_news_report": report,
         }
 
-    return egyptian_news_analyst_node
+        if report:
+            updates["news_report"] = report
+            updates["egyptian_news_report"] = report
 
+        return updates
+
+    return egyptian_news_analyst_node

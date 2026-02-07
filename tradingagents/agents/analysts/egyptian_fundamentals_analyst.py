@@ -11,15 +11,15 @@ import json
 def create_egyptian_fundamentals_analyst(llm, toolkit):
     """
     Create an Egyptian fundamentals analyst specialized in EGX stock fundamentals
-    
+
     Args:
         llm: Language model instance
         toolkit: Toolkit with Egyptian market tools
-    
+
     Returns:
         function: Egyptian fundamentals analyst node function
     """
-    
+
     def egyptian_fundamentals_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
@@ -34,8 +34,7 @@ def create_egyptian_fundamentals_analyst(llm, toolkit):
                 toolkit.get_egyptian_fundamentals_openai,
             ]
 
-        system_message = (
-            """You are an Egyptian stock fundamentals analyst specializing in EGX (Egyptian Exchange) stocks. Your role is to analyze fundamental information about Egyptian companies, considering local market conditions, EGP currency, and Egyptian economic factors.
+        system_message = """You are an Egyptian stock fundamentals analyst specializing in EGX (Egyptian Exchange) stocks. Your role is to analyze fundamental information about Egyptian companies, considering local market conditions, EGP currency, and Egyptian economic factors.
 
 **Egyptian Market Context:**
 - Market: Egyptian Exchange (EGX)
@@ -114,7 +113,6 @@ def create_egyptian_fundamentals_analyst(llm, toolkit):
 Write a comprehensive fundamental analysis report focusing on Egyptian market conditions, financial performance in EGP, and sector-specific factors. Provide detailed insights that help traders make informed investment decisions about Egyptian stocks.
 
 Make sure to append a Markdown table organizing key financial metrics, ratios, and fundamental insights."""
-        )
 
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -144,13 +142,17 @@ Make sure to append a Markdown table organizing key financial metrics, ratios, a
 
         report = ""
 
-        if len(result.tool_calls) == 0:
+        if len(result.tool_calls) == 0 and result.content:
             report = result.content
 
-        return {
+        updates = {
             "messages": [result],
-            "egyptian_fundamentals_report": report,
         }
 
-    return egyptian_fundamentals_analyst_node
+        if report:
+            updates["fundamentals_report"] = report
+            updates["egyptian_fundamentals_report"] = report
 
+        return updates
+
+    return egyptian_fundamentals_analyst_node
