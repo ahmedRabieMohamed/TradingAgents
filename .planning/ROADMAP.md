@@ -12,7 +12,7 @@ This roadmap delivers an API-first, multi-market analytics backend that enables 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Validate multi-agent core** - Verify multi-agent stability and reliability before UI/API work.
+- [x] **Phase 1: Validate multi-agent core** - Verify multi-agent stability and reliability before UI/API work.
 - [ ] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
 - [ ] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
 - [ ] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Add state validation guardrails to US/EGX graphs
-- [ ] 01-02-PLAN.md — Provide a validation runner and documentation
+- [x] 01-02-PLAN.md — Provide a validation runner and documentation
 
 **Details:**
 Establish a shared state validation layer for both graphs and add a repeatable runner that reports pass/fail diagnostics for US and EGX flows.
@@ -118,7 +118,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Validate multi-agent core | 1/2 | In progress | - |
+| 1. Validate multi-agent core | 2/2 | Complete | 2026-02-07 |
 | 2. Market Access & Discovery API | 8/9 | In progress | - |
 | 3. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
 | 4. Historical Data Access | 0/TBD | Not started | - |
