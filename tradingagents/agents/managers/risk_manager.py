@@ -1,17 +1,19 @@
 import time
 import json
+import re
+
+from tradingagents.graph.state_validation import normalize_trade_decision
 
 
 def create_risk_manager(llm, memory):
     def risk_manager_node(state) -> dict:
-
         company_name = state["company_of_interest"]
 
         history = state["risk_debate_state"]["history"]
         risk_debate_state = state["risk_debate_state"]
         market_research_report = state["market_report"]
         news_report = state["news_report"]
-        fundamentals_report = state["news_report"]
+        fundamentals_report = state["fundamentals_report"]
         sentiment_report = state["sentiment_report"]
         trader_plan = state["investment_plan"]
 
@@ -34,6 +36,11 @@ Deliverables:
 - A clear and actionable recommendation: Buy, Sell, or Hold.
 - Detailed reasoning anchored in the debate and past reflections.
 
+Output format (required):
+Decision: BUY/SELL/HOLD
+Rationale:
+[Your reasoning with citations to the debate and past memories]
+
 ---
 
 **Analysts Debate History:**  
@@ -44,9 +51,25 @@ Deliverables:
 Focus on actionable insights and continuous improvement. Build on past lessons, critically evaluate all perspectives, and ensure each decision advances better outcomes."""
 
         response = llm.invoke(prompt)
+        response_content = response.content
+
+        decision_match = re.search(
+            r"^\s*Decision\s*:\s*(BUY|SELL|HOLD)\b",
+            response_content or "",
+            re.IGNORECASE | re.MULTILINE,
+        )
+        if decision_match:
+            normalized_decision = decision_match.group(1).upper()
+        else:
+            normalized_decision = normalize_trade_decision(response_content)
+
+        if normalized_decision is None:
+            raise ValueError(
+                "Risk manager could not derive a normalized BUY/SELL/HOLD decision."
+            )
 
         new_risk_debate_state = {
-            "judge_decision": response.content,
+            "judge_decision": response_content,
             "history": risk_debate_state["history"],
             "risky_history": risk_debate_state["risky_history"],
             "safe_history": risk_debate_state["safe_history"],
@@ -60,7 +83,7 @@ Focus on actionable insights and continuous improvement. Build on past lessons, 
 
         return {
             "risk_debate_state": new_risk_debate_state,
-            "final_trade_decision": response.content,
+            "final_trade_decision": normalized_decision,
         }
 
     return risk_manager_node
