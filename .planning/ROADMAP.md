@@ -12,38 +12,55 @@ This roadmap delivers an API-first, multi-market analytics backend that enables 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
-- [ ] **Phase 2: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
-- [ ] **Phase 3: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
-- [ ] **Phase 4: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
-- [ ] **Phase 5: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
+- [ ] **Phase 1: Validate multi-agent core** - Verify multi-agent stability and reliability before UI/API work.
+- [ ] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
+- [ ] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
+- [ ] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
+- [ ] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
+- [ ] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
 
 ## Phase Details
 
-### Phase 1: Market Access & Discovery API
+## Current Milestone: Phase 1-6
+
+### Phase 1: Validate multi-agent core
+
+**Goal:** Multi-agent core runs reliably for US and EGX with validation guardrails and repeatable smoke checks.
+**Depends on:** Nothing (first phase)
+**Plans:** 2 plans
+
+Plans:
+- [x] 01-01-PLAN.md — Add state validation guardrails to US/EGX graphs
+- [ ] 01-02-PLAN.md — Provide a validation runner and documentation
+
+**Details:**
+Establish a shared state validation layer for both graphs and add a repeatable runner that reports pass/fail diagnostics for US and EGX flows.
+
+### Phase 2: Market Access & Discovery API
 **Goal**: Users can authenticate and discover markets/symbols via a stable API surface.
-**Depends on**: Nothing (first phase)
+**Depends on**: Phase 1
 **Requirements**: MKT-01, MKT-02, MKT-03, MKT-04, API-01, API-03
 **Success Criteria** (what must be TRUE):
   1. User can authenticate with token/JWT and receives rate-limit/quota enforcement feedback when exceeded.
   2. User can select US or EGX and search symbols by ticker or company name within that market.
   3. User can filter stock lists by sector, market cap, and most active, and view top/trending lists per market.
   4. Discovery endpoints return a standard error model with explicit error codes on invalid requests.
-**Plans**: 8 plans
+**Plans**: 9 plans
 
 Plans:
-- [x] 01-01-PLAN.md — FastAPI foundation, settings, error model, rate-limit init
-- [x] 01-02-PLAN.md — JWT auth + refresh rotation + auth dependencies
-- [x] 01-03-PLAN.md — Market registry + /markets endpoints
-- [x] 01-04-PLAN.md — Symbol search/filter + most-active/trending endpoints
-- [ ] 01-05-PLAN.md — (pending)
-- [ ] 01-06-PLAN.md — (pending)
-- [x] 01-07-PLAN.md — EODHD client and cache layer
-- [ ] 01-08-PLAN.md — (pending)
+- [x] 02-01-PLAN.md — FastAPI foundation, settings, error model, rate-limit init
+- [x] 02-02-PLAN.md — JWT auth + refresh rotation + auth dependencies
+- [x] 02-03-PLAN.md — Market registry + /markets endpoints
+- [x] 02-04-PLAN.md — Symbol search/filter + most-active/trending endpoints
+- [x] 02-05-PLAN.md — (pending)
+- [x] 02-06-PLAN.md — (pending)
+- [x] 02-07-PLAN.md — EODHD client and cache layer
+- [x] 02-08-PLAN.md — (pending)
+- [ ] 02-09-PLAN.md — Align Phase 2 verification expectations with Option A
 
-### Phase 2: Snapshot Quotes & Freshness
+### Phase 3: Snapshot Quotes & Freshness
 **Goal**: Users receive sub‑1s snapshot quotes with session status and freshness/entitlement signals.
-**Depends on**: Phase 1
+**Depends on**: Phase 2
 **Requirements**: SNAP-01, SNAP-02, SNAP-03, SNAP-04, API-02, API-04, API-06
 **Success Criteria** (what must be TRUE):
   1. User receives a snapshot with last price, change %, session high/low, and volume for a selected stock.
@@ -53,11 +70,11 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 03-01: TBD
 
-### Phase 3: Historical Data Access
+### Phase 4: Historical Data Access
 **Goal**: Users can retrieve historical prices and corporate actions for analytics accuracy.
-**Depends on**: Phase 1
+**Depends on**: Phase 2
 **Requirements**: HIST-01, HIST-02, HIST-03, HIST-04
 **Success Criteria** (what must be TRUE):
   1. User can fetch daily OHLCV history for charts and analytics.
@@ -66,11 +83,11 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 04-01: TBD
 
-### Phase 4: Async Analytics Reports
+### Phase 5: Async Analytics Reports
 **Goal**: Users can request and retrieve explainable analytics reports asynchronously.
-**Depends on**: Phase 3
+**Depends on**: Phase 4
 **Requirements**: ANLT-01, ANLT-02, ANLT-03, ANLT-04, ANLT-05, ANLT-06, ANLT-07, API-05
 **Success Criteria** (what must be TRUE):
   1. User can create an analytics job and poll status/result via a report_id.
@@ -80,11 +97,11 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 05-01: TBD
 
-### Phase 5: Localization (AR/EN)
+### Phase 6: Localization (AR/EN)
 **Goal**: Users receive bilingual narratives and localized decision labels in API responses.
-**Depends on**: Phase 4
+**Depends on**: Phase 5
 **Requirements**: LOC-01, LOC-02
 **Success Criteria** (what must be TRUE):
   1. User can request Arabic or English via a language parameter and receives narrative fields in the chosen language.
@@ -92,17 +109,18 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 06-01: TBD
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 2 → 2.1 → 2.2 → 3 → 3.1 → 4
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Market Access & Discovery API | 5/8 | In progress | - |
-| 2. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
-| 3. Historical Data Access | 0/TBD | Not started | - |
-| 4. Async Analytics Reports | 0/TBD | Not started | - |
-| 5. Localization (AR/EN) | 0/TBD | Not started | - |
+| 1. Validate multi-agent core | 1/2 | In progress | - |
+| 2. Market Access & Discovery API | 8/9 | In progress | - |
+| 3. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
+| 4. Historical Data Access | 0/TBD | Not started | - |
+| 5. Async Analytics Reports | 0/TBD | Not started | - |
+| 6. Localization (AR/EN) | 0/TBD | Not started | - |
