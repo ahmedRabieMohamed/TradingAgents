@@ -1,5 +1,7 @@
 """Rate limit dependency helpers."""
 
+import logging
+
 from typing import Iterable, Optional
 
 from fastapi import Request, Response
@@ -21,6 +23,16 @@ except ImportError:  # pragma: no cover - fastapi-limiter optional at import tim
 
 
 from tradingagents.api.settings import settings
+
+_limiter_disabled_logged = False
+
+
+def _log_limiter_disabled(message: str) -> None:
+    global _limiter_disabled_logged
+    if _limiter_disabled_logged:
+        return
+    _limiter_disabled_logged = True
+    logging.getLogger(__name__).warning(message)
 
 
 async def limiter_identifier(request: Request) -> Optional[str]:
@@ -44,22 +56,60 @@ async def _apply_limiters(limiters: Iterable[RateLimiter], request: Request) -> 
         await limiter(request, response)
 
 
-async def _ensure_limiter_initialized() -> None:
+async def _ensure_limiter_initialized() -> bool:
     if FastAPILimiter is None or redis is None:
-        raise RuntimeError("fastapi-limiter is required for rate limiting.")
+        _log_limiter_disabled(
+            "Rate limiting disabled because fastapi-limiter is not installed."
+        )
+        return False
     if FastAPILimiter.redis is not None:
-        return
+        return True
     if not settings.redis_url:
+        if settings.app_env == "dev":
+            _log_limiter_disabled(
+                "Rate limiting disabled because REDIS_URL is not set."
+            )
+            return False
         raise RuntimeError("REDIS_URL is required to initialize rate limiting.")
     redis_client = redis.from_url(
         settings.redis_url, encoding="utf-8", decode_responses=True
     )
     await FastAPILimiter.init(redis_client, identifier=limiter_identifier)
+    return True
 
 
 async def enforce_rate_limits(request: Request, is_authenticated: bool) -> None:
-    await _ensure_limiter_initialized()
+    if not await _ensure_limiter_initialized():
+        return
     if is_authenticated:
         await _apply_limiters([auth_per_minute_limiter, auth_per_day_limiter], request)
         return
     await _apply_limiters([anon_per_minute_limiter, anon_per_day_limiter], request)
+
+
+async def optional_anon_per_minute_limiter(
+    request: Request, response: Response
+) -> None:
+    if not await _ensure_limiter_initialized():
+        return
+    await anon_per_minute_limiter(request, response)
+
+
+async def optional_anon_per_day_limiter(request: Request, response: Response) -> None:
+    if not await _ensure_limiter_initialized():
+        return
+    await anon_per_day_limiter(request, response)
+
+
+async def optional_auth_per_minute_limiter(
+    request: Request, response: Response
+) -> None:
+    if not await _ensure_limiter_initialized():
+        return
+    await auth_per_minute_limiter(request, response)
+
+
+async def optional_auth_per_day_limiter(request: Request, response: Response) -> None:
+    if not await _ensure_limiter_initialized():
+        return
+    await auth_per_day_limiter(request, response)
