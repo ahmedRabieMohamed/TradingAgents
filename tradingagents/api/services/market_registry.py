@@ -5,6 +5,10 @@ from __future__ import annotations
 from datetime import date, datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
+from tradingagents.api.services.eodhd_cache import load_cached_payload
+from tradingagents.api.services.eodhd_client import EodhdClient
+from tradingagents.api.settings import settings
+
 _MARKET_EXCHANGES = {
     "US": "US",
     "EGX": "EGX",
@@ -34,6 +38,8 @@ _MARKET_METADATA_DEFAULTS = {
     "EGX": {"name": "Egypt", "mic": "XCAI", "currency": "EGP"},
 }
 
+_EODHD_FALLBACK_TTL_SECONDS = 60 * 60 * 24 * 365 * 10
+
 
 def _parse_time(value: str) -> time:
     return time.fromisoformat(value)
@@ -46,6 +52,52 @@ def _next_trading_date(start_date: date, trading_days: list[int]) -> date:
             return current
         current += timedelta(days=1)
     return start_date
+
+
+def _normalize_provider_key(value: str) -> str:
+    return value.replace("_", "").replace(" ", "").lower()
+
+
+def _extract_provider_value(payload: dict, field: str) -> str | None:
+    normalized_field = _normalize_provider_key(field)
+    for key, value in payload.items():
+        if _normalize_provider_key(str(key)) == normalized_field:
+            return value
+    return None
+
+
+def _extract_exchange_metadata(exchange_details: dict) -> dict:
+    if not isinstance(exchange_details, dict):
+        return {}
+    return {
+        "name": _extract_provider_value(exchange_details, "Name"),
+        "mic": _extract_provider_value(exchange_details, "MIC"),
+        "currency": _extract_provider_value(exchange_details, "Currency"),
+        "timezone": _extract_provider_value(exchange_details, "Timezone"),
+    }
+
+
+def _fetch_exchange_details(exchange_code: str, defaults: dict) -> dict:
+    client = EodhdClient()
+    details = None
+
+    if settings.eodhd_api_key:
+        try:
+            details = client.get_exchange_details(exchange_code)
+        except Exception:
+            details = None
+
+    if details is None:
+        cache_key = f"exchange_details_{exchange_code}"
+        details = load_cached_payload(
+            cache_key,
+            ttl_seconds=_EODHD_FALLBACK_TTL_SECONDS,
+        )
+
+    if details is None:
+        return defaults
+
+    return details
 
 
 def _compute_session_status(market: dict) -> dict[str, datetime | str]:
@@ -85,14 +137,18 @@ def _compute_session_status(market: dict) -> dict[str, datetime | str]:
 def _build_market(market_id: str) -> dict:
     schedule = _MARKET_SCHEDULES[market_id].copy()
     defaults = _MARKET_METADATA_DEFAULTS[market_id]
-    name = defaults["name"]
-    mic = defaults["mic"]
-    currency = defaults["currency"]
+    exchange_code = _MARKET_EXCHANGES[market_id]
+    exchange_details = _fetch_exchange_details(exchange_code, defaults)
+    provider_metadata = _extract_exchange_metadata(exchange_details)
+    name = provider_metadata.get("name") or defaults["name"]
+    mic = provider_metadata.get("mic") or defaults["mic"]
+    currency = provider_metadata.get("currency") or defaults["currency"]
+    timezone = provider_metadata.get("timezone") or schedule["timezone"]
     return {
         "market_id": market_id,
         "name": name,
         "mic": mic,
-        "timezone": schedule["timezone"],
+        "timezone": timezone,
         "currency": currency,
         "session_open": schedule["session_open"],
         "session_close": schedule["session_close"],
