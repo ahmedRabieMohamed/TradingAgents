@@ -51,6 +51,19 @@ def _load_cached_exchange_symbols(exchange_code: str) -> list[dict[str, Any]] | 
     return None
 
 
+def _load_cached_eod_series(
+    exchange_code: str,
+    symbol_code: str,
+    start_date: str,
+    end_date: str,
+) -> list[dict[str, Any]] | None:
+    cache_key = f"eod_{exchange_code}_{symbol_code}_{start_date}_{end_date}"
+    cached = load_cached_payload(cache_key, ttl_seconds=60 * 60 * 24 * 365 * 10)
+    if isinstance(cached, list):
+        return cached
+    return None
+
+
 def _fetch_exchange_symbols(exchange_code: str) -> list[dict[str, Any]]:
     client = EodhdClient()
     try:
@@ -97,18 +110,14 @@ def _get_metrics(
     change_pct = _coerce_float(provider_change, default=None)
 
     if (avg_volume is None or change_pct is None) and allow_series:
-        client = EodhdClient()
         end_date = date.today()
         start_date = end_date - timedelta(days=7)
-        try:
-            series = client.get_eod_series(
-                symbol_code,
-                exchange_code,
-                start_date.isoformat(),
-                end_date.isoformat(),
-            )
-        except Exception:  # pragma: no cover - network failure fallback
-            series = []
+        series = _load_cached_eod_series(
+            exchange_code,
+            symbol_code,
+            start_date.isoformat(),
+            end_date.isoformat(),
+        )
         if series:
             sorted_series = sorted(series, key=_parse_series_date)
             volumes = [
@@ -193,7 +202,7 @@ def load_symbol_data(market_id: str) -> list[dict[str, Any]]:
             exchange_code,
             symbol_key,
             raw,
-            allow_series=False,
+            allow_series=True,
         )
         symbols.append(
             {
