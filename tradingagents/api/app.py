@@ -1,5 +1,7 @@
 """FastAPI application setup and lifecycle management."""
 
+import logging
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -22,11 +24,20 @@ from tradingagents.api.settings import settings
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    from fastapi_limiter import FastAPILimiter
-    import redis.asyncio as redis
-
     if not settings.redis_url:
+        if settings.app_env == "dev":
+            logging.getLogger(__name__).warning(
+                "Rate limiting disabled because REDIS_URL is not set."
+            )
+            yield
+            return
         raise RuntimeError("REDIS_URL is required to initialize rate limiting.")
+
+    try:
+        from fastapi_limiter import FastAPILimiter
+        import redis.asyncio as redis
+    except ImportError:
+        raise
 
     redis_client = redis.from_url(
         settings.redis_url, encoding="utf-8", decode_responses=True
