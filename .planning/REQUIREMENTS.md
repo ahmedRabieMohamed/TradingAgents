@@ -16,10 +16,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Snapshot & Quotes
 
-- [ ] **SNAP-01**: User receives a live snapshot with last price, change %, session high/low, and volume
-- [ ] **SNAP-02**: User receives bid/ask and spread when available
-- [ ] **SNAP-03**: User sees market session status (open/closed) and last update timestamp
-- [ ] **SNAP-04**: User sees freshness flags indicating real-time vs delayed data
+- [x] **SNAP-01**: User receives a live snapshot with last price, change %, session high/low, and volume
+- [x] **SNAP-02**: User receives bid/ask and spread when available
+- [x] **SNAP-03**: User sees market session status (open/closed) and last update timestamp
+- [x] **SNAP-04**: User sees freshness flags indicating real-time vs delayed data
 
 ### Historical Data
 
@@ -41,11 +41,11 @@ Requirements for initial release. Each maps to roadmap phases.
 ### API & Reliability
 
 - [x] **API-01**: API uses token/JWT auth with rate limits and quotas
-- [ ] **API-02**: Snapshot path is cache-first to meet sub-1s latency target
+- [x] **API-02**: Snapshot path is cache-first to meet sub-1s latency target
 - [x] **API-03**: API returns a standard error model with explicit error codes
-- [ ] **API-04**: API returns data freshness metadata and stale-data behavior
+- [x] **API-04**: API returns data freshness metadata and stale-data behavior
 - [ ] **API-05**: Analytics job creation supports idempotency for safe retries
-- [ ] **API-06**: API enforces licensing/entitlements with delayed fallback labeling
+- [x] **API-06**: API enforces licensing/entitlements with delayed fallback labeling
 
 ### Localization
 
@@ -86,10 +86,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MKT-02 | Phase 1 | Complete |
 | MKT-03 | Phase 1 | Complete |
 | MKT-04 | Phase 1 | Complete |
-| SNAP-01 | Phase 2 | Pending |
-| SNAP-02 | Phase 2 | Pending |
-| SNAP-03 | Phase 2 | Pending |
-| SNAP-04 | Phase 2 | Pending |
+| SNAP-01 | Phase 2 | Complete |
+| SNAP-02 | Phase 2 | Complete |
+| SNAP-03 | Phase 2 | Complete |
+| SNAP-04 | Phase 2 | Complete |
 | HIST-01 | Phase 3 | Pending |
 | HIST-02 | Phase 3 | Pending |
 | HIST-03 | Phase 3 | Pending |
@@ -102,11 +102,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANLT-06 | Phase 4 | Pending |
 | ANLT-07 | Phase 4 | Pending |
 | API-01 | Phase 1 | Complete |
-| API-02 | Phase 2 | Pending |
+| API-02 | Phase 2 | Complete |
 | API-03 | Phase 1 | Complete |
-| API-04 | Phase 2 | Pending |
+| API-04 | Phase 2 | Complete |
 | API-05 | Phase 4 | Pending |
-| API-06 | Phase 2 | Pending |
+| API-06 | Phase 2 | Complete |
 | LOC-01 | Phase 5 | Pending |
 | LOC-02 | Phase 5 | Pending |
 
