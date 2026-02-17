@@ -68,10 +68,12 @@ Plans:
   2. User receives bid/ask and spread when available, and can see when those fields are unavailable.
   3. User sees market session status (open/closed) and last update timestamp alongside freshness flags (real‑time vs delayed).
   4. Snapshot requests meet the sub‑1s latency target via cache-first responses and show delayed fallback labeling when entitlements require it.
-**Plans**: TBD
+**Plans**: 1/3 plans complete
 
 Plans:
-- [ ] 03-01: TBD
+- [x] 03-01-PLAN.md — Define snapshot schemas and cache TTL settings
+- [ ] 03-02-PLAN.md — Implement cache-first snapshot service and freshness labeling
+- [ ] 03-03-PLAN.md — Add snapshot router and wire into API
 
 ### Phase 4: Historical Data Access
 **Goal**: Users can retrieve historical prices and corporate actions for analytics accuracy.
