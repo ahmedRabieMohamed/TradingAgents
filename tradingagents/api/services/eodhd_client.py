@@ -24,7 +24,11 @@ class EodhdClient:
     ) -> None:
         self.api_key = api_key or settings.eodhd_api_key
         self.base_url = (base_url or settings.eodhd_base_url).rstrip("/")
-        self.cache_ttl_seconds = cache_ttl_seconds or settings.eodhd_cache_ttl_seconds
+        self.cache_ttl_seconds = (
+            settings.eodhd_cache_ttl_seconds
+            if cache_ttl_seconds is None
+            else cache_ttl_seconds
+        )
 
     def get_exchange_details(self, exchange_code: str) -> Dict[str, Any]:
         cache_key = f"exchange_details_{exchange_code}"
