@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Validate multi-agent core** - Verify multi-agent stability and reliability before UI/API work.
 - [x] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
-- [ ] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
+- [x] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
 - [ ] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
 - [ ] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
 - [ ] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
@@ -84,10 +84,12 @@ Plans:
   1. User can fetch daily OHLCV history for charts and analytics.
   2. User can fetch intraday ranges (1D/1W/1M/1Y) when licensed.
   3. User can fetch corporate actions and adjusted price series for accurate analytics.
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: TBD
+- [x] 04-01-PLAN.md — Define historical schemas and extend EODHD client
+- [ ] 04-02-PLAN.md — Implement historical services (daily, intraday, corporate actions)
+- [ ] 04-03-PLAN.md — Add historical API router and wire into versioned API
 
 ### Phase 5: Async Analytics Reports
 **Goal**: Users can request and retrieve explainable analytics reports asynchronously.
@@ -140,7 +142,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
-| 4. Historical Data Access | 0/TBD | Not started | - |
+| 4. Historical Data Access | 1/3 | In progress | - |
 | 5. Async Analytics Reports | 0/TBD | Not started | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
