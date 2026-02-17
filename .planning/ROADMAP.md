@@ -88,8 +88,8 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Define historical schemas and extend EODHD client
-- [ ] 04-02-PLAN.md — Implement historical services (daily, intraday, corporate actions)
-- [ ] 04-03-PLAN.md — Add historical API router and wire into versioned API
+- [x] 04-02-PLAN.md — Implement historical services (daily, intraday, corporate actions)
+- [x] 04-03-PLAN.md — Add historical API router and wire into versioned API
 
 ### Phase 5: Async Analytics Reports
 **Goal**: Users can request and retrieve explainable analytics reports asynchronously.
@@ -142,7 +142,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
-| 4. Historical Data Access | 2/3 | In progress | - |
+| 4. Historical Data Access | 3/3 | Complete | 2026-02-17 |
 | 5. Async Analytics Reports | 0/TBD | Not started | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
