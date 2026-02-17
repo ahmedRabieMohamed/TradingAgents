@@ -142,7 +142,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
-| 4. Historical Data Access | 1/3 | In progress | - |
+| 4. Historical Data Access | 2/3 | In progress | - |
 | 5. Async Analytics Reports | 0/TBD | Not started | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
