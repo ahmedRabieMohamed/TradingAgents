@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     eodhd_base_url: str = "https://eodhd.com/api"
     eodhd_cache_dir: str = "tradingagents/api/data_cache"
     eodhd_cache_ttl_seconds: int = 3600
+    historical_cache_ttl_seconds: int = 3600
+    intraday_cache_ttl_seconds: int = 300
     snapshot_cache_ttl_seconds: int = 5
     snapshot_stale_ttl_seconds: int = 300
 

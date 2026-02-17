@@ -60,6 +60,61 @@ class EodhdClient:
             cache_key=cache_key,
         )
 
+    def get_intraday_series(
+        self,
+        symbol: str,
+        exchange_code: str,
+        start_ts: int,
+        end_ts: int,
+        interval: str,
+    ) -> List[Dict[str, Any]]:
+        cache_key = f"intraday_{exchange_code}_{symbol}_{interval}_{start_ts}_{end_ts}"
+        return self._get_json(
+            endpoint=f"intraday/{symbol}.{exchange_code}",
+            params={"from": start_ts, "to": end_ts, "interval": interval},
+            cache_key=cache_key,
+        )
+
+    def get_dividends(
+        self,
+        symbol: str,
+        exchange_code: str,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        cache_key = f"dividends_{exchange_code}_{symbol}_{start_date or 'na'}_{end_date or 'na'}"
+        params: Dict[str, Any] = {}
+        if start_date:
+            params["from"] = start_date
+        if end_date:
+            params["to"] = end_date
+        return self._get_json(
+            endpoint=f"div/{symbol}.{exchange_code}",
+            params=params,
+            cache_key=cache_key,
+        )
+
+    def get_splits(
+        self,
+        symbol: str,
+        exchange_code: str,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        cache_key = (
+            f"splits_{exchange_code}_{symbol}_{start_date or 'na'}_{end_date or 'na'}"
+        )
+        params: Dict[str, Any] = {}
+        if start_date:
+            params["from"] = start_date
+        if end_date:
+            params["to"] = end_date
+        return self._get_json(
+            endpoint=f"splits/{symbol}.{exchange_code}",
+            params=params,
+            cache_key=cache_key,
+        )
+
     def get_quote(self, symbol: str, exchange_code: str) -> Dict[str, Any]:
         cache_key = f"snapshot_{exchange_code}_{symbol}"
         return self._get_json(
