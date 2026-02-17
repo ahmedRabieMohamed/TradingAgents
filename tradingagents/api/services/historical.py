@@ -110,11 +110,11 @@ def _parse_timestamp(value: Any) -> Optional[datetime]:
 
 def _get_market_context(market_id: str) -> tuple[str, str, dict[str, Any]]:
     market_key = market_id.upper()
-    exchange_code = _MARKET_EXCHANGES.get(market_key)
-    if not exchange_code:
-        raise ValueError(f"Unknown market_id: {market_id}")
     market = market_registry.get_market(market_key)
     if not market:
+        raise ValueError(f"Unknown market_id: {market_id}")
+    exchange_code = market.get("exchange_code") or _MARKET_EXCHANGES.get(market_key)
+    if not exchange_code:
         raise ValueError(f"Unknown market_id: {market_id}")
     return market_key, exchange_code, market
 

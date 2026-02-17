@@ -146,6 +146,7 @@ def _build_market(market_id: str) -> dict:
     timezone = provider_metadata.get("timezone") or schedule["timezone"]
     return {
         "market_id": market_id,
+        "exchange_code": exchange_code,
         "name": name,
         "mic": mic,
         "timezone": timezone,
