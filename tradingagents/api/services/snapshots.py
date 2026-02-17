@@ -162,11 +162,13 @@ def get_snapshot(
     cache_status = "fresh" if cache_meta else "miss"
 
     provider_payload: dict[str, Any] | None = None
+    fetch_time: datetime | None = None
     if cache_meta is None:
         try:
             provider_payload = EodhdClient(cache_ttl_seconds=0).get_quote(
                 symbol_key, exchange_code
             )
+            fetch_time = datetime.now(timezone.utc)
         except Exception as exc:
             cache_meta = load_cached_payload_with_meta(
                 cache_key, ttl_seconds=settings.snapshot_stale_ttl_seconds
@@ -185,7 +187,7 @@ def get_snapshot(
             if cache_meta is None:
                 cache_meta = {
                     "data": provider_payload or {},
-                    "fetched_at": datetime.now(timezone.utc),
+                    "fetched_at": fetch_time or datetime.now(timezone.utc),
                     "age_seconds": 0,
                 }
 
@@ -193,9 +195,11 @@ def get_snapshot(
     if not isinstance(payload, dict):
         payload = {}
 
-    fetched_at = cache_meta.get("fetched_at") if cache_meta else None
-    if fetched_at is None:
-        fetched_at = datetime.now(timezone.utc)
+    fetched_at = (
+        cache_meta.get("fetched_at")
+        if cache_meta
+        else fetch_time or datetime.now(timezone.utc)
+    )
     age_seconds = int(cache_meta.get("age_seconds", 0)) if cache_meta else 0
 
     entitlement = _build_entitlement(market, is_authenticated)
