@@ -52,6 +52,33 @@ def load_cached_payload(cache_key: str, ttl_seconds: int) -> Optional[Any]:
     return payload.get("data")
 
 
+def load_cached_payload_with_meta(
+    cache_key: str, ttl_seconds: int
+) -> Optional[dict[str, Any]]:
+    cache_file = _cache_path(cache_key)
+    if not cache_file.exists():
+        return None
+
+    try:
+        payload = json.loads(cache_file.read_text())
+    except json.JSONDecodeError:
+        return None
+
+    fetched_at = _parse_iso_datetime(payload.get("fetched_at"))
+    if fetched_at is None:
+        return None
+
+    age_seconds = (datetime.now(timezone.utc) - fetched_at).total_seconds()
+    if age_seconds > ttl_seconds:
+        return None
+
+    return {
+        "data": payload.get("data"),
+        "fetched_at": fetched_at,
+        "age_seconds": int(age_seconds),
+    }
+
+
 def save_cached_payload(cache_key: str, data: Any) -> None:
     cache_file = _cache_path(cache_key)
     payload = {
