@@ -45,6 +45,15 @@ def _coerce_float(value: Any, default: float = 0.0) -> float:
         return default
 
 
+def _coerce_optional_float(value: Any) -> Optional[float]:
+    if value in (None, ""):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def _coerce_int(value: Any, default: int = 0) -> int:
     if value in (None, ""):
         return default
@@ -106,11 +115,9 @@ def _normalize_daily_bars(rows: Iterable[dict[str, Any]]) -> list[DailyBar]:
             high=_coerce_float(_extract_value(row, "high", "High")),
             low=_coerce_float(_extract_value(row, "low", "Low")),
             close=_coerce_float(_extract_value(row, "close", "Close")),
-            adjusted_close=_coerce_float(
+            adjusted_close=_coerce_optional_float(
                 _extract_value(row, "adjusted_close", "Adjusted_close")
-            )
-            if _extract_value(row, "adjusted_close", "Adjusted_close") is not None
-            else None,
+            ),
             volume=_coerce_int(_extract_value(row, "volume", "Volume")),
         )
         bars.append(bar)
