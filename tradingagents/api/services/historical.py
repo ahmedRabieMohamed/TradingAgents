@@ -262,11 +262,36 @@ def get_daily_history(
                 symbol_key, exchange_code, start_value, end_value
             )
             fetch_time = datetime.now(timezone.utc)
+            if not isinstance(provider_payload, list) or not provider_payload:
+                raise ApiError(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    code="HISTORICAL_UNAVAILABLE",
+                    message="Historical data unavailable",
+                    details={
+                        "symbol": symbol_key,
+                        "exchange_code": exchange_code,
+                        "start_date": start_value,
+                        "end_date": end_value,
+                        "payload_type": type(provider_payload).__name__,
+                        "payload_size": len(provider_payload)
+                        if isinstance(provider_payload, list)
+                        else None,
+                    },
+                )
+        except ApiError:
+            raise
         except Exception as exc:
             raise ApiError(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 code="HISTORICAL_UNAVAILABLE",
                 message="Historical data unavailable",
+                details={
+                    "symbol": symbol_key,
+                    "exchange_code": exchange_code,
+                    "start_date": start_value,
+                    "end_date": end_value,
+                    "error": str(exc),
+                },
             ) from exc
         cache_meta = load_cached_payload_with_meta(
             cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
@@ -351,6 +376,14 @@ def get_intraday_history(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 code="INTRADAY_UNAVAILABLE",
                 message="Intraday data unavailable",
+                details={
+                    "symbol": symbol_key,
+                    "exchange_code": exchange_code,
+                    "interval": interval,
+                    "start_ts": start_ts,
+                    "end_ts": end_ts,
+                    "error": str(exc),
+                },
             ) from exc
         cache_meta = load_cached_payload_with_meta(
             cache_key, ttl_seconds=settings.intraday_cache_ttl_seconds
@@ -397,7 +430,13 @@ def get_corporate_actions(
     def _load_or_fetch(
         cache_key: str,
         fetch_fn: Callable[[], list[dict[str, Any]]],
-    ) -> tuple[list[dict[str, Any]], Optional[dict[str, Any]], bool, bool]:
+    ) -> tuple[
+        list[dict[str, Any]],
+        Optional[dict[str, Any]],
+        bool,
+        bool,
+        Optional[str],
+    ]:
         cache_meta = load_cached_payload_with_meta(
             cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
         )
@@ -406,8 +445,8 @@ def get_corporate_actions(
             try:
                 provider_payload = fetch_fn()
                 fetch_time = datetime.now(timezone.utc)
-            except Exception:
-                return [], None, False, cache_hit
+            except Exception as exc:
+                return [], None, False, cache_hit, str(exc)
             cache_meta = load_cached_payload_with_meta(
                 cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
             )
@@ -420,20 +459,22 @@ def get_corporate_actions(
         payload = cache_meta.get("data") if cache_meta else []
         if not isinstance(payload, list):
             payload = []
-        return payload, cache_meta, True, cache_hit
+        return payload, cache_meta, True, cache_hit, None
 
     dividends_key = f"dividends_{exchange_code}_{symbol_key}_{start_value or 'na'}_{end_value or 'na'}"
     splits_key = (
         f"splits_{exchange_code}_{symbol_key}_{start_value or 'na'}_{end_value or 'na'}"
     )
 
-    dividends_data, dividends_meta, dividends_ok, dividends_hit = _load_or_fetch(
-        dividends_key,
-        lambda: EodhdClient(cache_ttl_seconds=0).get_dividends(
-            symbol_key, exchange_code, start_value, end_value
-        ),
+    dividends_data, dividends_meta, dividends_ok, dividends_hit, dividends_error = (
+        _load_or_fetch(
+            dividends_key,
+            lambda: EodhdClient(cache_ttl_seconds=0).get_dividends(
+                symbol_key, exchange_code, start_value, end_value
+            ),
+        )
     )
-    splits_data, splits_meta, splits_ok, splits_hit = _load_or_fetch(
+    splits_data, splits_meta, splits_ok, splits_hit, splits_error = _load_or_fetch(
         splits_key,
         lambda: EodhdClient(cache_ttl_seconds=0).get_splits(
             symbol_key, exchange_code, start_value, end_value
@@ -445,6 +486,14 @@ def get_corporate_actions(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             code="CORP_ACTIONS_UNAVAILABLE",
             message="Corporate actions unavailable",
+            details={
+                "symbol": symbol_key,
+                "exchange_code": exchange_code,
+                "start_date": start_value,
+                "end_date": end_value,
+                "dividends_error": dividends_error,
+                "splits_error": splits_error,
+            },
         )
 
     dividends = _normalize_dividends(dividends_data)
