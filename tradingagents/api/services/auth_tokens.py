@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from typing import Any
-from uuid import uuid4
 
 import jwt
 from fastapi import status
@@ -30,17 +29,6 @@ def create_access_token(claims: dict[str, Any]) -> str:
         minutes=settings.access_token_ttl_minutes
     )
     payload.update({"exp": expire, "type": payload.get("type", "access")})
-    return jwt.encode(payload, _jwt_secret(), algorithm=settings.jwt_algorithm)
-
-
-def create_refresh_token(claims: dict[str, Any]) -> str:
-    payload = claims.copy()
-    expire = datetime.now(timezone.utc) + timedelta(
-        days=settings.refresh_token_ttl_days
-    )
-    payload.update(
-        {"exp": expire, "type": payload.get("type", "refresh"), "jti": str(uuid4())}
-    )
     return jwt.encode(payload, _jwt_secret(), algorithm=settings.jwt_algorithm)
 
 

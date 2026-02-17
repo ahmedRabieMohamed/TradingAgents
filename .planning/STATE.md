@@ -11,9 +11,9 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 Phase: 2 of 6 (Market Access & Discovery API)
 Plan: 7 of 7 in current phase
-Status: Phase complete
+Status: Phase complete (verified)
 **Next Phase:** Phase 3 - Snapshot Quotes & Freshness
-Last activity: 2026-02-16 — Completed 02-11-PLAN.md
+Last activity: 2026-02-17 — Verified Phase 02 after completing 02-11-PLAN.md
 
 Progress: [██████████] 100%
 
@@ -64,7 +64,6 @@ None yet.
 [Issues that affect future work]
 
 - REDIS_URL must be configured before rate limiting can initialize.
-- REDIS_URL is required for refresh token storage in UAT/prod.
 - EODHD_API_KEY is required to verify provider-backed market metadata.
 
 ## Session Continuity

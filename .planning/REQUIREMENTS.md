@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Market Discovery
 
-- [ ] **MKT-01**: User can select a market (US or EGX) for all queries
-- [ ] **MKT-02**: User can search symbols by ticker or company name within a market
-- [ ] **MKT-03**: User can filter stock lists by sector, market cap, and most active
-- [ ] **MKT-04**: User can view top/trending lists per market
+- [x] **MKT-01**: User can select a market (US or EGX) for all queries
+- [x] **MKT-02**: User can search symbols by ticker or company name within a market
+- [x] **MKT-03**: User can filter stock lists by sector, market cap, and most active
+- [x] **MKT-04**: User can view top/trending lists per market
 
 ### Snapshot & Quotes
 
@@ -40,9 +40,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### API & Reliability
 
-- [ ] **API-01**: API uses token/JWT auth with rate limits and quotas
+- [x] **API-01**: API uses token/JWT auth with rate limits and quotas
 - [ ] **API-02**: Snapshot path is cache-first to meet sub-1s latency target
-- [ ] **API-03**: API returns a standard error model with explicit error codes
+- [x] **API-03**: API returns a standard error model with explicit error codes
 - [ ] **API-04**: API returns data freshness metadata and stale-data behavior
 - [ ] **API-05**: Analytics job creation supports idempotency for safe retries
 - [ ] **API-06**: API enforces licensing/entitlements with delayed fallback labeling
@@ -82,10 +82,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MKT-01 | Phase 1 | Pending |
-| MKT-02 | Phase 1 | Pending |
-| MKT-03 | Phase 1 | Pending |
-| MKT-04 | Phase 1 | Pending |
+| MKT-01 | Phase 1 | Complete |
+| MKT-02 | Phase 1 | Complete |
+| MKT-03 | Phase 1 | Complete |
+| MKT-04 | Phase 1 | Complete |
 | SNAP-01 | Phase 2 | Pending |
 | SNAP-02 | Phase 2 | Pending |
 | SNAP-03 | Phase 2 | Pending |
@@ -101,9 +101,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANLT-05 | Phase 4 | Pending |
 | ANLT-06 | Phase 4 | Pending |
 | ANLT-07 | Phase 4 | Pending |
-| API-01 | Phase 1 | Pending |
+| API-01 | Phase 1 | Complete |
 | API-02 | Phase 2 | Pending |
-| API-03 | Phase 1 | Pending |
+| API-03 | Phase 1 | Complete |
 | API-04 | Phase 2 | Pending |
 | API-05 | Phase 4 | Pending |
 | API-06 | Phase 2 | Pending |

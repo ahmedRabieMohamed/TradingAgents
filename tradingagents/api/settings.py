@@ -16,13 +16,11 @@ class Settings(BaseSettings):
 
     jwt_secret: str = "dev-jwt-secret"
     jwt_algorithm: str = "HS256"
-    access_token_ttl_minutes: int = 15
-    refresh_token_ttl_days: int = 30
+    access_token_ttl_minutes: int = 1440
 
     api_clients_json: Optional[str] = None
-    dev_client_id: str = "demo-client"
-    dev_client_secret: str = "demo-secret"
-    refresh_token_salt: Optional[str] = None
+    dev_client_id: str = "dev-client"
+    dev_client_secret: str = "dev-secret"
 
     redis_url: Optional[str] = None
 

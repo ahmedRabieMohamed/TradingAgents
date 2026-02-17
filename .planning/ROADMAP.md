@@ -13,11 +13,12 @@ This roadmap delivers an API-first, multi-market analytics backend that enables 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Validate multi-agent core** - Verify multi-agent stability and reliability before UI/API work.
-- [ ] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
+- [x] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
 - [ ] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
 - [ ] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
 - [ ] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
 - [ ] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
+- [ ] **Phase 7: Mobile Apps (iOS/Android)** - Users select market/ticker, view charts, and trigger analysis from mobile.
 
 ## Phase Details
 
@@ -47,18 +48,16 @@ Establish a shared state validation layer for both graphs and add a repeatable r
   2. User can select US or EGX and search symbols by ticker or company name within that market.
   3. User can filter stock lists by sector, market cap, and most active, and view top/trending lists per market.
   4. Discovery endpoints return a standard error model with explicit error codes on invalid requests.
-**Plans**: 9 plans
+**Plans**: 4 plans
 
 Plans:
-- [x] 02-01-PLAN.md — FastAPI foundation, settings, error model, rate-limit init
-- [x] 02-02-PLAN.md — JWT auth + refresh rotation + auth dependencies
+- [x] 02-01-PLAN.md — API foundation (settings, error model, rate limits)
+- [x] 02-02-PLAN.md — Auth tokens (access-only) + auth endpoints
 - [x] 02-03-PLAN.md — Market registry + /markets endpoints
-- [x] 02-04-PLAN.md — Symbol search/filter + most-active/trending endpoints
-- [x] 02-05-PLAN.md — (pending)
-- [x] 02-06-PLAN.md — (pending)
-- [x] 02-07-PLAN.md — EODHD client and cache layer
-- [x] 02-08-PLAN.md — (pending)
-- [ ] 02-09-PLAN.md — Align Phase 2 verification expectations with Option A
+- [x] 02-04-PLAN.md — Symbol discovery + EODHD-backed lists
+- [x] 02-09-PLAN.md — Optional Redis limiter init in dev
+- [x] 02-10-PLAN.md — EODHD exchange details wired into market registry
+- [x] 02-11-PLAN.md — EOD series fallback for symbol metrics
 
 ### Phase 3: Snapshot Quotes & Freshness
 **Goal**: Users receive sub‑1s snapshot quotes with session status and freshness/entitlement signals.
@@ -113,6 +112,21 @@ Plans:
 Plans:
 - [ ] 06-01: TBD
 
+### Phase 7: Mobile Apps (iOS/Android)
+
+**Goal**: Users select market and ticker, view charts, and request analysis from mobile, then receive agent results.
+**Depends on**: Phase 6
+**Requirements**: MOB-01, MOB-02, MOB-03, MOB-04
+**Success Criteria** (what must be TRUE):
+  1. User can select market (US/EGX) and search/select ticker from mobile.
+  2. User can view interactive price charts (range controls, latest price, volume) on mobile.
+  3. User can trigger analysis from a ticker screen and receive results in-app with status and completion updates.
+  4. Mobile app handles API errors and rate limits gracefully with clear messaging.
+**Plans**: TBD
+
+Plans:
+- [ ] 07-01: TBD
+
 ## Progress
 
 **Execution Order:**
@@ -121,8 +135,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
-| 2. Market Access & Discovery API | 8/9 | In progress | - |
+| 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 0/TBD | Not started | - |
 | 4. Historical Data Access | 0/TBD | Not started | - |
 | 5. Async Analytics Reports | 0/TBD | Not started | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
+| 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |

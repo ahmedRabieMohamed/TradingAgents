@@ -26,6 +26,7 @@ Deliver fast, reliable, explainable stock analytics for US and EGX without regre
 - [ ] Data freshness monitoring with graceful degradation and stale-data behavior
 - [ ] Bilingual narratives (Arabic/English) with language parameter support
 - [ ] Decision-support label output: BUY / SELL / HOLD with rationale, confidence, and risks
+- [ ] Mobile apps allow market/ticker selection, chart viewing, and analysis requests
 
 ### Out of Scope
 
