@@ -56,6 +56,14 @@ class EodhdClient:
             cache_key=cache_key,
         )
 
+    def get_quote(self, symbol: str, exchange_code: str) -> Dict[str, Any]:
+        cache_key = f"snapshot_{exchange_code}_{symbol}"
+        return self._get_json(
+            endpoint=f"real-time/{symbol}.{exchange_code}",
+            params={},
+            cache_key=cache_key,
+        )
+
     def _get_json(self, endpoint: str, params: Dict[str, Any], cache_key: str) -> Any:
         cached = load_cached_payload(cache_key, ttl_seconds=self.cache_ttl_seconds)
         if cached is not None:
