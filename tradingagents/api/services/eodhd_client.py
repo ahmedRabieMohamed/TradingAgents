@@ -142,5 +142,9 @@ class EodhdClient:
             )
 
         payload = response.json()
-        save_cached_payload(cache_key, payload)
+        if isinstance(payload, list):
+            if payload:
+                save_cached_payload(cache_key, payload)
+        elif isinstance(payload, dict):
+            save_cached_payload(cache_key, payload)
         return payload

@@ -253,6 +253,10 @@ def get_daily_history(
         cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
     )
     cache_status = "fresh" if cache_meta else "miss"
+    cached_payload = cache_meta.get("data") if cache_meta else None
+    if cache_meta and (not isinstance(cached_payload, list) or not cached_payload):
+        cache_meta = None
+        cache_status = "miss"
 
     provider_payload: list[dict[str, Any]] | None = None
     fetch_time: datetime | None = None
@@ -296,9 +300,13 @@ def get_daily_history(
         cache_meta = load_cached_payload_with_meta(
             cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
         )
-        if cache_meta is None:
+        if (
+            cache_meta is None
+            and isinstance(provider_payload, list)
+            and provider_payload
+        ):
             cache_meta = {
-                "data": provider_payload or [],
+                "data": provider_payload,
                 "fetched_at": fetch_time or datetime.now(timezone.utc),
                 "age_seconds": 0,
             }
