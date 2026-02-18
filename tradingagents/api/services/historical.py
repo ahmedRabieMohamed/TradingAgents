@@ -380,6 +380,21 @@ def get_intraday_history(
             )
             fetch_time = datetime.now(timezone.utc)
         except Exception as exc:
+            error_message = str(exc)
+            if "status 403" in error_message:
+                raise ApiError(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    code="INTRADAY_NOT_ENTITLED",
+                    message="Intraday data requires an upgraded EODHD plan or authentication",
+                    details={
+                        "symbol": symbol_key,
+                        "exchange_code": exchange_code,
+                        "interval": interval,
+                        "start_ts": start_ts,
+                        "end_ts": end_ts,
+                        "error": error_message,
+                    },
+                ) from exc
             raise ApiError(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 code="INTRADAY_UNAVAILABLE",
@@ -390,7 +405,7 @@ def get_intraday_history(
                     "interval": interval,
                     "start_ts": start_ts,
                     "end_ts": end_ts,
-                    "error": str(exc),
+                    "error": error_message,
                 },
             ) from exc
         cache_meta = load_cached_payload_with_meta(
@@ -444,6 +459,7 @@ def get_corporate_actions(
         bool,
         bool,
         Optional[str],
+        bool,
     ]:
         cache_meta = load_cached_payload_with_meta(
             cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
@@ -454,7 +470,9 @@ def get_corporate_actions(
                 provider_payload = fetch_fn()
                 fetch_time = datetime.now(timezone.utc)
             except Exception as exc:
-                return [], None, False, cache_hit, str(exc)
+                error_message = str(exc)
+                entitlement_error = "status 403" in error_message
+                return [], None, False, cache_hit, error_message, entitlement_error
             cache_meta = load_cached_payload_with_meta(
                 cache_key, ttl_seconds=settings.historical_cache_ttl_seconds
             )
@@ -467,22 +485,34 @@ def get_corporate_actions(
         payload = cache_meta.get("data") if cache_meta else []
         if not isinstance(payload, list):
             payload = []
-        return payload, cache_meta, True, cache_hit, None
+        return payload, cache_meta, True, cache_hit, None, False
 
     dividends_key = f"dividends_{exchange_code}_{symbol_key}_{start_value or 'na'}_{end_value or 'na'}"
     splits_key = (
         f"splits_{exchange_code}_{symbol_key}_{start_value or 'na'}_{end_value or 'na'}"
     )
 
-    dividends_data, dividends_meta, dividends_ok, dividends_hit, dividends_error = (
-        _load_or_fetch(
-            dividends_key,
-            lambda: EodhdClient(cache_ttl_seconds=0).get_dividends(
-                symbol_key, exchange_code, start_value, end_value
-            ),
-        )
+    (
+        dividends_data,
+        dividends_meta,
+        dividends_ok,
+        dividends_hit,
+        dividends_error,
+        dividends_entitlement,
+    ) = _load_or_fetch(
+        dividends_key,
+        lambda: EodhdClient(cache_ttl_seconds=0).get_dividends(
+            symbol_key, exchange_code, start_value, end_value
+        ),
     )
-    splits_data, splits_meta, splits_ok, splits_hit, splits_error = _load_or_fetch(
+    (
+        splits_data,
+        splits_meta,
+        splits_ok,
+        splits_hit,
+        splits_error,
+        splits_entitlement,
+    ) = _load_or_fetch(
         splits_key,
         lambda: EodhdClient(cache_ttl_seconds=0).get_splits(
             symbol_key, exchange_code, start_value, end_value
@@ -490,6 +520,20 @@ def get_corporate_actions(
     )
 
     if not dividends_ok and not splits_ok:
+        if dividends_entitlement and splits_entitlement:
+            raise ApiError(
+                status_code=status.HTTP_403_FORBIDDEN,
+                code="CORP_ACTIONS_NOT_ENTITLED",
+                message="Corporate actions require an upgraded EODHD plan or authentication",
+                details={
+                    "symbol": symbol_key,
+                    "exchange_code": exchange_code,
+                    "start_date": start_value,
+                    "end_date": end_value,
+                    "dividends_error": dividends_error,
+                    "splits_error": splits_error,
+                },
+            )
         raise ApiError(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             code="CORP_ACTIONS_UNAVAILABLE",
