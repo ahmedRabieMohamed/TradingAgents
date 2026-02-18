@@ -26,6 +26,14 @@ class DailyBar(BaseModel):
     volume: int
 
 
+class DailyRangeFilterDiagnostics(BaseModel):
+    """Diagnostics for dropped daily bars outside requested range."""
+
+    dropped_count: int
+    dropped_min_date: Optional[date]
+    dropped_max_date: Optional[date]
+
+
 class DailyHistoryResponse(BaseModel):
     """Daily historical series response."""
 
@@ -37,6 +45,7 @@ class DailyHistoryResponse(BaseModel):
     bars: List[DailyBar]
     adjusted_close_available: bool
     freshness: HistoricalFreshness
+    range_filter: Optional[DailyRangeFilterDiagnostics] = None
 
 
 class IntradayCandle(BaseModel):
