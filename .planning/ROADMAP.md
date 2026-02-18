@@ -84,7 +84,7 @@ Plans:
   1. User can fetch daily OHLCV history for charts and analytics.
   2. User can fetch intraday ranges (1D/1W/1M/1Y) when licensed.
   3. User can fetch corporate actions and adjusted price series for accurate analytics.
-**Plans**: 4 plans
+**Plans**: 6 plans
 
 Plans:
 - [x] 04-01-PLAN.md — Define historical schemas and extend EODHD client
@@ -92,6 +92,7 @@ Plans:
 - [x] 04-03-PLAN.md — Add historical API router and wire into versioned API
 - [x] 04-04-PLAN.md — Align exchange mapping and provider diagnostics for historical fetches
 - [x] 04-05-PLAN.md — Close historical data entitlement and empty cache gaps
+- [ ] 04-06-PLAN.md — Enforce daily date-range filtering with diagnostics
 
 ### Phase 5: Async Analytics Reports
 **Goal**: Users can request and retrieve explainable analytics reports asynchronously.
