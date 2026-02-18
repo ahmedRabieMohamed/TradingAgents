@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
+import logging
 from typing import Any, Callable, Iterable, Optional
 
 from fastapi import status
@@ -12,6 +13,7 @@ from tradingagents.api.schemas.historical import (
     CorporateActionsResponse,
     DailyBar,
     DailyHistoryResponse,
+    DailyRangeFilterDiagnostics,
     DividendAction,
     HistoricalFreshness,
     IntradayCandle,
@@ -159,6 +161,30 @@ def _normalize_daily_bars(rows: Iterable[dict[str, Any]]) -> list[DailyBar]:
         bars.append(bar)
     bars.sort(key=lambda item: item.date)
     return bars
+
+
+def _filter_daily_bars_by_date(
+    bars: Iterable[DailyBar],
+    start_date: date,
+    end_date: date,
+) -> tuple[list[DailyBar], Optional[DailyRangeFilterDiagnostics]]:
+    filtered: list[DailyBar] = []
+    dropped_dates: list[date] = []
+    for bar in bars:
+        if start_date <= bar.date <= end_date:
+            filtered.append(bar)
+        else:
+            dropped_dates.append(bar.date)
+    if not dropped_dates:
+        return list(filtered), None
+    return (
+        list(filtered),
+        DailyRangeFilterDiagnostics(
+            dropped_count=len(dropped_dates),
+            dropped_min_date=min(dropped_dates),
+            dropped_max_date=max(dropped_dates),
+        ),
+    )
 
 
 def _normalize_intraday_candles(rows: Iterable[dict[str, Any]]) -> list[IntradayCandle]:
@@ -316,6 +342,16 @@ def get_daily_history(
         payload = []
 
     bars = _normalize_daily_bars(payload)
+    bars, range_filter = _filter_daily_bars_by_date(bars, start_date, end_date)
+    if range_filter and range_filter.dropped_count > 0:
+        logging.getLogger(__name__).warning(
+            "Filtered %s out-of-range daily bars for %s on %s (%s to %s)",
+            range_filter.dropped_count,
+            symbol_key,
+            exchange_code,
+            start_value,
+            end_value,
+        )
     adjusted_available = any(bar.adjusted_close is not None for bar in bars)
     freshness = _build_freshness(cache_meta, fetch_time, cache_status)
 
@@ -328,6 +364,7 @@ def get_daily_history(
         bars=bars,
         adjusted_close_available=adjusted_available,
         freshness=freshness,
+        range_filter=range_filter,
     )
 
 
