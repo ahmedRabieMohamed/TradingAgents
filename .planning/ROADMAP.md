@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Market Access & Discovery API** - Users can authenticate and discover markets/symbols via a stable API.
 - [x] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
 - [x] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
-- [ ] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
+- [x] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
 - [ ] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
 - [ ] **Phase 7: Mobile Apps (iOS/Android)** - Users select market/ticker, view charts, and trigger analysis from mobile.
 
@@ -108,7 +108,7 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md — Define analytics schemas and report storage
 - [x] 05-02-PLAN.md — Build analytics report generation and indicator summaries
-- [ ] 05-03-PLAN.md — Add analytics report API endpoints with idempotency
+- [x] 05-03-PLAN.md — Add analytics report API endpoints with idempotency
 
 ### Phase 6: Localization (AR/EN)
 **Goal**: Users receive bilingual narratives and localized decision labels in API responses.
@@ -148,6 +148,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
 | 4. Historical Data Access | 6/6 | Complete | 2026-02-20 |
-| 5. Async Analytics Reports | 2/3 | In progress | - |
+| 5. Async Analytics Reports | 3/3 | Complete | 2026-02-20 |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
