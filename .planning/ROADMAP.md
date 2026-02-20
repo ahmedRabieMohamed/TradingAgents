@@ -103,10 +103,12 @@ Plans:
   2. Reports include MA/EMA, RSI, MACD, ATR, Bollinger Bands, and a trend/momentum/volatility summary.
   3. Reports include support/resistance, liquidity/volume anomalies, and risk notes.
   4. Reports include a BUY/SELL/HOLD label with confidence and rationale, and repeated job creation with the same idempotency key returns the same report_id.
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: TBD
+- [x] 05-01-PLAN.md — Define analytics schemas and report storage
+- [ ] 05-02-PLAN.md — Build analytics report generation and indicator summaries
+- [ ] 05-03-PLAN.md — Add analytics report API endpoints with idempotency
 
 ### Phase 6: Localization (AR/EN)
 **Goal**: Users receive bilingual narratives and localized decision labels in API responses.
@@ -146,6 +148,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
 | 4. Historical Data Access | 6/6 | Complete | 2026-02-20 |
-| 5. Async Analytics Reports | 0/TBD | Not started | - |
+| 5. Async Analytics Reports | 1/3 | In progress | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
