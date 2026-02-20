@@ -30,13 +30,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Analytics & Reports
 
-- [ ] **ANLT-01**: User can request an async analytics report (job + status + result)
-- [ ] **ANLT-02**: Report includes MA/EMA, RSI, MACD, ATR, and Bollinger Bands
-- [ ] **ANLT-03**: Report includes trend/momentum/volatility regime summary
-- [ ] **ANLT-04**: Report includes support/resistance levels
-- [ ] **ANLT-05**: Report includes liquidity/volume anomaly signals
-- [ ] **ANLT-06**: Report includes risk notes (volatility, gap, illiquidity)
-- [ ] **ANLT-07**: Report includes BUY/SELL/HOLD label with confidence and rationale
+- [x] **ANLT-01**: User can request an async analytics report (job + status + result)
+- [x] **ANLT-02**: Report includes MA/EMA, RSI, MACD, ATR, and Bollinger Bands
+- [x] **ANLT-03**: Report includes trend/momentum/volatility regime summary
+- [x] **ANLT-04**: Report includes support/resistance levels
+- [x] **ANLT-05**: Report includes liquidity/volume anomaly signals
+- [x] **ANLT-06**: Report includes risk notes (volatility, gap, illiquidity)
+- [x] **ANLT-07**: Report includes BUY/SELL/HOLD label with confidence and rationale
 
 ### API & Reliability
 
@@ -44,7 +44,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **API-02**: Snapshot path is cache-first to meet sub-1s latency target
 - [x] **API-03**: API returns a standard error model with explicit error codes
 - [x] **API-04**: API returns data freshness metadata and stale-data behavior
-- [ ] **API-05**: Analytics job creation supports idempotency for safe retries
+- [x] **API-05**: Analytics job creation supports idempotency for safe retries
 - [x] **API-06**: API enforces licensing/entitlements with delayed fallback labeling
 
 ### Localization
@@ -94,18 +94,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HIST-02 | Phase 3 | Complete |
 | HIST-03 | Phase 3 | Complete |
 | HIST-04 | Phase 3 | Complete |
-| ANLT-01 | Phase 4 | Pending |
-| ANLT-02 | Phase 4 | Pending |
-| ANLT-03 | Phase 4 | Pending |
-| ANLT-04 | Phase 4 | Pending |
-| ANLT-05 | Phase 4 | Pending |
-| ANLT-06 | Phase 4 | Pending |
-| ANLT-07 | Phase 4 | Pending |
+| ANLT-01 | Phase 4 | Complete |
+| ANLT-02 | Phase 4 | Complete |
+| ANLT-03 | Phase 4 | Complete |
+| ANLT-04 | Phase 4 | Complete |
+| ANLT-05 | Phase 4 | Complete |
+| ANLT-06 | Phase 4 | Complete |
+| ANLT-07 | Phase 4 | Complete |
 | API-01 | Phase 1 | Complete |
 | API-02 | Phase 2 | Complete |
 | API-03 | Phase 1 | Complete |
 | API-04 | Phase 2 | Complete |
-| API-05 | Phase 4 | Pending |
+| API-05 | Phase 4 | Complete |
 | API-06 | Phase 2 | Complete |
 | LOC-01 | Phase 5 | Pending |
 | LOC-02 | Phase 5 | Pending |
