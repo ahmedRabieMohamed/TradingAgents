@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Header, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Header, Query, Request, status
 
 from tradingagents.api.deps import rate_limit
 from tradingagents.api.deps.auth import optional_current_account
@@ -18,6 +18,10 @@ from tradingagents.api.schemas.analytics import (
     AnalyticsReportResult,
 )
 from tradingagents.api.services import analytics_reports
+from tradingagents.api.services.localization import (
+    LanguageCode,
+    localize_analytics_result,
+)
 from tradingagents.api.services import report_storage
 from tradingagents.api.settings import settings
 
@@ -59,12 +63,12 @@ def _find_job_by_idempotency_key(idempotency_key: str) -> Dict[str, Any] | None:
     return None
 
 
-def _build_response(job_data: Dict[str, Any]) -> Dict[str, Any]:
+def _build_response(job_data: Dict[str, Any], lang: LanguageCode) -> Dict[str, Any]:
     job = AnalyticsReportJob.model_validate(job_data)
     result_payload = job_data.get("result")
     if result_payload:
         result = AnalyticsReportResult.model_validate(result_payload)
-        return {"job": job, "result": result}
+        return {"job": job, "result": localize_analytics_result(result, lang)}
     return {"job": job}
 
 
@@ -74,6 +78,7 @@ async def create_report(
     background_tasks: BackgroundTasks,
     payload: AnalyticsReportRequest,
     idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key"),
+    lang: LanguageCode = Query(LanguageCode.EN, alias="lang"),
     _: Optional[dict[str, Optional[str]]] = Depends(optional_current_account),
 ) -> Dict[str, Any]:
     is_authenticated = bool(getattr(request.state, "account_id", None))
@@ -84,7 +89,7 @@ async def create_report(
 
     existing_job = report_storage.load_job(report_id)
     if existing_job:
-        return _build_response(existing_job)
+        return _build_response(existing_job, lang)
 
     if idempotency_key:
         existing_by_key = _find_job_by_idempotency_key(idempotency_key)
@@ -96,7 +101,7 @@ async def create_report(
                     code="IDEMPOTENCY_CONFLICT",
                     message="Idempotency key already used with different request",
                 )
-            return _build_response(existing_by_key)
+            return _build_response(existing_by_key, lang)
 
     now = _now_utc()
     job_record = AnalyticsReportJob(
@@ -120,13 +125,14 @@ async def create_report(
         idempotency_key,
     )
 
-    return _build_response(job_payload)
+    return _build_response(job_payload, lang)
 
 
 @router.get("/report/{report_id}")
 async def get_report(
     report_id: str,
     request: Request,
+    lang: LanguageCode = Query(LanguageCode.EN, alias="lang"),
     _: Optional[dict[str, Optional[str]]] = Depends(optional_current_account),
 ) -> Dict[str, Any]:
     is_authenticated = bool(getattr(request.state, "account_id", None))
@@ -139,4 +145,4 @@ async def get_report(
             code="REPORT_NOT_FOUND",
             message="Report not found",
         )
-    return _build_response(job)
+    return _build_response(job, lang)
