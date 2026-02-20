@@ -120,7 +120,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 06-01-PLAN.md — Add response-time AR/EN localization for analytics reports
+- [x] 06-01-PLAN.md — Add response-time AR/EN localization for analytics reports
 
 ### Phase 7: Mobile Apps (iOS/Android)
 
@@ -149,5 +149,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
 | 4. Historical Data Access | 6/6 | Complete | 2026-02-20 |
 | 5. Async Analytics Reports | 3/3 | Complete | 2026-02-20 |
-| 6. Localization (AR/EN) | 0/1 | Not started | - |
+| 6. Localization (AR/EN) | 1/1 | Complete | 2026-02-20 |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |
