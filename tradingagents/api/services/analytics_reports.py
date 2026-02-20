@@ -2,21 +2,52 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+import logging
+import traceback
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from stockstats import wrap
 
 from tradingagents.api.schemas.analytics import (
+    AnalyticsReportJob,
+    AnalyticsReportRequest,
+    AnalyticsReportResult,
     DecisionSummary,
     IndicatorsSummary,
     LiquidityAnomaly,
+    ReportArtifacts,
     SupportResistanceLevel,
     TrendMomentumVolatility,
 )
 from tradingagents.api.services import historical as historical_service
+from tradingagents.api.services import report_storage
 from tradingagents.dataflows.interface import get_stock_stats_indicators_window
+from tradingagents.default_config import DEFAULT_CONFIG
+from tradingagents.egyptian_config import EGYPTIAN_CONFIG
+from tradingagents.graph.egyptian_trading_graph import EgyptianTradingAgentsGraph
+from tradingagents.graph.trading_graph import TradingAgentsGraph
+
+LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class ReportBuffer:
+    """Collects report sections and renders CLI-style report output."""
+
+    market_id: str
+    report_sections: Dict[str, Optional[str]]
+    final_report: Optional[str] = None
+
+    def update_section(self, section_name: str, content: Optional[str]) -> None:
+        if section_name not in self.report_sections:
+            return
+        if content:
+            self.report_sections[section_name] = content
+            self.final_report = build_cli_report(self.market_id, self.report_sections)
 
 
 def _now_utc() -> datetime:
@@ -466,3 +497,339 @@ def compute_decision_label(
         f"Trend is {summary.trend}, momentum {summary.momentum}, RSI {rsi:.1f}."
     )
     return DecisionSummary(label=label, confidence=confidence, rationale=rationale)
+
+
+def build_cli_report(market_id: str, report_sections: Dict[str, Optional[str]]) -> str:
+    report_parts: List[str] = []
+    market_key = market_id.upper()
+
+    if market_key == "EGX":
+        if any(
+            report_sections.get(section)
+            for section in (
+                "egyptian_market_report",
+                "egyptian_news_report",
+                "egyptian_fundamentals_report",
+            )
+        ):
+            report_parts.append("## Egyptian Analyst Team Reports")
+            if report_sections.get("egyptian_market_report"):
+                report_parts.append(
+                    f"### Egyptian Market Analysis\n{report_sections['egyptian_market_report']}"
+                )
+            if report_sections.get("egyptian_news_report"):
+                report_parts.append(
+                    f"### Egyptian News Analysis\n{report_sections['egyptian_news_report']}"
+                )
+            if report_sections.get("egyptian_fundamentals_report"):
+                report_parts.append(
+                    "### Egyptian Fundamentals Analysis\n"
+                    f"{report_sections['egyptian_fundamentals_report']}"
+                )
+    else:
+        if any(
+            report_sections.get(section)
+            for section in (
+                "market_report",
+                "sentiment_report",
+                "news_report",
+                "fundamentals_report",
+            )
+        ):
+            report_parts.append("## Analyst Team Reports")
+            if report_sections.get("market_report"):
+                report_parts.append(
+                    f"### Market Analysis\n{report_sections['market_report']}"
+                )
+            if report_sections.get("sentiment_report"):
+                report_parts.append(
+                    f"### Social Sentiment\n{report_sections['sentiment_report']}"
+                )
+            if report_sections.get("news_report"):
+                report_parts.append(
+                    f"### News Analysis\n{report_sections['news_report']}"
+                )
+            if report_sections.get("fundamentals_report"):
+                report_parts.append(
+                    f"### Fundamentals Analysis\n{report_sections['fundamentals_report']}"
+                )
+
+    if report_sections.get("investment_plan"):
+        report_parts.append("## Research Team Decision")
+        report_parts.append(report_sections["investment_plan"])
+
+    if report_sections.get("trader_investment_plan"):
+        report_parts.append("## Trading Team Plan")
+        report_parts.append(report_sections["trader_investment_plan"])
+
+    if report_sections.get("final_trade_decision"):
+        report_parts.append("## Portfolio Management Decision")
+        report_parts.append(report_sections["final_trade_decision"])
+
+    return "\n\n".join(report_parts)
+
+
+def _default_report_sections(market_id: str) -> Dict[str, Optional[str]]:
+    if market_id.upper() == "EGX":
+        return {
+            "egyptian_market_report": None,
+            "egyptian_news_report": None,
+            "egyptian_fundamentals_report": None,
+            "investment_plan": None,
+            "trader_investment_plan": None,
+            "final_trade_decision": None,
+        }
+    return {
+        "market_report": None,
+        "sentiment_report": None,
+        "news_report": None,
+        "fundamentals_report": None,
+        "investment_plan": None,
+        "trader_investment_plan": None,
+        "final_trade_decision": None,
+    }
+
+
+def _render_analytics_markdown(
+    indicators: IndicatorsSummary,
+    summary: TrendMomentumVolatility,
+    support_resistance: List[SupportResistanceLevel],
+    liquidity_anomalies: List[LiquidityAnomaly],
+    risk_notes: List[str],
+    decision: DecisionSummary,
+) -> Dict[str, str]:
+    indicator_lines = [
+        "## Technical Indicators",
+        f"- SMA: {indicators.ma}",
+        f"- EMA: {indicators.ema}",
+        f"- RSI: {indicators.rsi:.2f}",
+        f"- MACD: {indicators.macd}",
+        f"- ATR: {indicators.atr:.2f}",
+        f"- Bollinger: {indicators.bollinger}",
+    ]
+    summary_lines = [
+        "## Trend/Momentum/Volatility Summary",
+        f"- Trend: {summary.trend}",
+        f"- Momentum: {summary.momentum}",
+        f"- Volatility: {summary.volatility}",
+    ]
+    if summary.summary:
+        summary_lines.append(f"- Notes: {summary.summary}")
+
+    support_lines = ["## Support/Resistance"]
+    for level in support_resistance:
+        note = f" ({level.note})" if level.note else ""
+        support_lines.append(f"- {level.label}: {level.level:.2f}{note}")
+
+    liquidity_lines = ["## Liquidity Anomalies"]
+    if not liquidity_anomalies:
+        liquidity_lines.append("- None detected")
+    else:
+        for anomaly in liquidity_anomalies:
+            detail = f" - {anomaly.description}" if anomaly.description else ""
+            liquidity_lines.append(f"- {anomaly.label} ({anomaly.severity}){detail}")
+
+    risk_lines = ["## Risk Notes"] + [f"- {note}" for note in risk_notes]
+
+    decision_lines = [
+        "## Decision",
+        f"- Label: {decision.label}",
+        f"- Confidence: {decision.confidence:.2f}",
+        f"- Rationale: {decision.rationale}",
+    ]
+
+    return {
+        "technical_indicators": "\n".join(indicator_lines),
+        "summary": "\n".join(summary_lines),
+        "support_resistance": "\n".join(support_lines),
+        "liquidity_anomalies": "\n".join(liquidity_lines),
+        "risk_notes": "\n".join(risk_lines),
+        "decision": "\n".join(decision_lines),
+    }
+
+
+def build_report_result(
+    report_id: str,
+    final_report: str,
+    indicators: IndicatorsSummary,
+    summary: TrendMomentumVolatility,
+    support_resistance: List[SupportResistanceLevel],
+    liquidity_anomalies: List[LiquidityAnomaly],
+    risk_notes: List[str],
+    decision: DecisionSummary,
+    artifacts: ReportArtifacts,
+) -> AnalyticsReportResult:
+    return AnalyticsReportResult(
+        report_id=report_id,
+        final_report=final_report,
+        indicators=indicators,
+        summary=summary,
+        support_resistance=support_resistance,
+        liquidity_anomalies=liquidity_anomalies,
+        risk_notes=risk_notes,
+        decision=decision,
+        artifacts=artifacts,
+    )
+
+
+def _write_markdown(report_dir: Path, name: str, content: str) -> Path:
+    path = report_dir / f"{name}.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content)
+    return path
+
+
+def run_report_job(
+    report_id: str, request: AnalyticsReportRequest, idempotency_key: str | None = None
+) -> AnalyticsReportResult:
+    job = report_storage.load_job(report_id) or {}
+    created_at = job.get("created_at") or _now_utc().isoformat()
+    status = "running"
+
+    job_record = AnalyticsReportJob(
+        report_id=report_id,
+        status=status,
+        created_at=datetime.fromisoformat(created_at)
+        if isinstance(created_at, str)
+        else created_at,
+        updated_at=_now_utc(),
+        idempotency_key=idempotency_key or job.get("idempotency_key"),
+    )
+
+    job_payload: Dict[str, Any] = {
+        **job_record.model_dump(),
+        "market_id": request.market_id,
+        "symbol": request.symbol,
+        "analysis_date": request.analysis_date,
+    }
+    report_storage.save_job(job_payload)
+
+    try:
+        (
+            indicators,
+            summary,
+            support_resistance,
+            liquidity_anomalies,
+            risk_notes,
+            decision,
+            _,
+        ) = compute_indicator_summary(
+            request.market_id,
+            request.symbol,
+            request.analysis_date,
+            request.lookback_days,
+            request.online,
+        )
+
+        report_sections = _default_report_sections(request.market_id)
+        buffer = ReportBuffer(
+            market_id=request.market_id, report_sections=report_sections
+        )
+
+        if request.market_id.upper() == "EGX":
+            graph = EgyptianTradingAgentsGraph(
+                debug=True, config=EGYPTIAN_CONFIG.copy()
+            )
+        else:
+            graph = TradingAgentsGraph(debug=True, config=DEFAULT_CONFIG.copy())
+
+        init_state = graph.propagator.create_initial_state(
+            request.symbol, request.analysis_date.isoformat()
+        )
+        args = graph.propagator.get_graph_args()
+
+        for chunk in graph.graph.stream(init_state, **args):
+            for key in list(report_sections.keys()):
+                if key in chunk and chunk[key]:
+                    buffer.update_section(key, chunk[key])
+
+        analytics_markdown = _render_analytics_markdown(
+            indicators,
+            summary,
+            support_resistance,
+            liquidity_anomalies,
+            risk_notes,
+            decision,
+        )
+
+        final_sections = [buffer.final_report] if buffer.final_report else []
+        final_sections.extend(analytics_markdown.values())
+        final_report = "\n\n".join([section for section in final_sections if section])
+
+        _, report_dir = report_storage.get_report_paths(
+            report_id, request.symbol, request.analysis_date
+        )
+        report_dir.mkdir(parents=True, exist_ok=True)
+
+        section_files: Dict[str, str] = {}
+
+        for name, content in buffer.report_sections.items():
+            if not content:
+                continue
+            report_storage.save_report_section(report_dir, name, content)
+            section_files[name] = str(_write_markdown(report_dir, name, content))
+
+        for name, content in analytics_markdown.items():
+            report_storage.save_report_section(report_dir, name, content)
+            section_files[name] = str(_write_markdown(report_dir, name, content))
+
+        section_files["final_report"] = str(
+            _write_markdown(report_dir, "final_report", final_report)
+        )
+
+        report_storage.save_report_section(report_dir, "final_report", final_report)
+
+        artifacts = ReportArtifacts(
+            report_dir=str(report_dir),
+            section_files=section_files,
+        )
+        result = build_report_result(
+            report_id,
+            final_report,
+            indicators,
+            summary,
+            support_resistance,
+            liquidity_anomalies,
+            risk_notes,
+            decision,
+            artifacts,
+        )
+
+        completed_job = AnalyticsReportJob(
+            report_id=report_id,
+            status="complete",
+            created_at=job_record.created_at,
+            updated_at=_now_utc(),
+            completed_at=_now_utc(),
+            idempotency_key=job_record.idempotency_key,
+        )
+        job_payload = {
+            **completed_job.model_dump(),
+            "market_id": request.market_id,
+            "symbol": request.symbol,
+            "analysis_date": request.analysis_date,
+            "result": result.model_dump(),
+        }
+        report_storage.save_job(job_payload)
+        return result
+    except Exception as exc:
+        error_text = "\n".join(traceback.format_exc().splitlines()[-8:])
+        failed_job = AnalyticsReportJob(
+            report_id=report_id,
+            status="failed",
+            created_at=job_record.created_at,
+            updated_at=_now_utc(),
+            completed_at=_now_utc(),
+            error=str(exc),
+            idempotency_key=job_record.idempotency_key,
+        )
+        job_payload = {
+            **failed_job.model_dump(),
+            "market_id": request.market_id,
+            "symbol": request.symbol,
+            "analysis_date": request.analysis_date,
+            "error": error_text,
+        }
+        report_storage.save_job(job_payload)
+        LOGGER.exception("Report job %s failed", report_id)
+        raise
