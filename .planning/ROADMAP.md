@@ -132,10 +132,12 @@ Plans:
   2. User can view interactive price charts (range controls, latest price, volume) on mobile.
   3. User can trigger analysis from a ticker screen and receive results in-app with status and completion updates.
   4. Mobile app handles API errors and rate limits gracefully with clear messaging.
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: TBD
+- [ ] 07-01-PLAN.md — Bootstrap iOS repo, models, and API client
+- [ ] 07-02-PLAN.md — Market picker and ticker search flow
+- [ ] 07-03-PLAN.md — Ticker detail charts and analysis polling
 
 ## Progress
 
