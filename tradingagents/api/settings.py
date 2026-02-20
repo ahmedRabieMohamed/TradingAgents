@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     snapshot_cache_ttl_seconds: int = 5
     snapshot_stale_ttl_seconds: int = 300
 
+    analytics_reports_dir: str = "./results"
+    analytics_reports_egx_dir: Optional[str] = None
+
     auth_per_minute: int = 60
     auth_per_day: int = 20000
     anon_per_minute: int = 10
