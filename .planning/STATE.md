@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 5 of 7 (Async Analytics Reports)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-20 — Completed 05-01-PLAN.md
+Last activity: 2026-02-20 — Completed 05-02-PLAN.md
 
-Progress: [█████░░░░░] 54%
+Progress: [█████████░] 96%
 
 ## Performance Metrics
 
@@ -63,11 +63,12 @@ None yet.
 [Issues that affect future work]
 
 - REDIS_URL must be configured before rate limiting can initialize.
+- OPENAI_API_KEY is required to run report generation via LLM provider.
 - EODHD_API_KEY is required to verify provider-backed market metadata.
 - Historical endpoint verification requires a valid EODHD_API_KEY.
 
 ## Session Continuity
 
-Last session: 2026-02-20 11:28
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-02-20 11:44
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
