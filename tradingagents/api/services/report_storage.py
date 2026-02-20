@@ -50,7 +50,7 @@ def get_report_paths(
 def _write_json_atomic(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = path.with_suffix(path.suffix + ".tmp")
-    tmp_path.write_text(json.dumps(payload))
+    tmp_path.write_text(json.dumps(payload, default=str))
     tmp_path.replace(path)
 
 
