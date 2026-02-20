@@ -49,8 +49,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Localization
 
-- [ ] **LOC-01**: Narrative fields are available in Arabic and English via a language parameter
-- [ ] **LOC-02**: Decision labels are localized (AR/EN) in responses
+- [x] **LOC-01**: Narrative fields are available in Arabic and English via a language parameter
+- [x] **LOC-02**: Decision labels are localized (AR/EN) in responses
 
 ## v2 Requirements
 
@@ -107,8 +107,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | API-04 | Phase 2 | Complete |
 | API-05 | Phase 4 | Complete |
 | API-06 | Phase 2 | Complete |
-| LOC-01 | Phase 5 | Pending |
-| LOC-02 | Phase 5 | Pending |
+| LOC-01 | Phase 6 | Complete |
+| LOC-02 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 25 total

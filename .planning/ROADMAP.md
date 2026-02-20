@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Snapshot Quotes & Freshness** - Users get sub‑1s snapshots with session status, freshness, and entitlement labeling.
 - [x] **Phase 4: Historical Data Access** - Users can retrieve historical prices and corporate actions for analytics and charts.
 - [x] **Phase 5: Async Analytics Reports** - Users can request and retrieve explainable analytics reports with decision labels.
-- [ ] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
+- [x] **Phase 6: Localization (AR/EN)** - Users receive bilingual narratives and localized decision labels.
 - [ ] **Phase 7: Mobile Apps (iOS/Android)** - Users select market/ticker, view charts, and trigger analysis from mobile.
 
 ## Phase Details
