@@ -92,7 +92,7 @@ Plans:
 - [x] 04-03-PLAN.md — Add historical API router and wire into versioned API
 - [x] 04-04-PLAN.md — Align exchange mapping and provider diagnostics for historical fetches
 - [x] 04-05-PLAN.md — Close historical data entitlement and empty cache gaps
-- [ ] 04-06-PLAN.md — Enforce daily date-range filtering with diagnostics
+- [x] 04-06-PLAN.md — Enforce daily date-range filtering with diagnostics
 
 ### Phase 5: Async Analytics Reports
 **Goal**: Users can request and retrieve explainable analytics reports asynchronously.
@@ -145,7 +145,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Validate multi-agent core | 4/4 | Complete | 2026-02-08 |
 | 2. Market Access & Discovery API | 7/7 | Complete | 2026-02-17 |
 | 3. Snapshot Quotes & Freshness | 4/4 | Complete | 2026-02-17 |
-| 4. Historical Data Access | 5/5 | Complete | 2026-02-18 |
+| 4. Historical Data Access | 6/6 | Complete | 2026-02-20 |
 | 5. Async Analytics Reports | 0/TBD | Not started | - |
 | 6. Localization (AR/EN) | 0/TBD | Not started | - |
 | 7. Mobile Apps (iOS/Android) | 0/TBD | Not started | - |

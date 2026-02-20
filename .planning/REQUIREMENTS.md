@@ -23,10 +23,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Historical Data
 
-- [ ] **HIST-01**: User can fetch daily OHLCV history for charts and analytics
-- [ ] **HIST-02**: User can fetch intraday ranges (1D/1W/1M/1Y) when licensed
-- [ ] **HIST-03**: User can fetch corporate actions (splits/dividends) per market
-- [ ] **HIST-04**: User can fetch adjusted price series for analytics accuracy
+- [x] **HIST-01**: User can fetch daily OHLCV history for charts and analytics
+- [x] **HIST-02**: User can fetch intraday ranges (1D/1W/1M/1Y) when licensed
+- [x] **HIST-03**: User can fetch corporate actions (splits/dividends) per market
+- [x] **HIST-04**: User can fetch adjusted price series for analytics accuracy
 
 ### Analytics & Reports
 
@@ -90,10 +90,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SNAP-02 | Phase 2 | Complete |
 | SNAP-03 | Phase 2 | Complete |
 | SNAP-04 | Phase 2 | Complete |
-| HIST-01 | Phase 3 | Pending |
-| HIST-02 | Phase 3 | Pending |
-| HIST-03 | Phase 3 | Pending |
-| HIST-04 | Phase 3 | Pending |
+| HIST-01 | Phase 3 | Complete |
+| HIST-02 | Phase 3 | Complete |
+| HIST-03 | Phase 3 | Complete |
+| HIST-04 | Phase 3 | Complete |
 | ANLT-01 | Phase 4 | Pending |
 | ANLT-02 | Phase 4 | Pending |
 | ANLT-03 | Phase 4 | Pending |
