@@ -137,7 +137,7 @@ Plans:
 Plans:
 - [x] 07-01-PLAN.md — Bootstrap iOS repo, models, and API client
 - [x] 07-02-PLAN.md — Market picker and ticker search flow
-- [ ] 07-03-PLAN.md — Ticker detail charts and analysis polling
+- [x] 07-03-PLAN.md — Ticker detail charts and analysis polling
 
 ## Progress
 
@@ -152,4 +152,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 4. Historical Data Access | 6/6 | Complete | 2026-02-20 |
 | 5. Async Analytics Reports | 3/3 | Complete | 2026-02-20 |
 | 6. Localization (AR/EN) | 1/1 | Complete | 2026-02-20 |
-| 7. Mobile Apps (iOS/Android) | 2/3 | In progress | - |
+| 7. Mobile Apps (iOS/Android) | 3/3 | Complete | 2026-02-20 |
