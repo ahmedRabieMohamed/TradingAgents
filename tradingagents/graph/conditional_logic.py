@@ -60,11 +60,11 @@ class ConditionalLogic:
             state["risk_debate_state"]["count"] >= 3 * self.max_risk_discuss_rounds
         ):  # 3 rounds of back-and-forth between 3 agents
             return "Risk Judge"
-        if state["risk_debate_state"]["latest_speaker"].startswith("Risky"):
-            return "Safe Analyst"
-        if state["risk_debate_state"]["latest_speaker"].startswith("Safe"):
+        if state["risk_debate_state"]["latest_speaker"].startswith("Aggressive"):
+            return "Conservative Analyst"
+        if state["risk_debate_state"]["latest_speaker"].startswith("Conservative"):
             return "Neutral Analyst"
-        return "Risky Analyst"
+        return "Aggressive Analyst"
 
     # Egyptian Market Conditional Logic
     def should_continue_egyptian_market(self, state: AgentState):
