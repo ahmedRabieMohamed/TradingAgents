@@ -27,5 +27,27 @@ def get_config() -> Dict:
     return _config.copy()
 
 
+def get_market_region() -> Dict:
+    """Get the market region configuration for the current region."""
+    config = get_config()
+    region_name = config.get("market_region", "us")
+    regions = default_config.MARKET_REGIONS
+    if region_name not in regions:
+        raise ValueError(
+            f"Unknown market region '{region_name}'. "
+            f"Available regions: {list(regions.keys())}"
+        )
+    return regions[region_name]
+
+
+def get_ticker_with_suffix(symbol: str) -> str:
+    """Apply the market region's ticker suffix if needed."""
+    region = get_market_region()
+    suffix = region.get("ticker_suffix", "")
+    if suffix and not symbol.upper().endswith(suffix):
+        return symbol.upper() + suffix
+    return symbol.upper()
+
+
 # Initialize with default config
 initialize_config()

@@ -498,29 +498,48 @@ def get_user_selections():
             box_content += f"\n[dim]Default: {default}[/dim]"
         return Panel(box_content, border_style="blue", padding=(1, 2))
 
-    # Step 1: Ticker symbol
+    # Step 1: Market region
     console.print(
         create_question_box(
-            "Step 1: Ticker Symbol", "Enter the ticker symbol to analyze", "SPY"
+            "Step 1: Market Region",
+            "Select the market region (us / egypt)",
+            "us",
         )
     )
-    selected_ticker = get_ticker()
+    selected_market_region = select_market_region()
+    console.print(f"[green]Selected market:[/green] {selected_market_region}")
 
-    # Step 2: Analysis date
+    # Step 2: Ticker symbol
+    if selected_market_region == "egypt":
+        ticker_hint = "e.g. COMI, HRHO, TMGH, EFIH, SWDY"
+        default_ticker = "COMI"
+    else:
+        ticker_hint = "e.g. AAPL, NVDA, SPY"
+        default_ticker = "SPY"
+    console.print(
+        create_question_box(
+            "Step 2: Ticker Symbol",
+            f"Enter the ticker symbol to analyze ({ticker_hint})",
+            default_ticker,
+        )
+    )
+    selected_ticker = get_ticker(default=default_ticker)
+
+    # Step 3: Analysis date
     default_date = datetime.datetime.now().strftime("%Y-%m-%d")
     console.print(
         create_question_box(
-            "Step 2: Analysis Date",
+            "Step 3: Analysis Date",
             "Enter the analysis date (YYYY-MM-DD)",
             default_date,
         )
     )
     analysis_date = get_analysis_date()
 
-    # Step 3: Select analysts
+    # Step 4: Select analysts
     console.print(
         create_question_box(
-            "Step 3: Analysts Team", "Select your LLM analyst agents for the analysis"
+            "Step 4: Analysts Team", "Select your LLM analyst agents for the analysis"
         )
     )
     selected_analysts = select_analysts()
@@ -528,32 +547,32 @@ def get_user_selections():
         f"[green]Selected analysts:[/green] {', '.join(analyst.value for analyst in selected_analysts)}"
     )
 
-    # Step 4: Research depth
+    # Step 5: Research depth
     console.print(
         create_question_box(
-            "Step 4: Research Depth", "Select your research depth level"
+            "Step 5: Research Depth", "Select your research depth level"
         )
     )
     selected_research_depth = select_research_depth()
 
-    # Step 5: OpenAI backend
+    # Step 6: OpenAI backend
     console.print(
         create_question_box(
-            "Step 5: OpenAI backend", "Select which service to talk to"
+            "Step 6: OpenAI backend", "Select which service to talk to"
         )
     )
     selected_llm_provider, backend_url = select_llm_provider()
     
-    # Step 6: Thinking agents
+    # Step 7: Thinking agents
     console.print(
         create_question_box(
-            "Step 6: Thinking Agents", "Select your thinking agents for analysis"
+            "Step 7: Thinking Agents", "Select your thinking agents for analysis"
         )
     )
     selected_shallow_thinker = select_shallow_thinking_agent(selected_llm_provider)
     selected_deep_thinker = select_deep_thinking_agent(selected_llm_provider)
 
-    # Step 7: Provider-specific thinking configuration
+    # Step 8: Provider-specific thinking configuration
     thinking_level = None
     reasoning_effort = None
 
@@ -561,7 +580,7 @@ def get_user_selections():
     if provider_lower == "google":
         console.print(
             create_question_box(
-                "Step 7: Thinking Mode",
+                "Step 8: Thinking Mode",
                 "Configure Gemini thinking mode"
             )
         )
@@ -569,13 +588,14 @@ def get_user_selections():
     elif provider_lower == "openai":
         console.print(
             create_question_box(
-                "Step 7: Reasoning Effort",
+                "Step 8: Reasoning Effort",
                 "Configure OpenAI reasoning effort level"
             )
         )
         reasoning_effort = ask_openai_reasoning_effort()
 
     return {
+        "market_region": selected_market_region,
         "ticker": selected_ticker,
         "analysis_date": analysis_date,
         "analysts": selected_analysts,
@@ -589,9 +609,39 @@ def get_user_selections():
     }
 
 
-def get_ticker():
+def select_market_region():
+    """Select market region using an interactive arrow-key selector."""
+    import questionary
+
+    REGION_OPTIONS = [
+        ("🇺🇸  US Market (NYSE/NASDAQ)", "us"),
+        ("🇪🇬  Egypt Market (EGX)", "egypt"),
+    ]
+
+    choice = questionary.select(
+        "Select market region:",
+        choices=[
+            questionary.Choice(display, value=value)
+            for display, value in REGION_OPTIONS
+        ],
+        instruction="\n- Use arrow keys to navigate\n- Press Enter to select",
+        style=questionary.Style(
+            [
+                ("selected", "fg:cyan noinherit"),
+            ]
+        ),
+    ).ask()
+
+    if choice is None:
+        console.print("\n[red]No market region selected. Exiting...[/red]")
+        raise typer.Exit(1)
+
+    return choice
+
+
+def get_ticker(default="SPY"):
     """Get ticker symbol from user input."""
-    return typer.prompt("", default="SPY")
+    return typer.prompt("", default=default)
 
 
 def get_analysis_date():
@@ -908,6 +958,7 @@ def run_analysis():
     config["deep_think_llm"] = selections["deep_thinker"]
     config["backend_url"] = selections["backend_url"]
     config["llm_provider"] = selections["llm_provider"].lower()
+    config["market_region"] = selections["market_region"]
     # Provider-specific thinking configuration
     config["google_thinking_level"] = selections.get("google_thinking_level")
     config["openai_reasoning_effort"] = selections.get("openai_reasoning_effort")

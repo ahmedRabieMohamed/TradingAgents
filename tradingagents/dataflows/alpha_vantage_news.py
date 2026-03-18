@@ -1,4 +1,5 @@
 from .alpha_vantage_common import _make_api_request, format_datetime_for_api
+from .config import get_market_region
 
 def get_news(ticker, start_date, end_date) -> dict[str, str] | str:
     """Returns live and historical market news & sentiment data from premier news outlets worldwide.
@@ -42,8 +43,10 @@ def get_global_news(curr_date, look_back_days: int = 7, limit: int = 50) -> dict
     start_dt = curr_dt - timedelta(days=look_back_days)
     start_date = start_dt.strftime("%Y-%m-%d")
 
+    region = get_market_region()
+    topics = region.get("macro_topics", "financial_markets,economy_macro,economy_monetary")
     params = {
-        "topics": "financial_markets,economy_macro,economy_monetary",
+        "topics": topics,
         "time_from": format_datetime_for_api(start_date),
         "time_to": format_datetime_for_api(curr_date),
         "limit": str(limit),

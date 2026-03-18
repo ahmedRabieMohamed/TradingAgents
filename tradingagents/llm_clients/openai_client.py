@@ -59,9 +59,13 @@ class OpenAIClient(BaseLLMClient):
         elif self.base_url:
             llm_kwargs["base_url"] = self.base_url
 
-        for key in ("timeout", "max_retries", "reasoning_effort", "api_key", "callbacks", "http_client", "http_async_client"):
+        for key in ("timeout", "max_retries", "api_key", "callbacks", "http_client", "http_async_client"):
             if key in self.kwargs:
                 llm_kwargs[key] = self.kwargs[key]
+
+        # Only pass reasoning_effort for models that support it (GPT-5 family)
+        if "reasoning_effort" in self.kwargs and "gpt-5" in self.model.lower():
+            llm_kwargs["reasoning_effort"] = self.kwargs["reasoning_effort"]
 
         return UnifiedChatOpenAI(**llm_kwargs)
 

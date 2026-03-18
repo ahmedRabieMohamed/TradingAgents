@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 import yfinance as yf
 import os
 from .stockstats_utils import StockstatsUtils, _clean_dataframe
+from .config import get_ticker_with_suffix
 
 def get_YFin_data_online(
     symbol: Annotated[str, "ticker symbol of the company"],
@@ -14,8 +15,9 @@ def get_YFin_data_online(
     datetime.strptime(start_date, "%Y-%m-%d")
     datetime.strptime(end_date, "%Y-%m-%d")
 
-    # Create ticker object
-    ticker = yf.Ticker(symbol.upper())
+    # Create ticker object (applies region suffix like .CA for Egypt)
+    symbol = get_ticker_with_suffix(symbol)
+    ticker = yf.Ticker(symbol)
 
     # Fetch historical data for the specified date range
     data = ticker.history(start=start_date, end=end_date)
@@ -152,7 +154,10 @@ def get_stock_stats_indicators_window(
             if date_str in indicator_data:
                 indicator_value = indicator_data[date_str]
             else:
-                indicator_value = "N/A: Not a trading day (weekend or holiday)"
+                from .config import get_market_region as _get_region
+                _region = _get_region()
+                _exchange = _region.get("exchange", "")
+                indicator_value = f"N/A: Not a trading day on {_exchange} (weekend or holiday)"
             
             date_values.append((date_str, indicator_value))
             current_dt = current_dt - relativedelta(days=1)
@@ -194,11 +199,12 @@ def _get_stock_stats_bulk(
     Fetches data once and calculates indicator for all available dates.
     Returns dict mapping date strings to indicator values.
     """
-    from .config import get_config
+    from .config import get_config, get_ticker_with_suffix
     import pandas as pd
     from stockstats import wrap
     import os
-    
+
+    symbol = get_ticker_with_suffix(symbol)
     config = get_config()
     online = config["data_vendors"]["technical_indicators"] != "local"
     
@@ -299,7 +305,8 @@ def get_fundamentals(
 ):
     """Get company fundamentals overview from yfinance."""
     try:
-        ticker_obj = yf.Ticker(ticker.upper())
+        ticker = get_ticker_with_suffix(ticker)
+        ticker_obj = yf.Ticker(ticker)
         info = ticker_obj.info
 
         if not info:
@@ -357,7 +364,8 @@ def get_balance_sheet(
 ):
     """Get balance sheet data from yfinance."""
     try:
-        ticker_obj = yf.Ticker(ticker.upper())
+        ticker = get_ticker_with_suffix(ticker)
+        ticker_obj = yf.Ticker(ticker)
         
         if freq.lower() == "quarterly":
             data = ticker_obj.quarterly_balance_sheet
@@ -387,7 +395,8 @@ def get_cashflow(
 ):
     """Get cash flow data from yfinance."""
     try:
-        ticker_obj = yf.Ticker(ticker.upper())
+        ticker = get_ticker_with_suffix(ticker)
+        ticker_obj = yf.Ticker(ticker)
         
         if freq.lower() == "quarterly":
             data = ticker_obj.quarterly_cashflow
@@ -417,7 +426,8 @@ def get_income_statement(
 ):
     """Get income statement data from yfinance."""
     try:
-        ticker_obj = yf.Ticker(ticker.upper())
+        ticker = get_ticker_with_suffix(ticker)
+        ticker_obj = yf.Ticker(ticker)
         
         if freq.lower() == "quarterly":
             data = ticker_obj.quarterly_income_stmt
@@ -445,7 +455,8 @@ def get_insider_transactions(
 ):
     """Get insider transactions data from yfinance."""
     try:
-        ticker_obj = yf.Ticker(ticker.upper())
+        ticker = get_ticker_with_suffix(ticker)
+        ticker_obj = yf.Ticker(ticker)
         data = ticker_obj.insider_transactions
         
         if data is None or data.empty:

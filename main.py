@@ -20,12 +20,23 @@ config["data_vendors"] = {
     "news_data": "yfinance",                 # Options: alpha_vantage, yfinance
 }
 
+# Market region: "us" (default) or "egypt"
+# For Egypt: tickers like COMI, HRHO, TMGH, EFIH, SWDY
+# The .CA suffix for yfinance is applied automatically
+config["market_region"] = "us"
+
 # Initialize with custom config
 ta = TradingAgentsGraph(debug=True, config=config)
 
-# forward propagate
+# forward propagate (US market example)
 _, decision = ta.propagate("NVDA", "2024-05-10")
 print(decision)
+
+# Egypt market example:
+# config["market_region"] = "egypt"
+# ta_egypt = TradingAgentsGraph(debug=True, config=config)
+# _, decision = ta_egypt.propagate("COMI", "2024-05-10")  # Commercial International Bank
+# print(decision)
 
 # Memorize mistakes and reflect
 # ta.reflect_and_remember(1000) # parameter is the position returns

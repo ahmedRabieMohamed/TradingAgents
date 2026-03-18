@@ -3,7 +3,7 @@ import yfinance as yf
 from stockstats import wrap
 from typing import Annotated
 import os
-from .config import get_config
+from .config import get_config, get_ticker_with_suffix
 
 
 def _clean_dataframe(data: pd.DataFrame) -> pd.DataFrame:
@@ -31,6 +31,7 @@ class StockstatsUtils:
         ],
     ):
         config = get_config()
+        symbol = get_ticker_with_suffix(symbol)
 
         today_date = pd.Timestamp.today()
         curr_date_dt = pd.to_datetime(curr_date)
@@ -74,4 +75,6 @@ class StockstatsUtils:
             indicator_value = matching_rows[indicator].values[0]
             return indicator_value
         else:
-            return "N/A: Not a trading day (weekend or holiday)"
+            region = get_market_region()
+            exchange = region.get("exchange", "")
+            return f"N/A: Not a trading day on {exchange} (weekend or holiday)"

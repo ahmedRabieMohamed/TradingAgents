@@ -1,5 +1,52 @@
 import os
 
+# Market region definitions
+MARKET_REGIONS = {
+    "us": {
+        "currency": "USD",
+        "exchange": "NYSE/NASDAQ",
+        "ticker_suffix": "",
+        "weekend_days": [5, 6],  # Saturday, Sunday
+        "global_news_queries": [
+            "stock market economy",
+            "Federal Reserve interest rates",
+            "inflation economic outlook",
+            "global markets trading",
+        ],
+        "central_bank": "Federal Reserve",
+        "macro_topics": "financial_markets,economy_macro,economy_monetary",
+        "market_context": (
+            "This is a US-listed stock trading on NYSE/NASDAQ. "
+            "Currency is USD. The relevant central bank is the Federal Reserve. "
+            "Financial reporting follows US GAAP standards."
+        ),
+    },
+    "egypt": {
+        "currency": "EGP",
+        "exchange": "EGX (Egyptian Exchange)",
+        "ticker_suffix": ".CA",  # Cairo exchange suffix for yfinance
+        "weekend_days": [4, 5],  # Friday, Saturday
+        "global_news_queries": [
+            "Egypt stock market EGX",
+            "Central Bank of Egypt interest rates",
+            "Egypt economy inflation outlook",
+            "Egyptian pound exchange rate EGP",
+            "MENA emerging markets trading",
+        ],
+        "central_bank": "Central Bank of Egypt (CBE)",
+        "macro_topics": "financial_markets,economy_macro,emerging_markets",
+        "market_context": (
+            "This is an Egyptian stock trading on the EGX (Egyptian Exchange). "
+            "Currency is EGP (Egyptian Pound). The relevant central bank is the "
+            "Central Bank of Egypt (CBE). Financial reporting follows Egyptian "
+            "Accounting Standards (based on IFRS). The EGX trades Sunday-Thursday "
+            "and is closed on Fridays and Saturdays. Key macro factors include "
+            "EGP/USD exchange rate, CBE monetary policy, Suez Canal revenues, "
+            "tourism sector, and remittances from Egyptians abroad."
+        ),
+    },
+}
+
 DEFAULT_CONFIG = {
     "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", "./results"),
@@ -7,6 +54,8 @@ DEFAULT_CONFIG = {
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
         "dataflows/data_cache",
     ),
+    # Market region: "us" or "egypt"
+    "market_region": "us",
     # LLM settings
     "llm_provider": "openai",
     "deep_think_llm": "gpt-5.2",
