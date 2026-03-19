@@ -6,6 +6,7 @@ from tradingagents.agents.utils.agent_states import (
     InvestDebateState,
     RiskDebateState,
 )
+from tradingagents.dataflows.config import get_trade_horizon
 
 
 class Propagator:
@@ -19,10 +20,13 @@ class Propagator:
         self, company_name: str, trade_date: str
     ) -> Dict[str, Any]:
         """Create the initial state for the agent graph."""
+        horizon = get_trade_horizon()
         return {
             "messages": [("human", company_name)],
             "company_of_interest": company_name,
             "trade_date": str(trade_date),
+            "trade_horizon": horizon["label"],
+            "trade_horizon_description": horizon["description"],
             "investment_debate_state": InvestDebateState(
                 {
                     "bull_history": "",

@@ -47,6 +47,45 @@ MARKET_REGIONS = {
     },
 }
 
+# Trade horizon definitions
+TRADE_HORIZONS = {
+    "intraday": {
+        "label": "Intraday (1-4 hours)",
+        "description": (
+            "Ultra-short-term trade. Focus on momentum, order flow, intraday "
+            "catalysts, and technical breakouts. Ignore long-term fundamentals "
+            "unless there is an imminent event (earnings, dividend, major "
+            "announcement) within the next few hours."
+        ),
+        "lookback_days": 5,
+    },
+    "short-term": {
+        "label": "Short-Term (1-5 days)",
+        "description": (
+            "Short swing trade. Focus on technical patterns, news catalysts, "
+            "and short-term momentum. Fundamentals matter only if there is a "
+            "near-term catalyst."
+        ),
+        "lookback_days": 30,
+    },
+    "medium-term": {
+        "label": "Medium-Term (1-4 weeks)",
+        "description": (
+            "Swing/position trade. Balance technical and fundamental analysis. "
+            "Consider earnings cycles, sector rotation, and macro trends."
+        ),
+        "lookback_days": 90,
+    },
+    "long-term": {
+        "label": "Long-Term (1+ months)",
+        "description": (
+            "Position/investment. Emphasize fundamentals, valuation, and macro "
+            "trends. Technical analysis is secondary."
+        ),
+        "lookback_days": 365,
+    },
+}
+
 DEFAULT_CONFIG = {
     "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", "./results"),
@@ -56,6 +95,8 @@ DEFAULT_CONFIG = {
     ),
     # Market region: "us" or "egypt"
     "market_region": "us",
+    # Trade horizon: "intraday", "short-term", "medium-term", "long-term"
+    "trade_horizon": "short-term",
     # LLM settings
     "llm_provider": "openai",
     "deep_think_llm": "gpt-5.2",

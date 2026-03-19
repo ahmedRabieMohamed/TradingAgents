@@ -40,6 +40,19 @@ def get_market_region() -> Dict:
     return regions[region_name]
 
 
+def get_trade_horizon() -> Dict:
+    """Get the trade horizon configuration for the current horizon."""
+    config = get_config()
+    horizon_name = config.get("trade_horizon", "short-term")
+    horizons = default_config.TRADE_HORIZONS
+    if horizon_name not in horizons:
+        raise ValueError(
+            f"Unknown trade horizon '{horizon_name}'. "
+            f"Available horizons: {list(horizons.keys())}"
+        )
+    return horizons[horizon_name]
+
+
 def get_ticker_with_suffix(symbol: str) -> str:
     """Apply the market region's ticker suffix if needed."""
     region = get_market_region()

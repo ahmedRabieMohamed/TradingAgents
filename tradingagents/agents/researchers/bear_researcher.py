@@ -22,7 +22,12 @@ def create_bear_researcher(llm, memory):
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
 
-        prompt = f"""You are a Bear Analyst making the case against investing in the stock. Your goal is to present a well-reasoned argument emphasizing risks, challenges, and negative indicators. Leverage the provided research and data to highlight potential downsides and counter bullish arguments effectively.
+        trade_horizon = state.get("trade_horizon", "Short-Term (1-5 days)")
+        horizon_desc = state.get("trade_horizon_description", "")
+
+        prompt = f"""You are a Bear Analyst making the case against investing in the stock for a **{trade_horizon}** trade. {horizon_desc}
+
+Your goal is to present a well-reasoned argument emphasizing risks, challenges, and negative indicators. Leverage the provided research and data to highlight potential downsides and counter bullish arguments effectively.
 
 Key points to focus on:
 

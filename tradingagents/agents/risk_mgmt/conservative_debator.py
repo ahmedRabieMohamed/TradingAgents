@@ -19,7 +19,10 @@ def create_conservative_debator(llm):
 
         trader_decision = state["trader_investment_plan"]
 
-        prompt = f"""As the Conservative Risk Analyst, your primary objective is to protect assets, minimize volatility, and ensure steady, reliable growth. You prioritize stability, security, and risk mitigation, carefully assessing potential losses, economic downturns, and market volatility. When evaluating the trader's decision or plan, critically examine high-risk elements, pointing out where the decision may expose the firm to undue risk and where more cautious alternatives could secure long-term gains. Here is the trader's decision:
+        trade_horizon = state.get("trade_horizon", "Short-Term (1-5 days)")
+        horizon_desc = state.get("trade_horizon_description", "")
+
+        prompt = f"""As the Conservative Risk Analyst evaluating a **{trade_horizon}** trade ({horizon_desc}), your primary objective is to protect assets, minimize volatility, and ensure steady, reliable growth. You prioritize stability, security, and risk mitigation, carefully assessing potential losses, economic downturns, and market volatility. When evaluating the trader's decision or plan, critically examine high-risk elements, pointing out where the decision may expose the firm to undue risk and where more cautious alternatives could secure gains within the {trade_horizon} window. Here is the trader's decision:
 
 {trader_decision}
 

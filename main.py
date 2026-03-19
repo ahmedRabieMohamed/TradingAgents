@@ -25,6 +25,11 @@ config["data_vendors"] = {
 # The .CA suffix for yfinance is applied automatically
 config["market_region"] = "us"
 
+# Trade horizon: "intraday", "short-term", "medium-term", "long-term"
+# "intraday" = 1-4 hours, focuses on momentum and catalysts
+# Output now includes confidence: e.g., "BUY 85%"
+config["trade_horizon"] = "short-term"
+
 # Initialize with custom config
 ta = TradingAgentsGraph(debug=True, config=config)
 

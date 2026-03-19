@@ -12,18 +12,25 @@ class SignalProcessor:
 
     def process_signal(self, full_signal: str) -> str:
         """
-        Process a full trading signal to extract the core decision.
+        Process a full trading signal to extract the core decision and confidence.
 
         Args:
             full_signal: Complete trading signal text
 
         Returns:
-            Extracted decision (BUY, SELL, or HOLD)
+            Extracted decision with confidence (e.g., "BUY 85%")
         """
         messages = [
             (
                 "system",
-                "You are an efficient assistant designed to analyze paragraphs or financial reports provided by a group of analysts. Your task is to extract the investment decision: SELL, BUY, or HOLD. Provide only the extracted decision (SELL, BUY, or HOLD) as your output, without adding any additional text or information.",
+                "You are an efficient assistant designed to analyze paragraphs or "
+                "financial reports provided by a group of analysts. Your task is to "
+                "extract the investment decision (BUY, SELL, or HOLD) and the "
+                "confidence percentage. Output ONLY in this exact format: "
+                "DECISION XX% (e.g., 'BUY 85%' or 'SELL 60%' or 'HOLD 45%'). "
+                "If no confidence percentage is explicitly stated, estimate one "
+                "based on the conviction and certainty expressed in the text. "
+                "Do not add any other text.",
             ),
             ("human", full_signal),
         ]

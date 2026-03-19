@@ -525,21 +525,31 @@ def get_user_selections():
     )
     selected_ticker = get_ticker(default=default_ticker)
 
-    # Step 3: Analysis date
+    # Step 3: Trade horizon
+    console.print(
+        create_question_box(
+            "Step 3: Trade Horizon",
+            "Select your trading time horizon",
+        )
+    )
+    selected_trade_horizon = select_trade_horizon()
+    console.print(f"[green]Selected horizon:[/green] {selected_trade_horizon}")
+
+    # Step 4: Analysis date
     default_date = datetime.datetime.now().strftime("%Y-%m-%d")
     console.print(
         create_question_box(
-            "Step 3: Analysis Date",
+            "Step 4: Analysis Date",
             "Enter the analysis date (YYYY-MM-DD)",
             default_date,
         )
     )
     analysis_date = get_analysis_date()
 
-    # Step 4: Select analysts
+    # Step 5: Select analysts
     console.print(
         create_question_box(
-            "Step 4: Analysts Team", "Select your LLM analyst agents for the analysis"
+            "Step 5: Analysts Team", "Select your LLM analyst agents for the analysis"
         )
     )
     selected_analysts = select_analysts()
@@ -547,32 +557,32 @@ def get_user_selections():
         f"[green]Selected analysts:[/green] {', '.join(analyst.value for analyst in selected_analysts)}"
     )
 
-    # Step 5: Research depth
+    # Step 6: Research depth
     console.print(
         create_question_box(
-            "Step 5: Research Depth", "Select your research depth level"
+            "Step 6: Research Depth", "Select your research depth level"
         )
     )
     selected_research_depth = select_research_depth()
 
-    # Step 6: OpenAI backend
+    # Step 7: OpenAI backend
     console.print(
         create_question_box(
-            "Step 6: OpenAI backend", "Select which service to talk to"
+            "Step 7: OpenAI backend", "Select which service to talk to"
         )
     )
     selected_llm_provider, backend_url = select_llm_provider()
     
-    # Step 7: Thinking agents
+    # Step 8: Thinking agents
     console.print(
         create_question_box(
-            "Step 7: Thinking Agents", "Select your thinking agents for analysis"
+            "Step 8: Thinking Agents", "Select your thinking agents for analysis"
         )
     )
     selected_shallow_thinker = select_shallow_thinking_agent(selected_llm_provider)
     selected_deep_thinker = select_deep_thinking_agent(selected_llm_provider)
 
-    # Step 8: Provider-specific thinking configuration
+    # Step 9: Provider-specific thinking configuration
     thinking_level = None
     reasoning_effort = None
 
@@ -580,7 +590,7 @@ def get_user_selections():
     if provider_lower == "google":
         console.print(
             create_question_box(
-                "Step 8: Thinking Mode",
+                "Step 9: Thinking Mode",
                 "Configure Gemini thinking mode"
             )
         )
@@ -588,7 +598,7 @@ def get_user_selections():
     elif provider_lower == "openai":
         console.print(
             create_question_box(
-                "Step 8: Reasoning Effort",
+                "Step 9: Reasoning Effort",
                 "Configure OpenAI reasoning effort level"
             )
         )
@@ -596,6 +606,7 @@ def get_user_selections():
 
     return {
         "market_region": selected_market_region,
+        "trade_horizon": selected_trade_horizon,
         "ticker": selected_ticker,
         "analysis_date": analysis_date,
         "analysts": selected_analysts,
@@ -634,6 +645,38 @@ def select_market_region():
 
     if choice is None:
         console.print("\n[red]No market region selected. Exiting...[/red]")
+        raise typer.Exit(1)
+
+    return choice
+
+
+def select_trade_horizon():
+    """Select trade horizon using an interactive arrow-key selector."""
+    import questionary
+
+    HORIZON_OPTIONS = [
+        ("⚡  Intraday (1-4 hours)", "intraday"),
+        ("📊  Short-Term (1-5 days)", "short-term"),
+        ("📈  Medium-Term (1-4 weeks)", "medium-term"),
+        ("🏦  Long-Term (1+ months)", "long-term"),
+    ]
+
+    choice = questionary.select(
+        "Select trade horizon:",
+        choices=[
+            questionary.Choice(display, value=value)
+            for display, value in HORIZON_OPTIONS
+        ],
+        instruction="\n- Use arrow keys to navigate\n- Press Enter to select",
+        style=questionary.Style(
+            [
+                ("selected", "fg:yellow noinherit"),
+            ]
+        ),
+    ).ask()
+
+    if choice is None:
+        console.print("\n[red]No trade horizon selected. Exiting...[/red]")
         raise typer.Exit(1)
 
     return choice
@@ -959,6 +1002,7 @@ def run_analysis():
     config["backend_url"] = selections["backend_url"]
     config["llm_provider"] = selections["llm_provider"].lower()
     config["market_region"] = selections["market_region"]
+    config["trade_horizon"] = selections["trade_horizon"]
     # Provider-specific thinking configuration
     config["google_thinking_level"] = selections.get("google_thinking_level")
     config["openai_reasoning_effort"] = selections.get("openai_reasoning_effort")
