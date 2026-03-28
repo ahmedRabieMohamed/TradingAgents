@@ -23,9 +23,14 @@ from .alpha_vantage import (
     get_global_news as get_alpha_vantage_global_news,
 )
 from .alpha_vantage_common import AlphaVantageRateLimitError
+from .egypt_news import (
+    get_news as get_egypt_news,
+    get_global_news as get_egypt_global_news,
+)
+from .egypt_news_google import EgyptNewsError
 
 # Configuration and routing logic
-from .config import get_config
+from .config import get_config, get_market_region
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
@@ -63,6 +68,7 @@ TOOLS_CATEGORIES = {
 VENDOR_LIST = [
     "yfinance",
     "alpha_vantage",
+    "egypt_news",
 ]
 
 # Mapping of methods to their vendor-specific implementations
@@ -96,10 +102,12 @@ VENDOR_METHODS = {
     },
     # news_data
     "get_news": {
+        "egypt_news": get_egypt_news,
         "alpha_vantage": get_alpha_vantage_news,
         "yfinance": get_news_yfinance,
     },
     "get_global_news": {
+        "egypt_news": get_egypt_global_news,
         "yfinance": get_global_news_yfinance,
         "alpha_vantage": get_alpha_vantage_global_news,
     },
@@ -118,17 +126,30 @@ def get_category_for_method(method: str) -> str:
 
 def get_vendor(category: str, method: str = None) -> str:
     """Get the configured vendor for a data category or specific tool method.
-    Tool-level configuration takes precedence over category-level.
+
+    Priority order:
+    1. Tool-level config (highest — user override)
+    2. Region vendor_overrides (auto-routes Egypt news to egypt_news)
+    3. Category-level config (global default)
     """
     config = get_config()
 
-    # Check tool-level configuration first (if method provided)
+    # 1. Check tool-level configuration first (if method provided)
     if method:
         tool_vendors = config.get("tool_vendors", {})
         if method in tool_vendors:
             return tool_vendors[method]
 
-    # Fall back to category-level configuration
+    # 2. Check region-level vendor overrides
+    try:
+        region = get_market_region()
+        region_overrides = region.get("vendor_overrides", {})
+        if category in region_overrides:
+            return region_overrides[category]
+    except (ValueError, KeyError):
+        pass
+
+    # 3. Fall back to category-level configuration
     return config.get("data_vendors", {}).get(category, "default")
 
 def route_to_vendor(method: str, *args, **kwargs):
@@ -156,7 +177,7 @@ def route_to_vendor(method: str, *args, **kwargs):
 
         try:
             return impl_func(*args, **kwargs)
-        except AlphaVantageRateLimitError:
-            continue  # Only rate limits trigger fallback
+        except (AlphaVantageRateLimitError, EgyptNewsError):
+            continue  # Rate limits and news errors trigger fallback
 
     raise RuntimeError(f"No available vendor for '{method}'")

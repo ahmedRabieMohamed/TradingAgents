@@ -27,11 +27,17 @@ MARKET_REGIONS = {
         "ticker_suffix": ".CA",  # Cairo exchange suffix for yfinance
         "weekend_days": [4, 5],  # Friday, Saturday
         "global_news_queries": [
+            # English queries
             "Egypt stock market EGX",
             "Central Bank of Egypt interest rates",
             "Egypt economy inflation outlook",
             "Egyptian pound exchange rate EGP",
             "MENA emerging markets trading",
+            # Arabic queries (for Google News / Serper)
+            "البورصة المصرية اليوم",
+            "البنك المركزي المصري قرارات",
+            "الاقتصاد المصري",
+            "سعر صرف الجنيه المصري",
         ],
         "central_bank": "Central Bank of Egypt (CBE)",
         "macro_topics": "financial_markets,economy_macro,emerging_markets",
@@ -44,6 +50,10 @@ MARKET_REGIONS = {
             "EGP/USD exchange rate, CBE monetary policy, Suez Canal revenues, "
             "tourism sector, and remittances from Egyptians abroad."
         ),
+        # Route news to egypt_news vendor automatically
+        "vendor_overrides": {
+            "news_data": "egypt_news",
+        },
     },
 }
 
