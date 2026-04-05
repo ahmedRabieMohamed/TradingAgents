@@ -15,6 +15,7 @@ from app.routers import (
     settings as settings_router,
     llm_providers,
     market_overview,
+    portfolio,
 )
 
 
@@ -50,6 +51,7 @@ app.include_router(performance.router, prefix="/api")
 app.include_router(settings_router.router, prefix="/api")
 app.include_router(llm_providers.router, prefix="/api")
 app.include_router(market_overview.router, prefix="/api")
+app.include_router(portfolio.router, prefix="/api")
 
 
 @app.get("/api/health")

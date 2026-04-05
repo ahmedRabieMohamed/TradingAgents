@@ -107,6 +107,7 @@ export default function Settings() {
   const [defaultHorizon, setDefaultHorizon] = useState<TradeHorizon>('short-term');
   const [defaultDepth, setDefaultDepth] = useState<ResearchDepth>('medium');
   const [defaultLLM, setDefaultLLM] = useState('openai');
+  const [startingBalance, setStartingBalance] = useState(100000);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,6 +142,7 @@ export default function Settings() {
         default_horizon: defaultHorizon,
         default_depth: defaultDepth,
         default_llm_provider: defaultLLM,
+        starting_balance: startingBalance,
       };
       // Only include api keys that have been filled in
       const filledKeys: Record<string, string> = {};
@@ -272,6 +274,25 @@ export default function Settings() {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+
+        {/* Paper Trading */}
+        <div style={cardStyle}>
+          <div style={cardTitle}>Paper Trading</div>
+          <div style={fieldRow}>
+            <label style={labelStyle}>Starting Balance</label>
+            <input
+              type="number"
+              style={inputStyle}
+              min={1000}
+              step={1000}
+              value={startingBalance}
+              onChange={(e) => setStartingBalance(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: -4 }}>
+            Changes apply on next portfolio reset.
           </div>
         </div>
 

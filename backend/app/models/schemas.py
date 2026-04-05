@@ -255,3 +255,139 @@ class MarketNewsResponse(BaseModel):
     market_id: str
     ticker: Optional[str] = None
     articles: list[NewsArticle]
+
+
+# --- Paper Trading & Portfolio ---
+
+
+class PositionResponse(BaseModel):
+    id: str
+    portfolio_id: str
+    analysis_session_id: Optional[str] = None
+    ticker: str
+    market_id: str
+    direction: str
+    quantity: int
+    entry_price: float
+    entry_date: datetime
+    exit_price: Optional[float] = None
+    exit_date: Optional[datetime] = None
+    status: str
+    realized_pnl: Optional[float] = None
+    realized_pnl_pct: Optional[float] = None
+    current_price: float = 0.0
+    unrealized_pnl: float = 0.0
+    unrealized_pnl_pct: float = 0.0
+    days_held: int = 0
+    recommendation: Optional[str] = None
+    confidence: Optional[float] = None
+
+    model_config = {"from_attributes": True}
+
+
+class PortfolioResponse(BaseModel):
+    id: str
+    starting_balance: float
+    cash_balance: float
+    currency: str
+    total_value: float
+    total_pnl: float
+    total_pnl_pct: float
+    open_positions_count: int
+    open_positions: list[PositionResponse] = []
+
+
+class TradeRequest(BaseModel):
+    ticker: str = Field(..., min_length=1, max_length=10)
+    market_id: str
+    direction: str = Field(..., pattern="^(long|short)$")
+    quantity: int = Field(..., gt=0)
+    analysis_session_id: Optional[str] = None
+
+
+class TradeExecutionResponse(BaseModel):
+    position_id: str
+    ticker: str
+    direction: str
+    quantity: int
+    entry_price: float
+    total_cost: float
+    remaining_cash: float
+
+
+class ClosePositionResponse(BaseModel):
+    position_id: str
+    ticker: str
+    direction: str
+    entry_price: float
+    exit_price: float
+    quantity: int
+    realized_pnl: float
+    realized_pnl_pct: float
+    hold_days: int
+    cash_balance: float
+
+
+class TradeHistoryItem(BaseModel):
+    id: str
+    ticker: str
+    market_id: str
+    direction: str
+    quantity: int
+    entry_price: float
+    exit_price: Optional[float] = None
+    entry_date: datetime
+    exit_date: Optional[datetime] = None
+    realized_pnl: Optional[float] = None
+    realized_pnl_pct: Optional[float] = None
+    hold_days: int = 0
+    recommendation: Optional[str] = None
+    confidence: Optional[float] = None
+
+    model_config = {"from_attributes": True}
+
+
+class TradeHistoryResponse(BaseModel):
+    total: int
+    trades: list[TradeHistoryItem]
+
+
+class EquityPointSchema(BaseModel):
+    date: str
+    value: float
+
+
+class MarketBreakdown(BaseModel):
+    count: int
+    win_rate: float
+    avg_return_pct: float
+
+
+class TradeSummary(BaseModel):
+    ticker: str
+    pnl: float
+    pnl_pct: float
+
+
+class PortfolioAnalyticsResponse(BaseModel):
+    total_trades: int
+    win_rate: float
+    avg_return_pct: float
+    total_realized_pnl: float
+    best_trade: Optional[TradeSummary] = None
+    worst_trade: Optional[TradeSummary] = None
+    by_market: dict[str, MarketBreakdown] = {}
+    equity_curve: list[EquityPointSchema] = []
+
+
+class AIComparisonSide(BaseModel):
+    count: int
+    avg_return_pct: float
+    win_rate: float
+    total_pnl: float
+
+
+class AIComparisonResponse(BaseModel):
+    followed: AIComparisonSide
+    ignored: AIComparisonSide
+    difference: dict

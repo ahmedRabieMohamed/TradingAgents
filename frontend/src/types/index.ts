@@ -158,6 +158,7 @@ export interface SettingsUpdate {
   default_depth?: ResearchDepth;
   default_llm_provider?: string;
   api_keys?: Record<string, string>;
+  starting_balance?: number;
 }
 
 // === LLM Providers ===
@@ -311,4 +312,138 @@ export interface MarketNewsResponse {
   market_id: string;
   ticker: string | null;
   articles: NewsArticle[];
+}
+
+// === Portfolio & Paper Trading ===
+
+export interface PositionResponse {
+  id: string;
+  ticker: string;
+  market_id: string;
+  direction: 'long' | 'short';
+  quantity: number;
+  entry_price: number;
+  entry_date: string;
+  exit_price: number | null;
+  exit_date: string | null;
+  status: 'open' | 'closed';
+  realized_pnl: number | null;
+  realized_pnl_pct: number | null;
+  current_price: number;
+  unrealized_pnl: number;
+  unrealized_pnl_pct: number;
+  days_held: number;
+  analysis_session_id: string | null;
+  recommendation: string | null;
+  confidence: number | null;
+}
+
+export interface PortfolioResponse {
+  id: string;
+  starting_balance: number;
+  cash_balance: number;
+  currency: string;
+  total_value: number;
+  total_pnl: number;
+  total_pnl_pct: number;
+  open_positions_count: number;
+  open_positions: PositionResponse[];
+}
+
+export interface TradeRequest {
+  ticker: string;
+  market_id: string;
+  direction: 'long' | 'short';
+  quantity: number;
+  analysis_session_id?: string;
+}
+
+export interface TradeExecutionResponse {
+  position_id: string;
+  ticker: string;
+  direction: string;
+  quantity: number;
+  entry_price: number;
+  total_cost: number;
+  remaining_cash: number;
+}
+
+export interface ClosePositionResponse {
+  position_id: string;
+  ticker: string;
+  direction: string;
+  entry_price: number;
+  exit_price: number;
+  quantity: number;
+  realized_pnl: number;
+  realized_pnl_pct: number;
+  hold_days: number;
+  cash_balance: number;
+}
+
+export interface TradeHistoryItem {
+  id: string;
+  ticker: string;
+  market_id: string;
+  direction: string;
+  quantity: number;
+  entry_price: number;
+  exit_price: number;
+  entry_date: string;
+  exit_date: string;
+  realized_pnl: number;
+  realized_pnl_pct: number;
+  hold_days: number;
+  recommendation: string | null;
+  confidence: number | null;
+}
+
+export interface TradeHistoryResponse {
+  total: number;
+  trades: TradeHistoryItem[];
+}
+
+export interface EquityPoint {
+  date: string;
+  value: number;
+}
+
+export interface TradeSummary {
+  ticker: string;
+  pnl: number;
+  pnl_pct: number;
+}
+
+export interface MarketBreakdown {
+  count: number;
+  win_rate: number;
+  avg_return_pct: number;
+}
+
+export interface PortfolioAnalyticsResponse {
+  total_trades: number;
+  win_rate: number;
+  avg_return_pct: number;
+  total_realized_pnl: number;
+  best_trade: TradeSummary | null;
+  worst_trade: TradeSummary | null;
+  by_market: Record<string, MarketBreakdown>;
+  equity_curve: EquityPoint[];
+}
+
+export interface AIComparisonSide {
+  count: number;
+  avg_return_pct: number;
+  win_rate: number;
+  total_pnl: number;
+}
+
+export interface AIComparisonResponse {
+  followed: AIComparisonSide;
+  ignored: AIComparisonSide;
+  difference: {
+    return_advantage_pct: number;
+    win_rate_advantage: number;
+    message: string;
+  };
 }

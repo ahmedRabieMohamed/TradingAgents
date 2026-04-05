@@ -8,6 +8,7 @@ import AnalysisProgress from '../components/analysis/AnalysisProgress';
 import ResultHero from '../components/analysis/ResultHero';
 import ReportSection from '../components/analysis/ReportSection';
 import MarketOverview from '../components/market-overview/MarketOverview';
+import TradeModal from '../components/portfolio/TradeModal';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useAnalysisStore } from '../stores/analysisStore';
 import { createAnalysis, getAnalysis } from '../services/api';
@@ -153,6 +154,26 @@ const reportListStyle: CSSProperties = {
   marginTop: 24,
 };
 
+const tradeBtnStyle: CSSProperties = {
+  padding: '10px 24px',
+  borderRadius: 'var(--radius-sm)',
+  border: 'none',
+  background: '#22c55e',
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: 600,
+  cursor: 'pointer',
+  marginTop: 16,
+};
+
+const tradeBtnDisabledStyle: CSSProperties = {
+  ...tradeBtnStyle,
+  background: 'var(--surface2)',
+  color: 'var(--text3)',
+  cursor: 'not-allowed',
+  opacity: 0.6,
+};
+
 const btnRowStyle: CSSProperties = {
   display: 'flex',
   gap: 12,
@@ -181,6 +202,7 @@ export default function NewAnalysis() {
   const [starting, setStarting] = useState(false);
   const [loadingSession, setLoadingSession] = useState(false);
   const [showCustomTicker, setShowCustomTicker] = useState(false);
+  const [tradeModalOpen, setTradeModalOpen] = useState(false);
 
   const analysisStore = useAnalysisStore();
 
@@ -539,6 +561,22 @@ export default function NewAnalysis() {
               >
                 Save Report
               </button>
+              {analysisStore.recommendation?.toUpperCase() === 'HOLD' ? (
+                <button
+                  style={tradeBtnDisabledStyle}
+                  disabled
+                  title="No action recommended"
+                >
+                  💰 Execute Trade
+                </button>
+              ) : (
+                <button
+                  style={tradeBtnStyle}
+                  onClick={() => setTradeModalOpen(true)}
+                >
+                  💰 Execute Trade
+                </button>
+              )}
               <button
                 style={newAnalysisBtnStyle}
                 onClick={() => {
@@ -554,6 +592,22 @@ export default function NewAnalysis() {
                 New Analysis
               </button>
             </div>
+
+            {/* Trade Modal */}
+            <TradeModal
+              isOpen={tradeModalOpen}
+              onClose={() => setTradeModalOpen(false)}
+              ticker={selectedStock?.ticker || ''}
+              marketId={selectedMarket || ''}
+              direction={analysisStore.recommendation?.toUpperCase() === 'BUY' ? 'long' : 'short'}
+              recommendation={analysisStore.recommendation || ''}
+              confidence={analysisStore.confidence}
+              currentPrice={selectedStock?.price || 0}
+              analysisSessionId={analysisStore.sessionId}
+              onSuccess={() => {
+                // Could navigate to portfolio or show notification
+              }}
+            />
           </>
         )}
       </div>

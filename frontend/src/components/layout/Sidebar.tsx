@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { CSSProperties } from 'react';
+import { useState, useEffect, CSSProperties } from 'react';
 import { useMarketStore } from '../../stores/marketStore';
+import { getPortfolio } from '../../services/api';
 
 const sidebarStyle: CSSProperties = {
   width: 'var(--sidebar-width)',
@@ -101,6 +102,7 @@ const marketItems: NavItem[] = [
 
 const analysisItems: NavItem[] = [
   { to: '/history', icon: '📋', label: 'History' },
+  { to: '/portfolio', icon: '💰', label: 'Portfolio' },
   { to: '/performance', icon: '📈', label: 'Performance' },
 ];
 
@@ -108,7 +110,22 @@ const settingsItems: NavItem[] = [
   { to: '/settings', icon: '⚙️', label: 'Settings' },
 ];
 
-function renderNavItem(item: NavItem) {
+const badgeStyle: CSSProperties = {
+  minWidth: 18,
+  height: 18,
+  borderRadius: 9,
+  background: 'var(--accent)',
+  color: '#fff',
+  fontSize: 10,
+  fontWeight: 700,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '0 5px',
+  marginLeft: 'auto',
+};
+
+function renderNavItem(item: NavItem, badge?: number) {
   return (
     <NavLink
       key={item.to}
@@ -118,12 +135,33 @@ function renderNavItem(item: NavItem) {
     >
       <span style={{ fontSize: 16, width: 20, textAlign: 'center' }}>{item.icon}</span>
       {item.label}
+      {badge != null && badge > 0 && <span style={badgeStyle}>{badge}</span>}
     </NavLink>
   );
 }
 
 export default function Sidebar() {
   const marketLabel = useMarketStore((s) => s.marketLabel);
+  const [openPositions, setOpenPositions] = useState<number>(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    function fetchCount() {
+      getPortfolio()
+        .then((p) => {
+          if (!cancelled) setOpenPositions(p.open_positions_count);
+        })
+        .catch(() => {
+          /* ignore */
+        });
+    }
+    fetchCount();
+    const interval = setInterval(fetchCount, 60000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <aside style={sidebarStyle}>
@@ -140,7 +178,9 @@ export default function Sidebar() {
         {marketItems.map(renderNavItem)}
 
         <div style={sectionLabel}>Analysis</div>
-        {analysisItems.map(renderNavItem)}
+        {analysisItems.map((item) =>
+          renderNavItem(item, item.to === '/portfolio' ? openPositions : undefined)
+        )}
 
         <div style={sectionLabel}>System</div>
         {settingsItems.map(renderNavItem)}

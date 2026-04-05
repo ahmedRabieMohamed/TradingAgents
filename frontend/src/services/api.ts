@@ -12,6 +12,13 @@ import type {
   LLMProvidersResponse,
   MarketOverviewResponse,
   MarketNewsResponse,
+  PortfolioResponse,
+  TradeRequest,
+  TradeExecutionResponse,
+  ClosePositionResponse,
+  TradeHistoryResponse,
+  PortfolioAnalyticsResponse,
+  AIComparisonResponse,
 } from '../types';
 
 const API_BASE = 'http://localhost:8000/api';
@@ -132,4 +139,35 @@ export function fetchMarketNews(marketId: string, ticker?: string, limit?: numbe
   if (limit) params.set('limit', String(limit));
   const query = params.toString() ? `?${params.toString()}` : '';
   return get<MarketNewsResponse>(`/market-overview/${encodeURIComponent(marketId)}/news${query}`);
+}
+
+// --- Portfolio & Paper Trading ---
+
+export function getPortfolio(): Promise<PortfolioResponse> {
+  return get<PortfolioResponse>('/portfolio');
+}
+
+export function executeTrade(req: TradeRequest): Promise<TradeExecutionResponse> {
+  return post<TradeExecutionResponse>('/portfolio/trade', req);
+}
+
+export function closePosition(positionId: string): Promise<ClosePositionResponse> {
+  return post<ClosePositionResponse>(`/portfolio/positions/${positionId}/close`);
+}
+
+export function getTradeHistory(params?: Record<string, string>): Promise<TradeHistoryResponse> {
+  const query = params ? '?' + new URLSearchParams(params).toString() : '';
+  return get<TradeHistoryResponse>(`/portfolio/trades${query}`);
+}
+
+export function getPortfolioAnalytics(): Promise<PortfolioAnalyticsResponse> {
+  return get<PortfolioAnalyticsResponse>('/portfolio/analytics');
+}
+
+export function getAIComparison(): Promise<AIComparisonResponse> {
+  return get<AIComparisonResponse>('/portfolio/ai-comparison');
+}
+
+export function resetPortfolio(): Promise<{ message: string }> {
+  return post<{ message: string }>('/portfolio/reset');
 }
