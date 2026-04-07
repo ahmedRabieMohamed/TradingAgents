@@ -40,6 +40,27 @@ class StockValidationError(BaseModel):
     error: str
 
 
+# --- Price History (OHLC) ---
+
+
+class OHLCBar(BaseModel):
+    timestamp: str
+    open: float
+    high: float
+    low: float
+    close: float
+    volume: int
+
+
+class PriceHistoryResponse(BaseModel):
+    ticker: str
+    market_id: str
+    currency: str
+    period: str
+    interval: str
+    bars: list[OHLCBar]
+
+
 # --- Analysis ---
 
 

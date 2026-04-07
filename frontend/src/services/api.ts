@@ -12,6 +12,7 @@ import type {
   LLMProvidersResponse,
   MarketOverviewResponse,
   MarketNewsResponse,
+  PriceHistoryResponse,
   PortfolioResponse,
   TradeRequest,
   TradeExecutionResponse,
@@ -75,6 +76,12 @@ export function fetchMarkets(): Promise<MarketsResponse> {
 
 export function validateStock(ticker: string, market: string): Promise<StockValidation> {
   return get<StockValidation>(`/stocks/validate?ticker=${encodeURIComponent(ticker)}&market=${encodeURIComponent(market)}`);
+}
+
+export function getPriceHistory(ticker: string, marketId: string, period: string = '3mo'): Promise<PriceHistoryResponse> {
+  return get<PriceHistoryResponse>(
+    `/stocks/price-history?ticker=${encodeURIComponent(ticker)}&market_id=${encodeURIComponent(marketId)}&period=${encodeURIComponent(period)}`
+  );
 }
 
 // --- Analysis ---

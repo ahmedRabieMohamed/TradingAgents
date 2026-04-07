@@ -72,6 +72,71 @@ def _market_status(market_id: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Price history (OHLC)
+# ---------------------------------------------------------------------------
+
+PERIOD_MAP = {
+    "1w": ("5d", "15m"),
+    "1mo": ("1mo", "1d"),
+    "3mo": ("3mo", "1d"),
+    "6mo": ("6mo", "1d"),
+    "1y": ("1y", "1d"),
+}
+
+
+async def get_price_history(ticker: str, market_id: str, period: str = "3mo") -> dict:
+    """Fetch OHLC bars for *ticker* over *period* via yfinance.
+
+    Returns a dict with ticker, market_id, currency, period, interval, and bars list.
+    """
+    yf_period, interval = PERIOD_MAP.get(period, ("3mo", "1d"))
+    yf_symbol = _to_yf_ticker(ticker, market_id)
+    currency = "EGP" if market_id == "egypt" else "USD"
+
+    try:
+        df = yf.download(
+            yf_symbol,
+            period=yf_period,
+            interval=interval,
+            progress=False,
+        )
+    except Exception:
+        logger.exception("yfinance OHLC download failed for %s", yf_symbol)
+        return {
+            "ticker": ticker,
+            "market_id": market_id,
+            "currency": currency,
+            "period": period,
+            "interval": interval,
+            "bars": [],
+        }
+
+    bars: list[dict] = []
+    if df is not None and not df.empty:
+        # Flatten MultiIndex columns from single-ticker download
+        if hasattr(df.columns, "levels"):
+            df = df.droplevel("Ticker", axis=1)
+        for idx, row in df.iterrows():
+            bars.append({
+                "timestamp": idx.isoformat(),
+                "open": round(float(row["Open"]), 4),
+                "high": round(float(row["High"]), 4),
+                "low": round(float(row["Low"]), 4),
+                "close": round(float(row["Close"]), 4),
+                "volume": int(row["Volume"]),
+            })
+
+    return {
+        "ticker": ticker,
+        "market_id": market_id,
+        "currency": currency,
+        "period": period,
+        "interval": interval,
+        "bars": bars,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 

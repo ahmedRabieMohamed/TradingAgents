@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
 import { useState, useEffect, CSSProperties } from 'react';
-import { useMarketStore } from '../../stores/marketStore';
 import { getPortfolio } from '../../services/api';
 
 const sidebarStyle: CSSProperties = {
@@ -74,21 +73,30 @@ const navItemActive: CSSProperties = {
 };
 
 const bottomSection: CSSProperties = {
-  padding: '16px 20px',
+  padding: '12px 20px',
   borderTop: '1px solid var(--border)',
-  fontSize: 12,
-  color: 'var(--text3)',
   display: 'flex',
-  alignItems: 'center',
+  flexDirection: 'column',
   gap: 8,
 };
 
-const marketDot: CSSProperties = {
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  background: 'var(--green)',
+const marketRowStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  fontSize: 11,
+  color: 'var(--text3)',
 };
+
+function statusDot(isOpen: boolean): CSSProperties {
+  return {
+    width: 7,
+    height: 7,
+    borderRadius: '50%',
+    background: isOpen ? 'var(--green)' : 'var(--red)',
+    flexShrink: 0,
+  };
+}
 
 interface NavItem {
   to: string;
@@ -125,6 +133,55 @@ const badgeStyle: CSSProperties = {
   marginLeft: 'auto',
 };
 
+// Market schedule definitions (mirrors backend MARKET_REGIONS)
+interface MarketSchedule {
+  label: string;
+  weekendDays: number[]; // JS: 0=Sun, 1=Mon, ..., 6=Sat
+  openHour: number;
+  closeHour: number;
+  timezone: string; // IANA timezone for correct local time
+}
+
+const MARKETS: Record<string, MarketSchedule> = {
+  us: {
+    label: 'US (NYSE/NASDAQ)',
+    weekendDays: [0, 6], // Sun, Sat (JS convention)
+    openHour: 9,
+    closeHour: 16,
+    timezone: 'America/New_York',
+  },
+  egypt: {
+    label: 'Egypt (EGX)',
+    weekendDays: [5, 6], // Fri, Sat (JS convention)
+    openHour: 10,
+    closeHour: 15,
+    timezone: 'Africa/Cairo',
+  },
+};
+
+function isMarketOpen(schedule: MarketSchedule): boolean {
+  // Get current time in the market's timezone
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: schedule.timezone,
+    hour: 'numeric',
+    hour12: false,
+    weekday: 'short',
+  });
+  const parts = formatter.formatToParts(now);
+  const hour = parseInt(parts.find((p) => p.type === 'hour')?.value || '0', 10);
+  const weekday = parts.find((p) => p.type === 'weekday')?.value || '';
+
+  // Map weekday string to number (JS convention: 0=Sun)
+  const dayMap: Record<string, number> = {
+    Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6,
+  };
+  const dayNum = dayMap[weekday] ?? now.getDay();
+
+  if (schedule.weekendDays.includes(dayNum)) return false;
+  return hour >= schedule.openHour && hour < schedule.closeHour;
+}
+
 function renderNavItem(item: NavItem, badge?: number) {
   return (
     <NavLink
@@ -141,8 +198,8 @@ function renderNavItem(item: NavItem, badge?: number) {
 }
 
 export default function Sidebar() {
-  const marketLabel = useMarketStore((s) => s.marketLabel);
   const [openPositions, setOpenPositions] = useState<number>(0);
+  const [marketStatus, setMarketStatus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -161,6 +218,20 @@ export default function Sidebar() {
       cancelled = true;
       clearInterval(interval);
     };
+  }, []);
+
+  // Update market status every minute
+  useEffect(() => {
+    function updateStatus() {
+      const status: Record<string, boolean> = {};
+      for (const [id, schedule] of Object.entries(MARKETS)) {
+        status[id] = isMarketOpen(schedule);
+      }
+      setMarketStatus(status);
+    }
+    updateStatus();
+    const interval = setInterval(updateStatus, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -187,8 +258,15 @@ export default function Sidebar() {
       </nav>
 
       <div style={bottomSection}>
-        <span style={marketDot} />
-        {marketLabel}
+        {Object.entries(MARKETS).map(([id, schedule]) => (
+          <div key={id} style={marketRowStyle}>
+            <span style={statusDot(marketStatus[id] ?? false)} />
+            <span>{schedule.label}</span>
+            <span style={{ marginLeft: 'auto', fontSize: 10, opacity: 0.7 }}>
+              {marketStatus[id] ? 'Open' : 'Closed'}
+            </span>
+          </div>
+        ))}
       </div>
     </aside>
   );

@@ -8,11 +8,13 @@ import AnalysisProgress from '../components/analysis/AnalysisProgress';
 import ResultHero from '../components/analysis/ResultHero';
 import ReportSection from '../components/analysis/ReportSection';
 import MarketOverview from '../components/market-overview/MarketOverview';
+import CandlestickChart from '../components/analysis/CandlestickChart';
 import TradeModal from '../components/portfolio/TradeModal';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useAnalysisStore } from '../stores/analysisStore';
+import { useWizardStore } from '../stores/wizardStore';
 import { createAnalysis, getAnalysis } from '../services/api';
-import type { StockValidation, AnalysisRequest, TradeHorizon, WSEvent } from '../types';
+import type { StockValidation, AnalysisRequest, WSEvent } from '../types';
 
 const STEPS = ['Market', 'Overview', 'Configure', 'Analyze', 'Results'] as const;
 
@@ -192,19 +194,32 @@ const errorBox: CSSProperties = {
 
 export default function NewAnalysis() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [step, setStep] = useState(0);
-  const [selectedMarket, setSelectedMarket] = useState<string | null>(null);
-  const [selectedStock, setSelectedStock] = useState<StockValidation | null>(null);
-  const [wsUrl, setWsUrl] = useState<string | null>(null);
-  const [tradeHorizon, setTradeHorizon] = useState<TradeHorizon>('short-term');
-  const [analysisDate, setAnalysisDate] = useState('');
+
+  // Persisted wizard state (survives navigation)
+  const wizard = useWizardStore();
+  const step = wizard.step;
+  const selectedMarket = wizard.selectedMarket;
+  const selectedStock = wizard.selectedStock;
+  const wsUrl = wizard.wsUrl;
+  const tradeHorizon = wizard.tradeHorizon;
+  const analysisDate = wizard.analysisDate;
+  const showCustomTicker = wizard.showCustomTicker;
+
+  // Transient UI state (OK to lose on navigation)
   const [startError, setStartError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
   const [loadingSession, setLoadingSession] = useState(false);
-  const [showCustomTicker, setShowCustomTicker] = useState(false);
   const [tradeModalOpen, setTradeModalOpen] = useState(false);
 
   const analysisStore = useAnalysisStore();
+
+  // On remount: if analysis completed while away, jump to results
+  useEffect(() => {
+    if (step === 3 && analysisStore.status === 'completed') {
+      wizard.setStep(4);
+    }
+    // If analysis failed while away, stay on step 3 (shows error state)
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load past analysis when ?session= is in the URL
   useEffect(() => {
@@ -240,8 +255,8 @@ export default function NewAnalysis() {
           });
         }
 
-        setSelectedMarket(session.market_id);
-        setSelectedStock({
+        wizard.setSelectedMarket(session.market_id);
+        wizard.setSelectedStock({
           valid: true,
           ticker: session.ticker,
           name: session.stock_name,
@@ -250,9 +265,9 @@ export default function NewAnalysis() {
           change_pct: 0,
           market_id: session.market_id,
         });
-        setTradeHorizon(session.trade_horizon);
-        setAnalysisDate(session.analysis_date);
-        setStep(4); // Go to results step
+        wizard.setTradeHorizon(session.trade_horizon);
+        wizard.setAnalysisDate(session.analysis_date);
+        wizard.setStep(4); // Go to results step
         setSearchParams({}, { replace: true }); // Clear query param
       })
       .catch((err) => {
@@ -268,10 +283,10 @@ export default function NewAnalysis() {
       analysisStore.handleEvent(event);
 
       if (event.type === 'analysis_completed') {
-        setStep(4);
+        wizard.setStep(4);
       }
     },
-    // handleEvent is stable from zustand, safe to depend on
+    // handleEvent and setStep are stable from zustand, safe to depend on
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
@@ -285,15 +300,15 @@ export default function NewAnalysis() {
   }
 
   function handleMarketSelect(marketId: string) {
-    setSelectedMarket(marketId);
-    setSelectedStock(null);
-    setShowCustomTicker(false);
-    setStep(1);
+    wizard.setSelectedMarket(marketId);
+    wizard.setSelectedStock(null);
+    wizard.setShowCustomTicker(false);
+    wizard.setStep(1);
   }
 
   function handleStockValidated(stock: StockValidation) {
-    setSelectedStock(stock);
-    setStep(2);
+    wizard.setSelectedStock(stock);
+    wizard.setStep(2);
   }
 
   function handleOverviewStockSelect(ticker: string, name: string) {
@@ -308,9 +323,9 @@ export default function NewAnalysis() {
       change_pct: 0,
       market_id: selectedMarket,
     };
-    setSelectedStock(stock);
-    setShowCustomTicker(false);
-    setStep(2);
+    wizard.setSelectedStock(stock);
+    wizard.setShowCustomTicker(false);
+    wizard.setStep(2);
   }
 
   async function handleStartAnalysis(config: Partial<AnalysisRequest>) {
@@ -330,8 +345,8 @@ export default function NewAnalysis() {
         deep_think_model: config.deep_think_model || 'o1',
       };
 
-      setTradeHorizon(fullConfig.trade_horizon);
-      setAnalysisDate(fullConfig.analysis_date);
+      wizard.setTradeHorizon(fullConfig.trade_horizon);
+      wizard.setAnalysisDate(fullConfig.analysis_date);
 
       const response = await createAnalysis(fullConfig);
 
@@ -342,9 +357,9 @@ export default function NewAnalysis() {
       // Connect WebSocket
       const wsBase = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const wsHost = 'localhost:8000';
-      setWsUrl(`${wsBase}//${wsHost}/api/analysis/ws/${response.session_id}`);
+      wizard.setWsUrl(`${wsBase}//${wsHost}/api/analysis/ws/${response.session_id}`);
 
-      setStep(3);
+      wizard.setStep(3);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to start analysis';
       setStartError(message);
@@ -359,10 +374,10 @@ export default function NewAnalysis() {
       return;
     }
     if (step === 1) {
-      setShowCustomTicker(false);
+      wizard.setShowCustomTicker(false);
     }
     if (step > 0) {
-      setStep(step - 1);
+      wizard.setStep(step - 1);
     }
   }
 
@@ -435,7 +450,7 @@ export default function NewAnalysis() {
                     cursor: 'pointer',
                     marginBottom: 16,
                   }}
-                  onClick={() => setShowCustomTicker(false)}
+                  onClick={() => wizard.setShowCustomTicker(false)}
                 >
                   &larr; Back to overview
                 </button>
@@ -458,7 +473,7 @@ export default function NewAnalysis() {
                     marginTop: 16,
                     textDecoration: 'underline',
                   }}
-                  onClick={() => setShowCustomTicker(true)}
+                  onClick={() => wizard.setShowCustomTicker(true)}
                 >
                   Enter custom ticker
                 </button>
@@ -474,6 +489,11 @@ export default function NewAnalysis() {
             <p style={sectionSub}>
               Set parameters for analyzing {selectedStock.name} ({selectedStock.ticker}).
             </p>
+            <CandlestickChart
+              ticker={selectedStock.ticker}
+              marketId={selectedMarket}
+              currency={selectedStock.currency}
+            />
             {startError && <div style={errorBox}>{startError}</div>}
             <ConfigPanel
               ticker={selectedStock.ticker}
@@ -581,12 +601,8 @@ export default function NewAnalysis() {
                 style={newAnalysisBtnStyle}
                 onClick={() => {
                   analysisStore.reset();
-                  setSelectedMarket(null);
-                  setSelectedStock(null);
-                  setWsUrl(null);
+                  wizard.reset();
                   setStartError(null);
-                  setShowCustomTicker(false);
-                  setStep(0);
                 }}
               >
                 New Analysis

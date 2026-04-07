@@ -259,6 +259,26 @@ export type WSEvent =
   | WSAnalysisFailed
   | WSAnalysisCancelled;
 
+// === Price History (OHLC) ===
+
+export interface OHLCBar {
+  timestamp: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface PriceHistoryResponse {
+  ticker: string;
+  market_id: string;
+  currency: string;
+  period: string;
+  interval: string;
+  bars: OHLCBar[];
+}
+
 // === Market Overview ===
 
 export interface StockSnapshot {
