@@ -123,7 +123,7 @@ export default function History() {
   }, [fetchData]);
 
   function handleView(id: string) {
-    navigate(`/?session=${id}`);
+    navigate(`/analysis?session=${id}`);
   }
 
   function handleToggleSelect(id: string) {
@@ -202,6 +202,7 @@ export default function History() {
             <HistoryTable
               items={items}
               onView={handleView}
+              onRefresh={fetchData}
               selectedIds={selectedIds}
               onToggleSelect={handleToggleSelect}
             />

@@ -259,6 +259,24 @@ export type WSEvent =
   | WSAnalysisFailed
   | WSAnalysisCancelled;
 
+// === Watchlist ===
+
+export interface WatchlistItem {
+  id: string;
+  ticker: string;
+  market_id: string;
+  name: string;
+  added_at: string;
+  notes: string;
+  price: number | null;
+  change_pct: number | null;
+  currency: string | null;
+}
+
+export interface WatchlistResponse {
+  items: WatchlistItem[];
+}
+
 // === Price History (OHLC) ===
 
 export interface OHLCBar {

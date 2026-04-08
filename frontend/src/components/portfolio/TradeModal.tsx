@@ -269,6 +269,30 @@ export default function TradeModal({
           />
         </div>
 
+        {/* Position size calculator */}
+        {availableCash !== null && currentPrice > 0 && (
+          <div style={{ background: 'var(--surface2)', borderRadius: 'var(--radius-sm)', padding: 12, fontSize: 12 }}>
+            <div style={{ fontWeight: 600, color: 'var(--text3)', marginBottom: 8, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Position Size Guide
+            </div>
+            {[1, 2, 5, 10].map((riskPct) => {
+              const riskAmount = availableCash * (riskPct / 100);
+              const suggestedQty = Math.floor(riskAmount / currentPrice);
+              return suggestedQty > 0 ? (
+                <div key={riskPct} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text2)', padding: '3px 0' }}>
+                  <span>{riskPct}% risk (${riskAmount.toFixed(0)})</span>
+                  <button
+                    style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}
+                    onClick={() => setQuantity(String(suggestedQty))}
+                  >
+                    {suggestedQty} shares
+                  </button>
+                </div>
+              ) : null;
+            })}
+          </div>
+        )}
+
         {/* Total cost */}
         <div style={rowStyle}>
           <span>Total Cost</span>

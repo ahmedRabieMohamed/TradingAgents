@@ -524,10 +524,25 @@ export default function NewAnalysis() {
         {/* Step 5: Results */}
         {step === 4 && analysisStore.recommendation && analysisStore.confidence !== null && (
           <>
-            <h2 style={sectionHeading}>Analysis Complete</h2>
-            <p style={sectionSub}>
-              {analysisStore.summary || 'Your analysis has been completed successfully.'}
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h2 style={sectionHeading}>Analysis Complete</h2>
+                <p style={{ ...sectionSub, marginBottom: 0 }}>
+                  {analysisStore.summary || 'Your analysis has been completed successfully.'}
+                </p>
+              </div>
+              <button
+                style={newAnalysisBtnStyle}
+                onClick={() => {
+                  analysisStore.reset();
+                  wizard.reset();
+                  setStartError(null);
+                }}
+              >
+                + New Analysis
+              </button>
+            </div>
+
             <ResultHero
               recommendation={analysisStore.recommendation}
               confidence={analysisStore.confidence}
@@ -536,25 +551,6 @@ export default function NewAnalysis() {
               horizon={tradeHorizon}
               date={analysisDate}
             />
-
-            {/* Detailed Agent Reports */}
-            {Object.keys(analysisStore.reports).length > 0 && (
-              <div style={reportListStyle}>
-                <h3 style={{ ...sectionHeading, fontSize: 16, marginTop: 8 }}>Detailed Reports</h3>
-                {Object.entries(analysisStore.reports).map(([agentName, content], idx) => {
-                  const display = AGENT_DISPLAY[agentName] || { icon: '\ud83d\udccb', label: agentName };
-                  return (
-                    <ReportSection
-                      key={agentName}
-                      icon={display.icon}
-                      title={display.label}
-                      content={content}
-                      defaultOpen={idx === 0}
-                    />
-                  );
-                })}
-              </div>
-            )}
 
             {/* Action buttons */}
             <div style={btnRowStyle}>
@@ -581,6 +577,17 @@ export default function NewAnalysis() {
               >
                 Save Report
               </button>
+              <button
+                style={{ ...saveBtnStyle, background: 'var(--surface2)', color: 'var(--text2)' }}
+                onClick={() => {
+                  // Keep ticker/market, reset analysis state, go to configure step
+                  analysisStore.reset();
+                  wizard.setWsUrl(null);
+                  wizard.setStep(2);
+                }}
+              >
+                Re-analyze
+              </button>
               {analysisStore.recommendation?.toUpperCase() === 'HOLD' ? (
                 <button
                   style={tradeBtnDisabledStyle}
@@ -597,17 +604,26 @@ export default function NewAnalysis() {
                   💰 Execute Trade
                 </button>
               )}
-              <button
-                style={newAnalysisBtnStyle}
-                onClick={() => {
-                  analysisStore.reset();
-                  wizard.reset();
-                  setStartError(null);
-                }}
-              >
-                New Analysis
-              </button>
             </div>
+
+            {/* Detailed Agent Reports */}
+            {Object.keys(analysisStore.reports).length > 0 && (
+              <div style={reportListStyle}>
+                <h3 style={{ ...sectionHeading, fontSize: 16, marginTop: 8 }}>Detailed Reports</h3>
+                {Object.entries(analysisStore.reports).map(([agentName, content], idx) => {
+                  const display = AGENT_DISPLAY[agentName] || { icon: '\ud83d\udccb', label: agentName };
+                  return (
+                    <ReportSection
+                      key={agentName}
+                      icon={display.icon}
+                      title={display.label}
+                      content={content}
+                      defaultOpen={idx === 0}
+                    />
+                  );
+                })}
+              </div>
+            )}
 
             {/* Trade Modal */}
             <TradeModal

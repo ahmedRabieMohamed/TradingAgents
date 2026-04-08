@@ -61,6 +61,33 @@ class PriceHistoryResponse(BaseModel):
     bars: list[OHLCBar]
 
 
+# --- Watchlist ---
+
+
+class WatchlistItemCreate(BaseModel):
+    ticker: str = Field(..., min_length=1, max_length=10)
+    market_id: str
+    name: str = ""
+
+
+class WatchlistItemResponse(BaseModel):
+    id: str
+    ticker: str
+    market_id: str
+    name: str
+    added_at: datetime
+    notes: str
+    price: Optional[float] = None
+    change_pct: Optional[float] = None
+    currency: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+
+class WatchlistResponse(BaseModel):
+    items: list[WatchlistItemResponse]
+
+
 # --- Analysis ---
 
 
@@ -103,6 +130,8 @@ class AnalysisSessionResponse(BaseModel):
     reports_path: str
     stock_name: str
     stock_price_at_analysis: Optional[float] = None
+    notes: str = ""
+    tags: list[str] = []
     reports: list["AgentReportSchema"] = Field(default=[], validation_alias="agent_reports")
     simulation: Optional["SimulationResultSchema"] = Field(default=None, validation_alias="simulation_result")
 
@@ -128,6 +157,8 @@ class AnalysisListItem(BaseModel):
     confidence: Optional[float] = None
     stock_name: str
     stock_price_at_analysis: Optional[float] = None
+    notes: str = ""
+    tags: list[str] = []
     simulation: Optional[SimulationSummary] = None
 
     model_config = {"from_attributes": True}

@@ -105,10 +105,12 @@ interface NavItem {
 }
 
 const marketItems: NavItem[] = [
-  { to: '/', icon: '📊', label: 'New Analysis' },
+  { to: '/', icon: '🏠', label: 'Dashboard' },
+  { to: '/analysis', icon: '📊', label: 'New Analysis' },
 ];
 
 const analysisItems: NavItem[] = [
+  { to: '/watchlist', icon: '⭐', label: 'Watchlist' },
   { to: '/history', icon: '📋', label: 'History' },
   { to: '/portfolio', icon: '💰', label: 'Portfolio' },
   { to: '/performance', icon: '📈', label: 'Performance' },
@@ -187,7 +189,7 @@ function renderNavItem(item: NavItem, badge?: number) {
     <NavLink
       key={item.to}
       to={item.to}
-      end={item.to === '/'}
+      end
       style={({ isActive }) => (isActive ? navItemActive : navItemBase)}
     >
       <span style={{ fontSize: 16, width: 20, textAlign: 'center' }}>{item.icon}</span>

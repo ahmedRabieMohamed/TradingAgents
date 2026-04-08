@@ -295,3 +295,26 @@ async def delete_analysis(
     await db.delete(session)
     await db.commit()
     return {"detail": "Analysis deleted", "session_id": session_id}
+
+
+@router.patch("/{session_id}/notes")
+async def update_analysis_notes(
+    session_id: str,
+    body: dict,
+    db: AsyncSession = Depends(get_db),
+):
+    """Update notes and/or tags on an analysis session."""
+    result = await db.execute(
+        select(AnalysisSession).where(AnalysisSession.id == session_id)
+    )
+    session = result.scalar_one_or_none()
+    if session is None:
+        raise HTTPException(status_code=404, detail="Analysis session not found")
+
+    if "notes" in body:
+        session.notes = str(body["notes"])
+    if "tags" in body:
+        session.tags = list(body["tags"])
+
+    await db.commit()
+    return {"session_id": session_id, "notes": session.notes, "tags": session.tags}

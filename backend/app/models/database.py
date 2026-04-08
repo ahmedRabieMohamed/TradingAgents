@@ -57,6 +57,8 @@ class AnalysisSession(Base):
     stock_price_at_analysis: Mapped[float | None] = mapped_column(
         Float, nullable=True
     )
+    notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
 
     # Relationships
     agent_reports: Mapped[list["AgentReport"]] = relationship(
@@ -173,6 +175,20 @@ class EquitySnapshot(Base):
     total_value: Mapped[float] = mapped_column(Float, nullable=False)
     cash_balance: Mapped[float] = mapped_column(Float, nullable=False)
     positions_value: Mapped[float] = mapped_column(Float, nullable=False)
+
+
+class WatchlistItem(Base):
+    __tablename__ = "watchlist_items"
+    __table_args__ = (UniqueConstraint("ticker", "market_id", name="uq_watchlist_ticker_market"),)
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=_generate_uuid
+    )
+    ticker: Mapped[str] = mapped_column(String(10), nullable=False)
+    market_id: Mapped[str] = mapped_column(String(20), nullable=False)
+    name: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=_utcnow)
+    notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
 
 
 class UserSettings(Base):

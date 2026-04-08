@@ -1,6 +1,8 @@
 import type {
   MarketsResponse,
   StockValidation,
+  WatchlistResponse,
+  WatchlistItem,
   AnalysisRequest,
   AnalysisCreateResponse,
   AnalysisSession,
@@ -78,6 +80,38 @@ export function validateStock(ticker: string, market: string): Promise<StockVali
   return get<StockValidation>(`/stocks/validate?ticker=${encodeURIComponent(ticker)}&market=${encodeURIComponent(market)}`);
 }
 
+// --- CSV Export ---
+
+export function downloadCsv(filename: string, headers: string[], rows: string[][]) {
+  const csvContent = [
+    headers.join(','),
+    ...rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')),
+  ].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// --- Watchlist ---
+
+export function getWatchlist(): Promise<WatchlistResponse> {
+  return get<WatchlistResponse>('/watchlist');
+}
+
+export function addToWatchlist(ticker: string, marketId: string, name: string): Promise<WatchlistItem> {
+  return post<WatchlistItem>('/watchlist', { ticker, market_id: marketId, name });
+}
+
+export function removeFromWatchlist(itemId: string): Promise<void> {
+  return del(`/watchlist/${itemId}`);
+}
+
+// --- Price History ---
+
 export function getPriceHistory(ticker: string, marketId: string, period: string = '3mo'): Promise<PriceHistoryResponse> {
   return get<PriceHistoryResponse>(
     `/stocks/price-history?ticker=${encodeURIComponent(ticker)}&market_id=${encodeURIComponent(marketId)}&period=${encodeURIComponent(period)}`
@@ -101,6 +135,10 @@ export function listAnalyses(params?: Record<string, string>): Promise<AnalysisL
 
 export function deleteAnalysis(sessionId: string): Promise<void> {
   return del(`/analysis/${sessionId}`);
+}
+
+export function updateAnalysisNotes(sessionId: string, notes?: string, tags?: string[]): Promise<{ notes: string; tags: string[] }> {
+  return patch<{ notes: string; tags: string[] }>(`/analysis/${sessionId}/notes`, { notes, tags });
 }
 
 export function exportAnalysis(sessionId: string): Promise<string> {
