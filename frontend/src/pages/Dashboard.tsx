@@ -127,13 +127,14 @@ export default function Dashboard() {
     Promise.all([
       getPortfolio().catch(() => null),
       getPerformance().catch(() => null),
-      listAnalyses({ limit: '5', sort: 'newest' }).catch(() => null),
+      listAnalyses({ limit: '5' }).catch(() => null),
     ]).then(([p, pf, an]) => {
       if (cancelled) return;
       if (p) setPortfolio(p);
       if (pf) setPerf(pf);
-      if (an) setRecent(an.items.slice(0, 5));
-      setLoading(false);
+      if (an && an.items) setRecent(an.items.slice(0, 5));
+    }).catch(() => {}).finally(() => {
+      if (!cancelled) setLoading(false);
     });
     return () => { cancelled = true; };
   }, []);

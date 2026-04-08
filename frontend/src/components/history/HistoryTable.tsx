@@ -1,9 +1,11 @@
 import { CSSProperties, useState } from 'react';
 import type { AnalysisListItem } from '../../types';
+import { simulateAnalysis } from '../../services/api';
 
 interface HistoryTableProps {
   items: AnalysisListItem[];
   onView: (id: string) => void;
+  onRefresh: () => void;
   selectedIds: string[];
   onToggleSelect: (id: string) => void;
 }
@@ -104,22 +106,51 @@ function formatConfidence(conf: number | null): string {
   return `${Math.round(conf)}%`;
 }
 
+const simBtn: CSSProperties = {
+  padding: '4px 12px',
+  borderRadius: 6,
+  fontSize: 12,
+  fontWeight: 500,
+  border: '1px solid rgba(139, 92, 246, 0.3)',
+  background: 'rgba(139, 92, 246, 0.1)',
+  color: 'var(--accent2)',
+  cursor: 'pointer',
+  transition: 'all 0.12s ease',
+  marginLeft: 4,
+};
+
 function HoverRow({
   item,
   onView,
+  onRefresh,
   selected,
   onToggleSelect,
 }: {
   item: AnalysisListItem;
   onView: (id: string) => void;
+  onRefresh: () => void;
   selected: boolean;
   onToggleSelect: (id: string) => void;
 }) {
   const [hovered, setHovered] = useState(false);
+  const [simulating, setSimulating] = useState(false);
   const td = tdStyle(hovered);
 
   const returnPct = item.simulation?.return_pct;
   const hasReturn = returnPct !== undefined && returnPct !== null;
+  const canSimulate = item.status === 'completed' && !item.simulation && item.recommendation;
+
+  async function handleSimulate() {
+    setSimulating(true);
+    try {
+      await simulateAnalysis(item.id);
+      onRefresh();
+    } catch {
+      // Silently fail — likely horizon hasn't elapsed yet
+    } finally {
+      setSimulating(false);
+    }
+  }
 
   return (
     <tr
@@ -154,6 +185,14 @@ function HoverRow({
           <span style={{ color: returnPct >= 0 ? '#10b981' : '#ef4444', fontWeight: 600 }}>
             {returnPct >= 0 ? '+' : ''}{returnPct.toFixed(2)}%
           </span>
+        ) : canSimulate ? (
+          <button
+            style={simBtn}
+            onClick={(e) => { e.stopPropagation(); handleSimulate(); }}
+            disabled={simulating}
+          >
+            {simulating ? '...' : 'Simulate'}
+          </button>
         ) : (
           <span style={{ color: 'var(--text3)' }}>--</span>
         )}
@@ -167,7 +206,7 @@ function HoverRow({
   );
 }
 
-export default function HistoryTable({ items, onView, selectedIds, onToggleSelect }: HistoryTableProps) {
+export default function HistoryTable({ items, onView, onRefresh, selectedIds, onToggleSelect }: HistoryTableProps) {
   if (items.length === 0) {
     return <div style={emptyStyle}>No analyses found. Run your first analysis to see it here.</div>;
   }
@@ -194,6 +233,7 @@ export default function HistoryTable({ items, onView, selectedIds, onToggleSelec
               key={item.id}
               item={item}
               onView={onView}
+              onRefresh={onRefresh}
               selected={selectedIds.includes(item.id)}
               onToggleSelect={onToggleSelect}
             />
