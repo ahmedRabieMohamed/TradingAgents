@@ -11,6 +11,7 @@ const cardStyle: CSSProperties = {
   border: '1px solid var(--border)',
   borderRadius: 'var(--radius-md)',
   overflow: 'hidden',
+  boxShadow: 'var(--shadow-sm)',
 };
 
 const tableStyle: CSSProperties = {
@@ -185,7 +186,7 @@ export default function WatchlistPage() {
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.id}>
+                  <tr key={item.id} className="hover-row">
                     <td style={{ ...tdStyle, fontWeight: 700 }}>{item.ticker}</td>
                     <td style={{ ...tdStyle, color: 'var(--text2)' }}>{item.name || '—'}</td>
                     <td style={tdStyle}>{item.market_id === 'egypt' ? 'EGX' : 'US'}</td>

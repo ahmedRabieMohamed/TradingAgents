@@ -192,7 +192,7 @@ export default function PositionsTable({ positions, onRefresh }: PositionsTableP
         </thead>
         <tbody>
           {positions.map((pos) => (
-            <tr key={pos.id} style={{ transition: 'background 0.15s' }}>
+            <tr key={pos.id} className="hover-row">
               <td style={{ ...tdStyle, fontWeight: 700, color: 'var(--text)' }}>{pos.ticker}</td>
               <td style={tdStyle}><span style={marketTag}>{pos.market_id}</span></td>
               <td style={tdStyle}><span style={dirBadge(pos.direction)}>{pos.direction.toUpperCase()}</span></td>

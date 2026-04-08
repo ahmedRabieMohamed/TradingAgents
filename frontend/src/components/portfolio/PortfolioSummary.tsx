@@ -31,6 +31,7 @@ export default function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
     border: `1.5px solid ${pnlColor(portfolio.total_pnl)}33`,
     borderRadius: 'var(--radius-lg)',
     padding: '28px 24px',
+    boxShadow: 'var(--shadow-sm)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

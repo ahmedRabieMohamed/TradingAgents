@@ -11,6 +11,7 @@ const topbarStyle: CSSProperties = {
   top: 0,
   background: 'var(--surface)',
   borderBottom: '1px solid var(--border)',
+  boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

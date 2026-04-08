@@ -190,6 +190,7 @@ function renderNavItem(item: NavItem, badge?: number) {
       key={item.to}
       to={item.to}
       end
+      className="nav-item"
       style={({ isActive }) => (isActive ? navItemActive : navItemBase)}
     >
       <span style={{ fontSize: 16, width: 20, textAlign: 'center' }}>{item.icon}</span>

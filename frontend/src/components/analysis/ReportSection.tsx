@@ -1,4 +1,6 @@
 import { useState, CSSProperties } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ReportSectionProps {
   title: string;
@@ -19,8 +21,6 @@ const headerStyle: CSSProperties = {
   transition: 'background 0.15s',
 };
 
-const headerHoverBg = 'var(--surface3, #2a2a3a)';
-
 const titleStyle: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
@@ -32,25 +32,16 @@ const titleStyle: CSSProperties = {
 
 const bodyStyle: CSSProperties = {
   padding: '16px 18px',
-  background: 'var(--surface1)',
+  background: 'var(--surface)',
   borderRadius: '0 0 var(--radius-sm) var(--radius-sm)',
   borderTop: '1px solid var(--border)',
-};
-
-const preStyle: CSSProperties = {
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-word',
-  fontFamily: 'inherit',
-  fontSize: 13,
-  lineHeight: 1.7,
-  color: 'var(--text2)',
-  margin: 0,
 };
 
 const containerStyle: CSSProperties = {
   border: '1px solid var(--border)',
   borderRadius: 'var(--radius-sm)',
   overflow: 'hidden',
+  boxShadow: 'var(--shadow-sm)',
 };
 
 export default function ReportSection({ title, icon, content, defaultOpen = false }: ReportSectionProps) {
@@ -62,7 +53,7 @@ export default function ReportSection({ title, icon, content, defaultOpen = fals
       <div
         style={{
           ...headerStyle,
-          ...(hovered ? { background: headerHoverBg } : {}),
+          ...(hovered ? { background: 'rgba(59, 130, 246, 0.08)' } : {}),
           ...(open ? { borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0' } : {}),
         }}
         onClick={() => setOpen(!open)}
@@ -87,7 +78,9 @@ export default function ReportSection({ title, icon, content, defaultOpen = fals
       </div>
       {open && (
         <div style={bodyStyle}>
-          <pre style={preStyle}>{content}</pre>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
+            {content}
+          </ReactMarkdown>
         </div>
       )}
     </div>

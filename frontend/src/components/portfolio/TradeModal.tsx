@@ -35,6 +35,7 @@ const cardStyle: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   gap: 16,
+  boxShadow: 'var(--shadow-md)',
 };
 
 const headerStyle: CSSProperties = {

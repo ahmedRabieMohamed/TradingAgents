@@ -40,6 +40,7 @@ export default function ResultHero({
     border: `1.5px solid ${color}33`,
     borderRadius: 'var(--radius-lg)',
     padding: '40px 24px',
+    boxShadow: 'var(--shadow-sm)',
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',

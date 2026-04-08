@@ -154,6 +154,7 @@ function HoverRow({
 
   return (
     <tr
+      className="hover-row"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ cursor: 'pointer' }}

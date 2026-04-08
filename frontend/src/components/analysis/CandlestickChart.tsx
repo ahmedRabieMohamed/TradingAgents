@@ -24,6 +24,7 @@ const containerStyle: CSSProperties = {
   borderRadius: 'var(--radius-md)',
   padding: 16,
   marginTop: 16,
+  boxShadow: 'var(--shadow-sm)',
 };
 
 const headerStyle: CSSProperties = {

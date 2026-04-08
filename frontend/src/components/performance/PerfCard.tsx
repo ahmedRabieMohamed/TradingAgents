@@ -11,6 +11,7 @@ const cardStyle: CSSProperties = {
   border: '1px solid var(--border)',
   borderRadius: 'var(--radius-lg)',
   padding: '24px 20px',
+  boxShadow: 'var(--shadow-sm)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

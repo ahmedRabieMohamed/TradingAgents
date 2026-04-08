@@ -23,6 +23,7 @@ const cardStyle: CSSProperties = {
   border: '1px solid var(--border)',
   borderRadius: 'var(--radius-md)',
   padding: 20,
+  boxShadow: 'var(--shadow-sm)',
 };
 
 const cardLabel: CSSProperties = {
@@ -143,9 +144,26 @@ export default function Dashboard() {
     return (
       <>
         <Topbar title="Dashboard" />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 8, color: 'var(--text3)' }}>
-          <span className="spinner" />
-          Loading dashboard...
+        <div style={pageStyle}>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+            <div className="skeleton" style={{ width: 140, height: 38, borderRadius: 'var(--radius-sm)' }} />
+            <div className="skeleton" style={{ width: 120, height: 38, borderRadius: 'var(--radius-sm)' }} />
+          </div>
+          <div style={gridStyle}>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} style={{ ...cardStyle, padding: 0 }}>
+                <div style={{ padding: 20 }}>
+                  <div className="skeleton" style={{ width: 80, height: 12, marginBottom: 12 }} />
+                  <div className="skeleton" style={{ width: 120, height: 28, marginBottom: 8 }} />
+                  <div className="skeleton" style={{ width: 100, height: 12 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="skeleton" style={{ width: 160, height: 16, marginBottom: 12 }} />
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="skeleton" style={{ height: 44, marginBottom: 2 }} />
+          ))}
         </div>
       </>
     );
@@ -228,7 +246,7 @@ export default function Dashboard() {
                 </thead>
                 <tbody>
                   {portfolio.open_positions.map((pos) => (
-                    <tr key={pos.id}>
+                    <tr key={pos.id} className="hover-row">
                       <td style={{ ...tdStyle, fontWeight: 600 }}>{pos.ticker}</td>
                       <td style={tdStyle}>
                         <span style={{ color: pos.direction === 'long' ? 'var(--green)' : 'var(--red)' }}>
@@ -278,6 +296,7 @@ export default function Dashboard() {
                   {recent.map((a) => (
                     <tr
                       key={a.id}
+                      className="hover-row"
                       style={{ cursor: 'pointer' }}
                       onClick={() => navigate(`/analysis?session=${a.id}`)}
                     >

@@ -1,4 +1,6 @@
 import { CSSProperties } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import type { AnalysisSession } from '../../types';
 
 interface CompareModalProps {
@@ -26,6 +28,7 @@ const modalStyle: CSSProperties = {
   maxHeight: '85vh',
   overflow: 'auto',
   padding: 24,
+  boxShadow: 'var(--shadow-md)',
 };
 
 const headerStyle: CSSProperties = {
@@ -109,7 +112,6 @@ const reportPreview: CSSProperties = {
   background: 'var(--bg)',
   borderRadius: 'var(--radius-sm)',
   border: '1px solid var(--border)',
-  whiteSpace: 'pre-wrap',
 };
 
 function recColor(rec: string | null): string {
@@ -177,7 +179,9 @@ function SessionColumn({ session }: { session: AnalysisSession }) {
                 {r.agent_name}
               </div>
               <div style={reportPreview}>
-                {r.content.slice(0, 400)}{r.content.length > 400 ? '...' : ''}
+                <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
+                  {r.content.slice(0, 600)}
+                </ReactMarkdown>
               </div>
             </div>
           ))}
