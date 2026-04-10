@@ -1,4 +1,5 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { getTradeHistory } from '../../services/api';
 import type { TradeHistoryItem } from '../../types';
 

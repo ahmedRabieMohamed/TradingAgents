@@ -1,0 +1,42 @@
+{
+  "title": "Portfolio",
+  "summary": {
+    "totalValue": "Total Value",
+    "totalPnl": "Total P&L",
+    "winRate": "Win Rate",
+    "openPositions": "Open Positions",
+    "cashBalance": "Cash Balance"
+  },
+  "positions": {
+    "title": "Positions",
+    "ticker": "Ticker",
+    "side": "Side",
+    "quantity": "Quantity",
+    "entryPrice": "Entry Price",
+    "currentPrice": "Current Price",
+    "pnl": "P&L",
+    "status": "Status",
+    "long": "Long",
+    "short": "Short",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "trades": {
+    "title": "Trade History",
+    "date": "Date",
+    "ticker": "Ticker",
+    "action": "Action",
+    "quantity": "Quantity",
+    "price": "Price",
+    "total": "Total"
+  },
+  "simulation": {
+    "title": "Simulate Trade",
+    "positionSize": "Position Size",
+    "entryPrice": "Entry Price",
+    "stopLoss": "Stop Loss",
+    "takeProfit": "Take Profit"
+  },
+  "empty": "No positions yet. Run an analysis and simulate a trade!",
+  "equityCurve": "Equity Curve"
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Performance",
+  "metrics": {
+    "totalTrades": "Total Trades",
+    "winRate": "Win Rate",
+    "avgReturn": "Avg Return",
+    "bestTrade": "Best Trade",
+    "worstTrade": "Worst Trade",
+    "sharpeRatio": "Sharpe Ratio"
+  },
+  "comparison": {
+    "title": "Market Comparison",
+    "vsMarket": "vs Market",
+    "alpha": "Alpha",
+    "beta": "Beta"
+  },
+  "simulations": {
+    "title": "Simulation Results",
+    "ticker": "Ticker",
+    "entryDate": "Entry Date",
+    "exitDate": "Exit Date",
+    "return": "Return",
+    "status": "Status"
+  },
+  "empty": "No performance data yet. Complete some analyses first!"
+}

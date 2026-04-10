@@ -1,0 +1,55 @@
+{
+  "title": "تحليل جديد",
+  "steps": {
+    "market": "اختر السوق",
+    "stock": "اختر السهم",
+    "configure": "إعدادات",
+    "analyze": "تحليل",
+    "results": "النتائج"
+  },
+  "market": {
+    "selectMarket": "اختر السوق",
+    "usMarket": "السوق الأمريكي",
+    "egyptMarket": "البورصة المصرية"
+  },
+  "stock": {
+    "enterTicker": "أدخل رمز السهم",
+    "searchPlaceholder": "ابحث بالرمز أو الاسم...",
+    "price": "السعر",
+    "change": "التغيير",
+    "customTicker": "استخدام رمز مخصص"
+  },
+  "config": {
+    "tradeHorizon": "أفق التداول",
+    "analysisDate": "تاريخ التحليل",
+    "researchDepth": "عمق البحث",
+    "analysts": "المحللون",
+    "llmProvider": "مزود النموذج",
+    "quickThinkModel": "نموذج التفكير السريع",
+    "deepThinkModel": "نموذج التفكير العميق"
+  },
+  "progress": {
+    "analyzing": "جارٍ التحليل",
+    "stage": "المرحلة",
+    "messages": "الرسائل",
+    "tokensUsed": "الرموز المستخدمة",
+    "apiCalls": "طلبات API"
+  },
+  "results": {
+    "recommendation": "التوصية",
+    "confidence": "مستوى الثقة",
+    "summary": "الملخص",
+    "reports": "التقارير التفصيلية",
+    "noRecommendation": "هذا التحليل لا يحتوي على توصية — ربما فشل أو تم إلغاؤه."
+  },
+  "agents": {
+    "marketAnalyst": "محلل السوق",
+    "fundamentalsAnalyst": "محلل الأساسيات",
+    "sentimentAnalyst": "محلل المشاعر",
+    "newsAnalyst": "محلل الأخبار",
+    "technicalAnalyst": "المحلل الفني",
+    "riskManager": "مدير المخاطر",
+    "portfolioManager": "مدير المحفظة",
+    "researcher": "الباحث"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "newAnalysis": "New Analysis",
+    "history": "History",
+    "performance": "Performance",
+    "watchlist": "Watchlist",
+    "portfolio": "Portfolio",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "refresh": "Refresh",
+    "add": "Add",
+    "remove": "Remove",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "retry": "Retry",
+    "viewDetails": "View Details",
+    "startAnalysis": "Start Analysis",
+    "reAnalyze": "Re-analyze",
+    "compare": "Compare",
+    "startNewAnalysis": "Start New Analysis"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "pending": "Pending",
+    "running": "Running",
+    "completed": "Completed",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "noData": "No data available",
+    "empty": "Nothing here yet"
+  },
+  "market": {
+    "us": "US Market",
+    "egypt": "Egypt (EGX)",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "recommendation": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "hold": "Hold"
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "shortTerm": "Short Term",
+    "mediumTerm": "Medium Term",
+    "longTerm": "Long Term"
+  },
+  "language": {
+    "en": "English",
+    "ar": "العربية",
+    "switchLanguage": "Language"
+  },
+  "app": {
+    "title": "TradingAgents",
+    "subtitle": "AI-Powered Trading Analysis"
+  }
+}

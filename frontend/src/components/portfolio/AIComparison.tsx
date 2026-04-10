@@ -1,4 +1,5 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { getAIComparison } from '../../services/api';
 import type { AIComparisonResponse } from '../../types';
 

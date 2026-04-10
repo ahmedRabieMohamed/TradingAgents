@@ -1,4 +1,5 @@
-import { useState, CSSProperties } from 'react';
+import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import { useMarketOverview } from '../../hooks/useMarketOverview';
 import IndexBar from './IndexBar';
 import MarketSummaryBar from './MarketSummaryBar';

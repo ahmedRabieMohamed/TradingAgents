@@ -1,4 +1,5 @@
-import { useState, useMemo, CSSProperties } from 'react';
+import { useState, useMemo } from 'react';
+import type { CSSProperties } from 'react';
 import { marked } from 'marked';
 
 // Configure marked for GFM tables and breaks

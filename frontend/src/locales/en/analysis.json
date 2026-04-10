@@ -1,0 +1,55 @@
+{
+  "title": "New Analysis",
+  "steps": {
+    "market": "Select Market",
+    "stock": "Choose Stock",
+    "configure": "Configure",
+    "analyze": "Analyze",
+    "results": "Results"
+  },
+  "market": {
+    "selectMarket": "Select Market",
+    "usMarket": "US Market",
+    "egyptMarket": "Egypt (EGX)"
+  },
+  "stock": {
+    "enterTicker": "Enter stock ticker",
+    "searchPlaceholder": "Search by ticker or name...",
+    "price": "Price",
+    "change": "Change",
+    "customTicker": "Use custom ticker"
+  },
+  "config": {
+    "tradeHorizon": "Trade Horizon",
+    "analysisDate": "Analysis Date",
+    "researchDepth": "Research Depth",
+    "analysts": "Analysts",
+    "llmProvider": "LLM Provider",
+    "quickThinkModel": "Quick Think Model",
+    "deepThinkModel": "Deep Think Model"
+  },
+  "progress": {
+    "analyzing": "Analyzing",
+    "stage": "Stage",
+    "messages": "Messages",
+    "tokensUsed": "Tokens Used",
+    "apiCalls": "API Calls"
+  },
+  "results": {
+    "recommendation": "Recommendation",
+    "confidence": "Confidence",
+    "summary": "Summary",
+    "reports": "Detailed Reports",
+    "noRecommendation": "This analysis has no recommendation — it may have failed or been cancelled."
+  },
+  "agents": {
+    "marketAnalyst": "Market Analyst",
+    "fundamentalsAnalyst": "Fundamentals Analyst",
+    "sentimentAnalyst": "Sentiment Analyst",
+    "newsAnalyst": "News Analyst",
+    "technicalAnalyst": "Technical Analyst",
+    "riskManager": "Risk Manager",
+    "portfolioManager": "Portfolio Manager",
+    "researcher": "Researcher"
+  }
+}

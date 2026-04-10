@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, CSSProperties } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import type { CSSProperties } from 'react';
 import { fetchMarketNews } from '../../services/api';
 import type { NewsArticle } from '../../types';
 

@@ -1,4 +1,5 @@
-import { useState, useMemo, CSSProperties } from 'react';
+import { useState, useMemo } from 'react';
+import type { CSSProperties } from 'react';
 import type { StockSnapshot } from '../../types';
 
 interface StockTableProps {

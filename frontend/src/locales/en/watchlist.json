@@ -1,0 +1,16 @@
+{
+  "title": "Watchlist",
+  "addTicker": "Add to Watchlist",
+  "tickerPlaceholder": "Enter ticker symbol",
+  "table": {
+    "ticker": "Ticker",
+    "name": "Name",
+    "price": "Price",
+    "change": "Change",
+    "market": "Market",
+    "addedDate": "Added",
+    "actions": "Actions"
+  },
+  "empty": "Your watchlist is empty. Add stocks to track!",
+  "removeConfirm": "Remove from watchlist?"
+}

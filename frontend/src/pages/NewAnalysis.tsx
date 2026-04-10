@@ -1,5 +1,14 @@
-import { useState, useCallback, useEffect, CSSProperties } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Steps, Button, Typography, Space, Spin, Alert, Empty } from 'antd';
+import {
+  ArrowLeftOutlined,
+  DownloadOutlined,
+  ReloadOutlined,
+  DollarOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import Topbar from '../components/layout/Topbar';
 import MarketSelector from '../components/analysis/MarketSelector';
 import TickerInput from '../components/analysis/TickerInput';
@@ -16,7 +25,7 @@ import { useWizardStore } from '../stores/wizardStore';
 import { createAnalysis, getAnalysis } from '../services/api';
 import type { StockValidation, AnalysisRequest, WSEvent } from '../types';
 
-const STEPS = ['Market', 'Overview', 'Configure', 'Analyze', 'Results'] as const;
+const { Title, Text, Paragraph } = Typography;
 
 const AGENT_DISPLAY: Record<string, { icon: string; label: string }> = {
   market_analyst:        { icon: '\ud83d\udcca', label: 'Market Analysis' },
@@ -38,161 +47,8 @@ const AGENT_DISPLAY: Record<string, { icon: string; label: string }> = {
   'Portfolio Manager':   { icon: '\ud83d\udcbc', label: 'Portfolio Decision' },
 };
 
-const pageStyle: CSSProperties = {
-  padding: 24,
-  maxWidth: 800,
-};
-
-// --- Step Indicator ---
-
-const indicatorBar: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 0,
-  marginBottom: 32,
-};
-
-function stepCircleStyle(state: 'done' | 'active' | 'pending'): CSSProperties {
-  const bg =
-    state === 'done'
-      ? 'var(--green)'
-      : state === 'active'
-        ? 'var(--accent)'
-        : 'var(--surface2)';
-  const color =
-    state === 'pending' ? 'var(--text3)' : '#fff';
-  return {
-    width: 28,
-    height: 28,
-    borderRadius: '50%',
-    background: bg,
-    color,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 12,
-    fontWeight: 700,
-    flexShrink: 0,
-  };
-}
-
-function stepLabelStyle(state: 'done' | 'active' | 'pending'): CSSProperties {
-  return {
-    fontSize: 12,
-    fontWeight: state === 'active' ? 600 : 400,
-    color:
-      state === 'done'
-        ? 'var(--green)'
-        : state === 'active'
-          ? 'var(--accent)'
-          : 'var(--text3)',
-    marginLeft: 6,
-    whiteSpace: 'nowrap',
-  };
-}
-
-const connectorStyle = (done: boolean): CSSProperties => ({
-  flex: 1,
-  height: 2,
-  background: done ? 'var(--green)' : 'var(--border)',
-  margin: '0 8px',
-  minWidth: 20,
-});
-
-// --- Section heading & back button ---
-
-const sectionHeading: CSSProperties = {
-  fontSize: 18,
-  fontWeight: 600,
-  color: 'var(--text)',
-  marginBottom: 6,
-};
-
-const sectionSub: CSSProperties = {
-  fontSize: 13,
-  color: 'var(--text3)',
-  marginBottom: 20,
-};
-
-const backBtn: CSSProperties = {
-  padding: '6px 14px',
-  background: 'transparent',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-sm)',
-  color: 'var(--text2)',
-  fontSize: 12,
-  cursor: 'pointer',
-  marginBottom: 20,
-};
-
-const saveBtnStyle: CSSProperties = {
-  padding: '10px 24px',
-  borderRadius: 'var(--radius-sm)',
-  border: 'none',
-  background: 'var(--accent)',
-  color: '#fff',
-  fontSize: 14,
-  fontWeight: 600,
-  cursor: 'pointer',
-  marginTop: 16,
-};
-
-const newAnalysisBtnStyle: CSSProperties = {
-  padding: '10px 24px',
-  borderRadius: 'var(--radius-sm)',
-  border: '1px solid var(--border)',
-  background: 'transparent',
-  color: 'var(--text2)',
-  fontSize: 14,
-  fontWeight: 600,
-  cursor: 'pointer',
-  marginTop: 16,
-};
-
-const reportListStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 12,
-  marginTop: 24,
-};
-
-const tradeBtnStyle: CSSProperties = {
-  padding: '10px 24px',
-  borderRadius: 'var(--radius-sm)',
-  border: 'none',
-  background: '#22c55e',
-  color: '#fff',
-  fontSize: 14,
-  fontWeight: 600,
-  cursor: 'pointer',
-  marginTop: 16,
-};
-
-const tradeBtnDisabledStyle: CSSProperties = {
-  ...tradeBtnStyle,
-  background: 'var(--surface2)',
-  color: 'var(--text3)',
-  cursor: 'not-allowed',
-  opacity: 0.6,
-};
-
-const btnRowStyle: CSSProperties = {
-  display: 'flex',
-  gap: 12,
-  marginTop: 20,
-};
-
-const errorBox: CSSProperties = {
-  padding: 12,
-  background: 'rgba(239, 68, 68, 0.1)',
-  border: '1px solid rgba(239, 68, 68, 0.3)',
-  borderRadius: 'var(--radius-sm)',
-  color: '#ef4444',
-  fontSize: 13,
-  marginBottom: 16,
-};
-
 export default function NewAnalysis() {
+  const { t } = useTranslation(['analysis', 'common']);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Persisted wizard state (survives navigation)
@@ -218,7 +74,6 @@ export default function NewAnalysis() {
     if (step === 3 && analysisStore.status === 'completed') {
       wizard.setStep(4);
     }
-    // If analysis failed while away, stay on step 3 (shows error state)
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load past analysis when ?session= is in the URL
@@ -232,7 +87,6 @@ export default function NewAnalysis() {
         analysisStore.reset();
         analysisStore.setSession(session.id);
 
-        // Populate store with the completed session data
         if (session.recommendation) {
           analysisStore.handleEvent({
             type: 'analysis_completed',
@@ -243,7 +97,6 @@ export default function NewAnalysis() {
           });
         }
 
-        // Load reports into the store
         for (const report of session.reports || []) {
           analysisStore.handleEvent({
             type: 'agent_completed',
@@ -260,19 +113,18 @@ export default function NewAnalysis() {
           valid: true,
           ticker: session.ticker,
           name: session.stock_name,
-          price: session.stock_price_at_analysis ?? 0,
+          price: (session as any).stock_price_at_analysis ?? 0,
           currency: session.market_id === 'egypt' ? 'EGP' : 'USD',
           change_pct: 0,
           market_id: session.market_id,
         });
         wizard.setTradeHorizon(session.trade_horizon);
         wizard.setAnalysisDate(session.analysis_date);
-        wizard.setStep(4); // Go to results step
-        setSearchParams({}, { replace: true }); // Clear query param
+        wizard.setStep(4);
+        setSearchParams({}, { replace: true });
       })
       .catch((err) => {
         console.error('Failed to load session:', err);
-        // On failure, reset to step 0 so user isn't stuck on blank screen
         wizard.reset();
       })
       .finally(() => {
@@ -283,23 +135,15 @@ export default function NewAnalysis() {
   const handleEvent = useCallback(
     (event: WSEvent) => {
       analysisStore.handleEvent(event);
-
       if (event.type === 'analysis_completed') {
         wizard.setStep(4);
       }
     },
-    // handleEvent and setStep are stable from zustand, safe to depend on
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   const { connected } = useWebSocket(wsUrl, handleEvent);
-
-  function getStepState(index: number): 'done' | 'active' | 'pending' {
-    if (index < step) return 'done';
-    if (index === step) return 'active';
-    return 'pending';
-  }
 
   function handleMarketSelect(marketId: string) {
     wizard.setSelectedMarket(marketId);
@@ -315,7 +159,6 @@ export default function NewAnalysis() {
 
   function handleOverviewStockSelect(ticker: string, name: string) {
     if (!selectedMarket) return;
-    // Create a StockValidation-compatible object from the overview selection
     const stock: StockValidation = {
       valid: true,
       ticker,
@@ -352,11 +195,9 @@ export default function NewAnalysis() {
 
       const response = await createAnalysis(fullConfig);
 
-      // Initialize store
       analysisStore.reset();
       analysisStore.setSession(response.session_id);
 
-      // Connect WebSocket
       const wsBase = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const wsHost = 'localhost:8000';
       wizard.setWsUrl(`${wsBase}//${wsHost}/api/analysis/ws/${response.session_id}`);
@@ -371,25 +212,17 @@ export default function NewAnalysis() {
   }
 
   function goBack() {
-    if (step === 3 || step === 4) {
-      // Don't allow going back during or after analysis
-      return;
-    }
-    if (step === 1) {
-      wizard.setShowCustomTicker(false);
-    }
-    if (step > 0) {
-      wizard.setStep(step - 1);
-    }
+    if (step === 3 || step === 4) return;
+    if (step === 1) wizard.setShowCustomTicker(false);
+    if (step > 0) wizard.setStep(step - 1);
   }
 
   if (loadingSession) {
     return (
       <>
-        <Topbar title="Loading Analysis..." />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 12, color: 'var(--text3)' }}>
-          <span className="spinner" />
-          <span>Loading analysis...</span>
+        <Topbar title={t('common:status.loading')} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+          <Spin size="large" tip={t('common:status.loading')} />
         </div>
       </>
     );
@@ -397,38 +230,39 @@ export default function NewAnalysis() {
 
   return (
     <>
-      <Topbar title="New Analysis" />
-      <div style={pageStyle}>
+      <Topbar title={t('title')} />
+      <div style={{ padding: 24, maxWidth: 800 }}>
         {/* Step indicator */}
-        <div style={indicatorBar}>
-          {STEPS.map((label, i) => {
-            const state = getStepState(i);
-            return (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', flex: i < STEPS.length - 1 ? 1 : undefined }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={stepCircleStyle(state)}>
-                    {state === 'done' ? '\u2713' : i + 1}
-                  </div>
-                  <span style={stepLabelStyle(state)}>{label}</span>
-                </div>
-                {i < STEPS.length - 1 && <div style={connectorStyle(i < step)} />}
-              </div>
-            );
-          })}
-        </div>
+        <Steps
+          current={step}
+          size="small"
+          style={{ marginBottom: 32 }}
+          items={[
+            { title: t('steps.market') },
+            { title: t('steps.stock') },
+            { title: t('steps.configure') },
+            { title: t('steps.analyze') },
+            { title: t('steps.results') },
+          ]}
+        />
 
         {/* Back button (steps 1-2 only) */}
         {step > 0 && step < 3 && (
-          <button style={backBtn} onClick={goBack}>
-            &larr; Back
-          </button>
+          <Button
+            icon={<ArrowLeftOutlined />}
+            size="small"
+            onClick={goBack}
+            style={{ marginBottom: 20 }}
+          >
+            {t('common:actions.back')}
+          </Button>
         )}
 
         {/* Step 1: Market */}
         {step === 0 && (
           <>
-            <h2 style={sectionHeading}>Select Market</h2>
-            <p style={sectionSub}>Choose the market you want to analyze a stock from.</p>
+            <Title level={4}>{t('market.selectMarket')}</Title>
+            <Paragraph type="secondary">Choose the market you want to analyze a stock from.</Paragraph>
             <MarketSelector onSelect={handleMarketSelect} />
           </>
         )}
@@ -436,26 +270,19 @@ export default function NewAnalysis() {
         {/* Step 2: Market Overview */}
         {step === 1 && selectedMarket && (
           <>
-            <h2 style={sectionHeading}>Market Overview</h2>
-            <p style={sectionSub}>Browse stocks or select one to analyze.</p>
+            <Title level={4}>Market Overview</Title>
+            <Paragraph type="secondary">Browse stocks or select one to analyze.</Paragraph>
 
             {showCustomTicker ? (
               <>
-                <button
-                  style={{
-                    padding: '6px 14px',
-                    background: 'transparent',
-                    border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
-                    color: 'var(--text2)',
-                    fontSize: 12,
-                    cursor: 'pointer',
-                    marginBottom: 16,
-                  }}
+                <Button
+                  icon={<ArrowLeftOutlined />}
+                  size="small"
                   onClick={() => wizard.setShowCustomTicker(false)}
+                  style={{ marginBottom: 16 }}
                 >
-                  &larr; Back to overview
-                </button>
+                  {t('common:actions.back')}
+                </Button>
                 <TickerInput marketId={selectedMarket} onValidated={handleStockValidated} />
               </>
             ) : (
@@ -464,21 +291,13 @@ export default function NewAnalysis() {
                   marketId={selectedMarket}
                   onSelectStock={handleOverviewStockSelect}
                 />
-                <button
-                  style={{
-                    padding: '8px 0',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--accent)',
-                    fontSize: 13,
-                    cursor: 'pointer',
-                    marginTop: 16,
-                    textDecoration: 'underline',
-                  }}
+                <Button
+                  type="link"
                   onClick={() => wizard.setShowCustomTicker(true)}
+                  style={{ marginTop: 16, padding: 0 }}
                 >
                   Enter custom ticker
-                </button>
+                </Button>
               </>
             )}
           </>
@@ -487,25 +306,35 @@ export default function NewAnalysis() {
         {/* Step 3: Configure */}
         {step === 2 && selectedMarket && selectedStock && (
           <>
-            <h2 style={sectionHeading}>Configure Analysis</h2>
-            <p style={sectionSub}>
+            <Title level={4}>Configure Analysis</Title>
+            <Paragraph type="secondary">
               Set parameters for analyzing {selectedStock.name} ({selectedStock.ticker}).
-            </p>
+            </Paragraph>
             <CandlestickChart
               ticker={selectedStock.ticker}
               marketId={selectedMarket}
               currency={selectedStock.currency}
             />
-            {startError && <div style={errorBox}>{startError}</div>}
+            {startError && (
+              <Alert
+                type="error"
+                message={startError}
+                showIcon
+                closable
+                onClose={() => setStartError(null)}
+                style={{ marginBottom: 16 }}
+              />
+            )}
             <ConfigPanel
               ticker={selectedStock.ticker}
               marketId={selectedMarket}
               onStart={handleStartAnalysis}
             />
             {starting && (
-              <p style={{ fontSize: 13, color: 'var(--text3)', marginTop: 12 }}>
-                Starting analysis...
-              </p>
+              <Text type="secondary" style={{ display: 'block', marginTop: 12 }}>
+                <Spin size="small" style={{ marginInlineEnd: 8 }} />
+                {t('common:status.loading')}
+              </Text>
             )}
           </>
         )}
@@ -513,12 +342,12 @@ export default function NewAnalysis() {
         {/* Step 4: Analyze */}
         {step === 3 && (
           <>
-            <h2 style={sectionHeading}>Analyzing {selectedStock?.name}</h2>
-            <p style={sectionSub}>
+            <Title level={4}>Analyzing {selectedStock?.name}</Title>
+            <Paragraph type="secondary">
               {connected
                 ? 'Connected - receiving live updates from agents.'
                 : 'Connecting to analysis stream...'}
-            </p>
+            </Paragraph>
             <AnalysisProgress />
           </>
         )}
@@ -528,21 +357,21 @@ export default function NewAnalysis() {
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <h2 style={sectionHeading}>Analysis Complete</h2>
-                <p style={{ ...sectionSub, marginBottom: 0 }}>
+                <Title level={4} style={{ marginBottom: 4 }}>{t('results.recommendation')}</Title>
+                <Text type="secondary">
                   {analysisStore.summary || 'Your analysis has been completed successfully.'}
-                </p>
+                </Text>
               </div>
-              <button
-                style={newAnalysisBtnStyle}
+              <Button
+                icon={<PlusOutlined />}
                 onClick={() => {
                   analysisStore.reset();
                   wizard.reset();
                   setStartError(null);
                 }}
               >
-                + New Analysis
-              </button>
+                {t('title')}
+              </Button>
             </div>
 
             <ResultHero
@@ -555,9 +384,10 @@ export default function NewAnalysis() {
             />
 
             {/* Action buttons */}
-            <div style={btnRowStyle}>
-              <button
-                style={saveBtnStyle}
+            <Space style={{ marginTop: 20 }}>
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
                 onClick={async () => {
                   if (!analysisStore.sessionId) return;
                   try {
@@ -573,45 +403,41 @@ export default function NewAnalysis() {
                     a.click();
                     URL.revokeObjectURL(url);
                   } catch {
-                    // Silently fail - could add error toast later
+                    // Silently fail
                   }
                 }}
               >
-                Save Report
-              </button>
-              <button
-                style={{ ...saveBtnStyle, background: 'var(--surface2)', color: 'var(--text2)' }}
+                {t('common:actions.save')}
+              </Button>
+              <Button
+                icon={<ReloadOutlined />}
                 onClick={() => {
-                  // Keep ticker/market, reset analysis state, go to configure step
                   analysisStore.reset();
                   wizard.setWsUrl(null);
                   wizard.setStep(2);
                 }}
               >
-                Re-analyze
-              </button>
-              {analysisStore.recommendation?.toUpperCase() === 'HOLD' ? (
-                <button
-                  style={tradeBtnDisabledStyle}
-                  disabled
-                  title="No action recommended"
-                >
-                  💰 Execute Trade
-                </button>
-              ) : (
-                <button
-                  style={tradeBtnStyle}
-                  onClick={() => setTradeModalOpen(true)}
-                >
-                  💰 Execute Trade
-                </button>
-              )}
-            </div>
+                {t('common:actions.reAnalyze')}
+              </Button>
+              <Button
+                type="primary"
+                icon={<DollarOutlined />}
+                style={
+                  analysisStore.recommendation?.toUpperCase() !== 'HOLD'
+                    ? { background: '#22c55e', borderColor: '#22c55e' }
+                    : undefined
+                }
+                disabled={analysisStore.recommendation?.toUpperCase() === 'HOLD'}
+                onClick={() => setTradeModalOpen(true)}
+              >
+                Execute Trade
+              </Button>
+            </Space>
 
             {/* Detailed Agent Reports */}
             {Object.keys(analysisStore.reports).length > 0 && (
-              <div style={reportListStyle}>
-                <h3 style={{ ...sectionHeading, fontSize: 16, marginTop: 8 }}>Detailed Reports</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
+                <Title level={5}>{t('results.reports')}</Title>
                 {Object.entries(analysisStore.reports).map(([agentName, content], idx) => {
                   const display = AGENT_DISPLAY[agentName] || { icon: '\ud83d\udccb', label: agentName };
                   return (
@@ -638,38 +464,26 @@ export default function NewAnalysis() {
               confidence={analysisStore.confidence}
               currentPrice={selectedStock?.price || 0}
               analysisSessionId={analysisStore.sessionId}
-              onSuccess={() => {
-                // Could navigate to portfolio or show notification
-              }}
+              onSuccess={() => {}}
             />
           </>
         )}
 
         {/* Step 5 fallback: session loaded but no recommendation */}
         {step === 4 && !analysisStore.recommendation && !loadingSession && (
-          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text3)' }}>
-            <p style={{ fontSize: 14, marginBottom: 16 }}>
-              This analysis has no recommendation — it may have failed or been cancelled.
-            </p>
-            <button
-              style={{
-                padding: '10px 24px',
-                borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border)',
-                background: 'transparent',
-                color: 'var(--text2)',
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+          <Empty
+            description={t('results.noRecommendation')}
+            style={{ padding: 40 }}
+          >
+            <Button
               onClick={() => {
                 analysisStore.reset();
                 wizard.reset();
               }}
             >
-              Start New Analysis
-            </button>
-          </div>
+              {t('common:actions.startNewAnalysis')}
+            </Button>
+          </Empty>
         )}
       </div>
     </>

@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 import { marked } from 'marked';
 import type { AnalysisSession } from '../../types';
 

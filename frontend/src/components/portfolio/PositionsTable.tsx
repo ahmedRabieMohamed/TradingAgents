@@ -1,4 +1,5 @@
-import { useState, CSSProperties } from 'react';
+import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import { closePosition } from '../../services/api';
 import type { PositionResponse } from '../../types';
 

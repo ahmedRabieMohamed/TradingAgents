@@ -1,90 +1,19 @@
-import { useEffect, useState, CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Empty, Input, Popconfirm, Select, Space, Spin, Table } from 'antd';
+import { useTranslation } from 'react-i18next';
 import Topbar from '../components/layout/Topbar';
 import { getWatchlist, addToWatchlist, removeFromWatchlist, validateStock } from '../services/api';
 import type { WatchlistItem } from '../types';
-
-const pageStyle: CSSProperties = { padding: 24, maxWidth: 900 };
-
-const cardStyle: CSSProperties = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-md)',
-  overflow: 'hidden',
-  boxShadow: 'var(--shadow-sm)',
-};
-
-const tableStyle: CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  fontSize: 13,
-};
-
-const thStyle: CSSProperties = {
-  textAlign: 'left',
-  padding: '10px 14px',
-  borderBottom: '1px solid var(--border)',
-  color: 'var(--text3)',
-  fontSize: 11,
-  fontWeight: 600,
-  textTransform: 'uppercase',
-  letterSpacing: '0.04em',
-};
-
-const tdStyle: CSSProperties = {
-  padding: '12px 14px',
-  borderBottom: '1px solid var(--border)',
-  color: 'var(--text)',
-};
-
-const addBarStyle: CSSProperties = {
-  display: 'flex',
-  gap: 8,
-  marginBottom: 20,
-  alignItems: 'center',
-};
-
-const inputStyle: CSSProperties = {
-  padding: '8px 12px',
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-sm)',
-  color: 'var(--text)',
-  fontSize: 13,
-  outline: 'none',
-};
-
-const btnStyle: CSSProperties = {
-  padding: '8px 16px',
-  borderRadius: 'var(--radius-sm)',
-  border: 'none',
-  background: 'var(--accent)',
-  color: '#fff',
-  fontSize: 13,
-  fontWeight: 600,
-  cursor: 'pointer',
-};
-
-const removeBtnStyle: CSSProperties = {
-  padding: '4px 10px',
-  borderRadius: 'var(--radius-sm)',
-  border: '1px solid var(--border)',
-  background: 'transparent',
-  color: 'var(--text3)',
-  fontSize: 11,
-  cursor: 'pointer',
-};
-
-const selectStyle: CSSProperties = {
-  ...inputStyle,
-  cursor: 'pointer',
-};
+import type { ColumnsType } from 'antd/es/table';
 
 const pnlColor = (v: number | null) =>
   v == null ? 'var(--text3)' : v >= 0 ? 'var(--green)' : 'var(--red)';
 
 export default function WatchlistPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation(['watchlist', 'common']);
+
   const [items, setItems] = useState<WatchlistItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [ticker, setTicker] = useState('');
@@ -107,7 +36,6 @@ export default function WatchlistPage() {
     setError(null);
 
     try {
-      // Validate ticker first
       const validated = await validateStock(ticker.trim(), market);
       await addToWatchlist(validated.ticker, market, validated.name);
       setTicker('');
@@ -125,13 +53,80 @@ export default function WatchlistPage() {
     setItems((prev) => prev.filter((i) => i.id !== id));
   }
 
+  const columns: ColumnsType<WatchlistItem> = [
+    {
+      title: t('table.ticker'),
+      dataIndex: 'ticker',
+      key: 'ticker',
+      render: (val: string) => <strong>{val}</strong>,
+    },
+    {
+      title: t('table.name'),
+      dataIndex: 'name',
+      key: 'name',
+      render: (val: string | null) => (
+        <span style={{ color: 'var(--text2)' }}>{val || '—'}</span>
+      ),
+    },
+    {
+      title: t('table.market'),
+      dataIndex: 'market_id',
+      key: 'market_id',
+      render: (val: string) => val === 'egypt' ? 'EGX' : 'US',
+    },
+    {
+      title: t('table.price'),
+      dataIndex: 'price',
+      key: 'price',
+      render: (_: unknown, record: WatchlistItem) =>
+        record.price != null
+          ? `${record.currency === 'EGP' ? 'E£' : '$'}${record.price.toFixed(2)}`
+          : '—',
+    },
+    {
+      title: t('table.change'),
+      dataIndex: 'change_pct',
+      key: 'change_pct',
+      render: (val: number | null) => (
+        <span style={{ color: pnlColor(val), fontWeight: 600 }}>
+          {val != null ? `${val >= 0 ? '+' : ''}${val.toFixed(2)}%` : '—'}
+        </span>
+      ),
+    },
+    {
+      title: t('table.actions'),
+      key: 'actions',
+      render: (_: unknown, record: WatchlistItem) => (
+        <Space size="small">
+          <Button
+            size="small"
+            type="link"
+            onClick={() => navigate(`/analysis?ticker=${record.ticker}&market=${record.market_id}`)}
+          >
+            {t('common:actions.startAnalysis')}
+          </Button>
+          <Popconfirm
+            title={t('removeConfirm')}
+            onConfirm={() => handleRemove(record.id)}
+            okText={t('common:actions.remove')}
+            cancelText="Cancel"
+          >
+            <Button size="small" danger>
+              {t('common:actions.remove')}
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   if (loading) {
     return (
       <>
-        <Topbar title="Watchlist" />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 8, color: 'var(--text3)' }}>
-          <span className="spinner" />
-          Loading watchlist...
+        <Topbar title={t('title')} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 8 }}>
+          <Spin size="large" />
+          <span>{t('common:status.loading')}</span>
         </div>
       </>
     );
@@ -139,85 +134,63 @@ export default function WatchlistPage() {
 
   return (
     <>
-      <Topbar title="Watchlist" />
-      <div style={pageStyle}>
+      <Topbar title={t('title')} />
+      <div style={{ padding: 24, maxWidth: 900 }}>
         {/* Add bar */}
-        <div style={addBarStyle}>
-          <select style={selectStyle} value={market} onChange={(e) => setMarket(e.target.value)}>
-            <option value="us">US</option>
-            <option value="egypt">Egypt</option>
-          </select>
-          <input
-            style={{ ...inputStyle, flex: 1 }}
-            placeholder="Enter ticker symbol (e.g. AAPL, COMI)"
+        <Space style={{ marginBottom: 20, width: '100%' }} wrap>
+          <Select
+            value={market}
+            onChange={(val) => setMarket(val)}
+            style={{ width: 120 }}
+            options={[
+              { value: 'us', label: 'US' },
+              { value: 'egypt', label: 'Egypt' },
+            ]}
+          />
+          <Input
+            style={{ width: 300 }}
+            placeholder={t('tickerPlaceholder')}
             value={ticker}
             onChange={(e) => setTicker(e.target.value.toUpperCase())}
-            onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+            onPressEnter={handleAdd}
           />
-          <button style={btnStyle} onClick={handleAdd} disabled={adding}>
-            {adding ? 'Adding...' : '+ Add'}
-          </button>
-        </div>
+          <Button type="primary" onClick={handleAdd} loading={adding}>
+            {adding ? t('common:status.loading') : t('common:actions.add')}
+          </Button>
+        </Space>
 
         {error && (
-          <div style={{ padding: 10, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 'var(--radius-sm)', color: '#ef4444', fontSize: 12, marginBottom: 16 }}>
-            {error}
-          </div>
+          <Alert
+            type="error"
+            message={error}
+            showIcon
+            closable
+            onClose={() => setError(null)}
+            style={{ marginBottom: 16 }}
+          />
         )}
 
         {items.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: 60, color: 'var(--text3)' }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>⭐</div>
-            <div style={{ fontSize: 14, color: 'var(--text2)' }}>Your watchlist is empty</div>
-            <div style={{ fontSize: 12, marginTop: 4 }}>Add tickers above to track them.</div>
-          </div>
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={
+              <span>
+                <span style={{ display: 'block', fontSize: 14, color: 'var(--text2)' }}>
+                  {t('empty')}
+                </span>
+                <span style={{ fontSize: 12 }}>Add tickers above to track them.</span>
+              </span>
+            }
+            style={{ padding: 60 }}
+          />
         ) : (
-          <div style={cardStyle}>
-            <table style={tableStyle}>
-              <thead>
-                <tr>
-                  <th style={thStyle}>Ticker</th>
-                  <th style={thStyle}>Name</th>
-                  <th style={thStyle}>Market</th>
-                  <th style={thStyle}>Price</th>
-                  <th style={thStyle}>Change</th>
-                  <th style={thStyle}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <tr key={item.id} className="hover-row">
-                    <td style={{ ...tdStyle, fontWeight: 700 }}>{item.ticker}</td>
-                    <td style={{ ...tdStyle, color: 'var(--text2)' }}>{item.name || '—'}</td>
-                    <td style={tdStyle}>{item.market_id === 'egypt' ? 'EGX' : 'US'}</td>
-                    <td style={tdStyle}>
-                      {item.price != null
-                        ? `${item.currency === 'EGP' ? 'E£' : '$'}${item.price.toFixed(2)}`
-                        : '—'}
-                    </td>
-                    <td style={{ ...tdStyle, color: pnlColor(item.change_pct), fontWeight: 600 }}>
-                      {item.change_pct != null
-                        ? `${item.change_pct >= 0 ? '+' : ''}${item.change_pct.toFixed(2)}%`
-                        : '—'}
-                    </td>
-                    <td style={tdStyle}>
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <button
-                          style={{ ...removeBtnStyle, color: 'var(--accent)' }}
-                          onClick={() => navigate(`/analysis?ticker=${item.ticker}&market=${item.market_id}`)}
-                        >
-                          Analyze
-                        </button>
-                        <button style={removeBtnStyle} onClick={() => handleRemove(item.id)}>
-                          Remove
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table<WatchlistItem>
+            rowKey="id"
+            columns={columns}
+            dataSource={items}
+            pagination={false}
+            size="middle"
+          />
         )}
       </div>
     </>

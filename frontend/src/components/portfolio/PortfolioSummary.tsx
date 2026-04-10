@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 import type { PortfolioResponse } from '../../types';
 
 interface PortfolioSummaryProps {

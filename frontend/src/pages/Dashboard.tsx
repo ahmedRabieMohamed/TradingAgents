@@ -1,5 +1,19 @@
-import { useEffect, useState, CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Row,
+  Col,
+  Card,
+  Statistic,
+  Table,
+  Button,
+  Tag,
+  Space,
+  Empty,
+  Spin,
+  Typography,
+} from 'antd';
+import { useTranslation } from 'react-i18next';
 import Topbar from '../components/layout/Topbar';
 import { listAnalyses, getPortfolio, getPerformance } from '../services/api';
 import type {
@@ -7,117 +21,22 @@ import type {
   PortfolioResponse,
   PerformanceStats,
   Recommendation,
+  PositionResponse,
 } from '../types';
 
-const pageStyle: CSSProperties = { padding: 24, maxWidth: 1000 };
+const { Title, Text } = Typography;
 
-const gridStyle: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: 16,
-  marginBottom: 28,
+const recTagColor = (rec: Recommendation | null): string => {
+  if (rec === 'BUY') return 'success';
+  if (rec === 'SELL') return 'error';
+  return 'warning';
 };
 
-const cardStyle: CSSProperties = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-md)',
-  padding: 20,
-  boxShadow: 'var(--shadow-sm)',
-};
-
-const cardLabel: CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  color: 'var(--text3)',
-  marginBottom: 8,
-};
-
-const cardValue: CSSProperties = {
-  fontSize: 24,
-  fontWeight: 700,
-  color: 'var(--text)',
-};
-
-const cardSub: CSSProperties = {
-  fontSize: 12,
-  color: 'var(--text3)',
-  marginTop: 4,
-};
-
-const sectionTitle: CSSProperties = {
-  fontSize: 15,
-  fontWeight: 600,
-  color: 'var(--text)',
-  marginBottom: 12,
-};
-
-const tableStyle: CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  fontSize: 13,
-};
-
-const thStyle: CSSProperties = {
-  textAlign: 'left',
-  padding: '8px 12px',
-  borderBottom: '1px solid var(--border)',
-  color: 'var(--text3)',
-  fontSize: 11,
-  fontWeight: 600,
-  textTransform: 'uppercase',
-  letterSpacing: '0.04em',
-};
-
-const tdStyle: CSSProperties = {
-  padding: '10px 12px',
-  borderBottom: '1px solid var(--border)',
-  color: 'var(--text)',
-};
-
-const recBadge = (rec: Recommendation | null): CSSProperties => ({
-  display: 'inline-block',
-  padding: '2px 8px',
-  borderRadius: 4,
-  fontSize: 11,
-  fontWeight: 700,
-  background:
-    rec === 'BUY'
-      ? 'rgba(16,185,129,0.15)'
-      : rec === 'SELL'
-        ? 'rgba(239,68,68,0.15)'
-        : 'rgba(245,158,11,0.15)',
-  color:
-    rec === 'BUY'
-      ? 'var(--green)'
-      : rec === 'SELL'
-        ? 'var(--red)'
-        : 'var(--yellow)',
-});
-
-const quickActionBtn: CSSProperties = {
-  padding: '10px 20px',
-  borderRadius: 'var(--radius-sm)',
-  border: 'none',
-  background: 'var(--accent)',
-  color: '#fff',
-  fontSize: 13,
-  fontWeight: 600,
-  cursor: 'pointer',
-};
-
-const secondaryBtn: CSSProperties = {
-  ...quickActionBtn,
-  background: 'var(--surface2)',
-  color: 'var(--text2)',
-};
-
-const pnlColor = (v: number) => (v >= 0 ? 'var(--green)' : 'var(--red)');
+const pnlColor = (v: number) => (v >= 0 ? '#10b981' : '#ef4444');
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation(['dashboard', 'common']);
   const [portfolio, setPortfolio] = useState<PortfolioResponse | null>(null);
   const [perf, setPerf] = useState<PerformanceStats | null>(null);
   const [recent, setRecent] = useState<AnalysisListItem[]>([]);
@@ -143,128 +62,216 @@ export default function Dashboard() {
   if (loading) {
     return (
       <>
-        <Topbar title="Dashboard" />
-        <div style={pageStyle}>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-            <div className="skeleton" style={{ width: 140, height: 38, borderRadius: 'var(--radius-sm)' }} />
-            <div className="skeleton" style={{ width: 120, height: 38, borderRadius: 'var(--radius-sm)' }} />
-          </div>
-          <div style={gridStyle}>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} style={{ ...cardStyle, padding: 0 }}>
-                <div style={{ padding: 20 }}>
-                  <div className="skeleton" style={{ width: 80, height: 12, marginBottom: 12 }} />
-                  <div className="skeleton" style={{ width: 120, height: 28, marginBottom: 8 }} />
-                  <div className="skeleton" style={{ width: 100, height: 12 }} />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="skeleton" style={{ width: 160, height: 16, marginBottom: 12 }} />
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="skeleton" style={{ height: 44, marginBottom: 2 }} />
-          ))}
+        <Topbar title={t('title')} />
+        <div style={{ padding: 24, maxWidth: 1000, display: 'flex', justifyContent: 'center', paddingTop: 80 }}>
+          <Spin size="large" />
         </div>
       </>
     );
   }
 
+  const positionsColumns = [
+    {
+      title: 'Ticker',
+      dataIndex: 'ticker',
+      key: 'ticker',
+      render: (v: string) => <Text strong>{v}</Text>,
+    },
+    {
+      title: 'Direction',
+      dataIndex: 'direction',
+      key: 'direction',
+      render: (v: string) => (
+        <Text style={{ color: v === 'long' ? '#10b981' : '#ef4444' }}>
+          {v.toUpperCase()}
+        </Text>
+      ),
+    },
+    {
+      title: 'Qty',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Entry',
+      dataIndex: 'entry_price',
+      key: 'entry_price',
+      render: (v: number) => `$${v.toFixed(2)}`,
+    },
+    {
+      title: 'Current',
+      dataIndex: 'current_price',
+      key: 'current_price',
+      render: (v: number) => `$${v.toFixed(2)}`,
+    },
+    {
+      title: 'P&L',
+      key: 'pnl',
+      render: (_: unknown, record: PositionResponse) => (
+        <Text strong style={{ color: pnlColor(record.unrealized_pnl) }}>
+          {record.unrealized_pnl >= 0 ? '+' : ''}${record.unrealized_pnl.toFixed(2)}
+          <Text style={{ fontSize: 11, opacity: 0.7 }}>
+            {' '}({record.unrealized_pnl_pct >= 0 ? '+' : ''}{record.unrealized_pnl_pct.toFixed(1)}%)
+          </Text>
+        </Text>
+      ),
+    },
+  ];
+
+  const analysesColumns = [
+    {
+      title: 'Ticker',
+      dataIndex: 'ticker',
+      key: 'ticker',
+      render: (v: string) => <Text strong>{v}</Text>,
+    },
+    {
+      title: 'Market',
+      dataIndex: 'market_id',
+      key: 'market_id',
+      render: (v: string) => (v === 'egypt' ? 'EGX' : 'US'),
+    },
+    {
+      title: 'Date',
+      dataIndex: 'analysis_date',
+      key: 'analysis_date',
+    },
+    {
+      title: 'Horizon',
+      dataIndex: 'trade_horizon',
+      key: 'trade_horizon',
+    },
+    {
+      title: 'Result',
+      key: 'result',
+      render: (_: unknown, record: AnalysisListItem) =>
+        record.recommendation ? (
+          <Tag color={recTagColor(record.recommendation)}>{record.recommendation}</Tag>
+        ) : (
+          <Text type="secondary">{record.status}</Text>
+        ),
+    },
+    {
+      title: 'Confidence',
+      dataIndex: 'confidence',
+      key: 'confidence',
+      render: (v: number | null) => (v != null ? `${(v * 100).toFixed(0)}%` : '—'),
+    },
+  ];
+
+  const isEmpty = recent.length === 0 && (!portfolio || portfolio.open_positions.length === 0);
+
   return (
     <>
-      <Topbar title="Dashboard" />
-      <div style={pageStyle}>
+      <Topbar title={t('title')} />
+      <div style={{ padding: 24, maxWidth: 1000 }}>
         {/* Quick Actions */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-          <button style={quickActionBtn} onClick={() => navigate('/analysis')}>
-            + New Analysis
-          </button>
-          <button style={secondaryBtn} onClick={() => navigate('/history')}>
-            View History
-          </button>
-          <button style={secondaryBtn} onClick={() => navigate('/portfolio')}>
-            Portfolio
-          </button>
-        </div>
+        <Space style={{ marginBottom: 24 }}>
+          <Button type="primary" onClick={() => navigate('/analysis')}>
+            {t('common:actions.startNewAnalysis')}
+          </Button>
+          <Button onClick={() => navigate('/history')}>
+            {t('common:nav.history')}
+          </Button>
+          <Button onClick={() => navigate('/portfolio')}>
+            {t('common:nav.portfolio')}
+          </Button>
+        </Space>
 
         {/* Stats Cards */}
-        <div style={gridStyle}>
-          <div style={cardStyle}>
-            <div style={cardLabel}>Portfolio Value</div>
-            <div style={cardValue}>
-              ${portfolio ? portfolio.total_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
-            </div>
-            {portfolio && (
-              <div style={{ ...cardSub, color: pnlColor(portfolio.total_pnl) }}>
-                {portfolio.total_pnl >= 0 ? '+' : ''}
-                ${portfolio.total_pnl.toFixed(2)} ({portfolio.total_pnl_pct >= 0 ? '+' : ''}{portfolio.total_pnl_pct.toFixed(2)}%)
-              </div>
-            )}
-          </div>
+        <Row gutter={[16, 16]} style={{ marginBottom: 28 }}>
+          <Col xs={24} sm={12} lg={6}>
+            <Card size="small">
+              <Statistic
+                title="Portfolio Value"
+                value={
+                  portfolio
+                    ? portfolio.total_value.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : '—'
+                }
+                prefix={portfolio ? '$' : undefined}
+                suffix={
+                  portfolio ? (
+                    <Text style={{ fontSize: 12, color: pnlColor(portfolio.total_pnl) }}>
+                      {' '}
+                      {portfolio.total_pnl >= 0 ? '+' : ''}${portfolio.total_pnl.toFixed(2)} (
+                      {portfolio.total_pnl_pct >= 0 ? '+' : ''}
+                      {portfolio.total_pnl_pct.toFixed(2)}%)
+                    </Text>
+                  ) : undefined
+                }
+              />
+            </Card>
+          </Col>
 
-          <div style={cardStyle}>
-            <div style={cardLabel}>Open Positions</div>
-            <div style={cardValue}>{portfolio?.open_positions_count ?? 0}</div>
-            <div style={cardSub}>
-              Cash: ${portfolio ? portfolio.cash_balance.toLocaleString(undefined, { maximumFractionDigits: 2 }) : '—'}
-            </div>
-          </div>
+          <Col xs={24} sm={12} lg={6}>
+            <Card size="small">
+              <Statistic
+                title="Open Positions"
+                value={portfolio?.open_positions_count ?? 0}
+                suffix={
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {' '}Cash: $
+                    {portfolio
+                      ? portfolio.cash_balance.toLocaleString(undefined, { maximumFractionDigits: 2 })
+                      : '—'}
+                  </Text>
+                }
+              />
+            </Card>
+          </Col>
 
-          <div style={cardStyle}>
-            <div style={cardLabel}>Total Analyses</div>
-            <div style={cardValue}>{perf?.total_analyses ?? 0}</div>
-            <div style={cardSub}>
-              {perf?.total_simulations ?? 0} simulated
-            </div>
-          </div>
+          <Col xs={24} sm={12} lg={6}>
+            <Card size="small">
+              <Statistic
+                title={t('totalAnalyses')}
+                value={perf?.total_analyses ?? 0}
+                suffix={
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {' '}{perf?.total_simulations ?? 0} simulated
+                  </Text>
+                }
+              />
+            </Card>
+          </Col>
 
-          <div style={cardStyle}>
-            <div style={cardLabel}>Win Rate</div>
-            <div style={{ ...cardValue, color: perf?.win_rate != null && perf.win_rate >= 50 ? 'var(--green)' : perf?.win_rate != null ? 'var(--red)' : 'var(--text)' }}>
-              {perf?.win_rate != null ? `${perf.win_rate.toFixed(1)}%` : '—'}
-            </div>
-            <div style={cardSub}>
-              Avg return: {perf?.avg_return_pct != null ? `${perf.avg_return_pct >= 0 ? '+' : ''}${perf.avg_return_pct.toFixed(2)}%` : '—'}
-            </div>
-          </div>
-        </div>
+          <Col xs={24} sm={12} lg={6}>
+            <Card size="small">
+              <Statistic
+                title="Win Rate"
+                value={perf?.win_rate != null ? `${perf.win_rate.toFixed(1)}%` : '—'}
+                valueStyle={
+                  perf?.win_rate != null
+                    ? { color: perf.win_rate >= 50 ? '#10b981' : '#ef4444' }
+                    : undefined
+                }
+                suffix={
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {' '}Avg:{' '}
+                    {perf?.avg_return_pct != null
+                      ? `${perf.avg_return_pct >= 0 ? '+' : ''}${perf.avg_return_pct.toFixed(2)}%`
+                      : '—'}
+                  </Text>
+                }
+              />
+            </Card>
+          </Col>
+        </Row>
 
         {/* Open Positions */}
         {portfolio && portfolio.open_positions.length > 0 && (
           <div style={{ marginBottom: 28 }}>
-            <div style={sectionTitle}>Open Positions</div>
-            <div style={{ ...cardStyle, padding: 0, overflow: 'hidden' }}>
-              <table style={tableStyle}>
-                <thead>
-                  <tr>
-                    <th style={thStyle}>Ticker</th>
-                    <th style={thStyle}>Direction</th>
-                    <th style={thStyle}>Qty</th>
-                    <th style={thStyle}>Entry</th>
-                    <th style={thStyle}>Current</th>
-                    <th style={thStyle}>P&L</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {portfolio.open_positions.map((pos) => (
-                    <tr key={pos.id} className="hover-row">
-                      <td style={{ ...tdStyle, fontWeight: 600 }}>{pos.ticker}</td>
-                      <td style={tdStyle}>
-                        <span style={{ color: pos.direction === 'long' ? 'var(--green)' : 'var(--red)' }}>
-                          {pos.direction.toUpperCase()}
-                        </span>
-                      </td>
-                      <td style={tdStyle}>{pos.quantity}</td>
-                      <td style={tdStyle}>${pos.entry_price.toFixed(2)}</td>
-                      <td style={tdStyle}>${pos.current_price.toFixed(2)}</td>
-                      <td style={{ ...tdStyle, color: pnlColor(pos.unrealized_pnl), fontWeight: 600 }}>
-                        {pos.unrealized_pnl >= 0 ? '+' : ''}${pos.unrealized_pnl.toFixed(2)}
-                        <span style={{ fontSize: 11, opacity: 0.7 }}> ({pos.unrealized_pnl_pct >= 0 ? '+' : ''}{pos.unrealized_pnl_pct.toFixed(1)}%)</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Title level={5} style={{ marginBottom: 12 }}>Open Positions</Title>
+            <Table<PositionResponse>
+              columns={positionsColumns}
+              dataSource={portfolio.open_positions}
+              rowKey="id"
+              size="small"
+              pagination={false}
+            />
           </div>
         )}
 
@@ -272,70 +279,43 @@ export default function Dashboard() {
         {recent.length > 0 && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <div style={sectionTitle}>Recent Analyses</div>
-              <button
-                style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 12, cursor: 'pointer' }}
+              <Title level={5} style={{ margin: 0 }}>{t('recentAnalyses')}</Title>
+              <Button
+                type="link"
+                size="small"
                 onClick={() => navigate('/history')}
               >
-                View all →
-              </button>
+                {t('viewAll')} →
+              </Button>
             </div>
-            <div style={{ ...cardStyle, padding: 0, overflow: 'hidden' }}>
-              <table style={tableStyle}>
-                <thead>
-                  <tr>
-                    <th style={thStyle}>Ticker</th>
-                    <th style={thStyle}>Market</th>
-                    <th style={thStyle}>Date</th>
-                    <th style={thStyle}>Horizon</th>
-                    <th style={thStyle}>Result</th>
-                    <th style={thStyle}>Confidence</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recent.map((a) => (
-                    <tr
-                      key={a.id}
-                      className="hover-row"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => navigate(`/analysis?session=${a.id}`)}
-                    >
-                      <td style={{ ...tdStyle, fontWeight: 600 }}>{a.ticker}</td>
-                      <td style={tdStyle}>{a.market_id === 'egypt' ? 'EGX' : 'US'}</td>
-                      <td style={tdStyle}>{a.analysis_date}</td>
-                      <td style={tdStyle}>{a.trade_horizon}</td>
-                      <td style={tdStyle}>
-                        {a.recommendation ? (
-                          <span style={recBadge(a.recommendation)}>{a.recommendation}</span>
-                        ) : (
-                          <span style={{ color: 'var(--text3)' }}>{a.status}</span>
-                        )}
-                      </td>
-                      <td style={tdStyle}>
-                        {a.confidence != null ? `${(a.confidence * 100).toFixed(0)}%` : '—'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Table<AnalysisListItem>
+              columns={analysesColumns}
+              dataSource={recent}
+              rowKey="id"
+              size="small"
+              pagination={false}
+              onRow={(record) => ({
+                onClick: () => navigate(`/analysis?session=${record.id}`),
+                style: { cursor: 'pointer' },
+              })}
+            />
           </div>
         )}
 
         {/* Empty state */}
-        {recent.length === 0 && (!portfolio || portfolio.open_positions.length === 0) && (
-          <div style={{ textAlign: 'center', padding: 60, color: 'var(--text3)' }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>📊</div>
-            <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text2)', marginBottom: 8 }}>
-              Welcome to TradingAgents
-            </div>
-            <div style={{ fontSize: 13, marginBottom: 20 }}>
-              Start by running your first stock analysis.
-            </div>
-            <button style={quickActionBtn} onClick={() => navigate('/analysis')}>
-              + New Analysis
-            </button>
-          </div>
+        {isEmpty && (
+          <Empty
+            description={
+              <Space direction="vertical" size="small">
+                <Text strong style={{ fontSize: 16 }}>{t('common:app.title')}</Text>
+                <Text type="secondary">{t('noAnalyses')}</Text>
+              </Space>
+            }
+          >
+            <Button type="primary" onClick={() => navigate('/analysis')}>
+              {t('common:actions.startNewAnalysis')}
+            </Button>
+          </Empty>
         )}
       </div>
     </>

@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 import { useAnalysisStore } from '../../stores/analysisStore';
 import StatsBar from './StatsBar';
 import PipelineStageRow from './PipelineStage';

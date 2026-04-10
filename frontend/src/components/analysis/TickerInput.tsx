@@ -1,4 +1,5 @@
-import { useState, CSSProperties, KeyboardEvent } from 'react';
+import { useState } from 'react';
+import type { CSSProperties, KeyboardEvent } from 'react';
 import { validateStock } from '../../services/api';
 import type { StockValidation } from '../../types';
 

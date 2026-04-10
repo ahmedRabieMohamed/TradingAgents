@@ -1,0 +1,30 @@
+{
+  "title": "Analysis History",
+  "filters": {
+    "all": "All",
+    "status": "Status",
+    "market": "Market",
+    "recommendation": "Recommendation",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To"
+  },
+  "table": {
+    "ticker": "Ticker",
+    "stockName": "Stock Name",
+    "market": "Market",
+    "date": "Date",
+    "horizon": "Horizon",
+    "recommendation": "Recommendation",
+    "confidence": "Confidence",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "compare": {
+    "title": "Compare Analyses",
+    "selectTwo": "Select two analyses to compare",
+    "noReports": "No reports available"
+  },
+  "empty": "No analyses found matching your filters.",
+  "deleteConfirm": "Are you sure you want to delete this analysis?"
+}

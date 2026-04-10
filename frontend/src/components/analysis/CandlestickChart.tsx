@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { createChart, CandlestickSeries, HistogramSeries, type IChartApi, type ISeriesApi, ColorType } from 'lightweight-charts';
 import { getPriceHistory } from '../../services/api';
 import type { OHLCBar } from '../../types';

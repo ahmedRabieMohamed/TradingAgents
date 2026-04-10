@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -29,7 +29,8 @@ const titleStyle: CSSProperties = {
   paddingLeft: 8,
 };
 
-function formatDollar(v: number): string {
+function formatDollar(v: unknown): string {
+  if (typeof v !== 'number') return '';
   if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
   if (v >= 1_000) return `$${(v / 1_000).toFixed(1)}K`;
   return `$${v.toFixed(0)}`;
@@ -80,7 +81,7 @@ export default function EquityCurve({ data }: EquityCurveProps) {
               fontSize: 12,
               color: 'var(--text)',
             }}
-            formatter={(value: number) => [formatTooltipValue(value), 'Value']}
+            formatter={(value: unknown) => [formatTooltipValue(Number(value)), 'Value']}
             labelStyle={{ color: 'var(--text3)', fontSize: 11, marginBottom: 4 }}
           />
           <Area

@@ -1,90 +1,11 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import { Card, Form, Input, Select, InputNumber, Button, Spin, Space, Typography, message } from 'antd';
 import { getSettings, updateSettings } from '../services/api';
 import type { UserSettings, SettingsUpdate, TradeHorizon, ResearchDepth } from '../types';
 import Topbar from '../components/layout/Topbar';
+import { useTranslation } from 'react-i18next';
 
-const pageStyle: CSSProperties = {
-  padding: 24,
-  maxWidth: 800,
-};
-
-const cardStyle: CSSProperties = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-lg)',
-  padding: 24,
-  marginBottom: 20,
-};
-
-const cardTitle: CSSProperties = {
-  fontSize: 15,
-  fontWeight: 600,
-  color: 'var(--text)',
-  marginBottom: 16,
-};
-
-const fieldRow: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: 14,
-  gap: 16,
-};
-
-const labelStyle: CSSProperties = {
-  fontSize: 13,
-  color: 'var(--text2)',
-  minWidth: 140,
-};
-
-const inputStyle: CSSProperties = {
-  flex: 1,
-  maxWidth: 340,
-  padding: '8px 12px',
-  background: 'var(--surface2)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-sm)',
-  color: 'var(--text)',
-  fontSize: 13,
-  outline: 'none',
-};
-
-const selectStyle: CSSProperties = {
-  ...inputStyle,
-  cursor: 'pointer',
-};
-
-const btnStyle: CSSProperties = {
-  padding: '10px 28px',
-  background: 'var(--accent)',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 'var(--radius-md)',
-  fontSize: 14,
-  fontWeight: 600,
-  cursor: 'pointer',
-  transition: 'opacity 0.15s',
-};
-
-const btnDisabled: CSSProperties = {
-  ...btnStyle,
-  opacity: 0.5,
-  cursor: 'not-allowed',
-};
-
-const feedbackSuccess: CSSProperties = {
-  display: 'inline-block',
-  marginLeft: 12,
-  fontSize: 13,
-  color: 'var(--green)',
-};
-
-const feedbackError: CSSProperties = {
-  display: 'inline-block',
-  marginLeft: 12,
-  fontSize: 13,
-  color: 'var(--red)',
-};
+const { Title, Text } = Typography;
 
 const API_KEY_FIELDS = [
   { key: 'openai', label: 'OpenAI' },
@@ -101,6 +22,7 @@ const MARKETS = ['us', 'egx'];
 const LLM_PROVIDERS = ['openai', 'anthropic', 'google', 'xai'];
 
 export default function Settings() {
+  const { t } = useTranslation(['settings', 'common']);
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
   const [defaultMarket, setDefaultMarket] = useState('us');
@@ -109,8 +31,8 @@ export default function Settings() {
   const [defaultLLM, setDefaultLLM] = useState('openai');
   const [startingBalance, setStartingBalance] = useState(100000);
   const [saving, setSaving] = useState(false);
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     getSettings()
@@ -128,14 +50,13 @@ export default function Settings() {
         setApiKeys(keys);
       })
       .catch(() => {
-        setFeedback({ type: 'error', msg: 'Failed to load settings' });
+        void messageApi.error(t('common:status.error'));
       })
       .finally(() => setLoading(false));
   }, []);
 
   async function handleSave() {
     setSaving(true);
-    setFeedback(null);
     try {
       const payload: SettingsUpdate = {
         default_market: defaultMarket,
@@ -159,7 +80,7 @@ export default function Settings() {
 
       const updated = await updateSettings(payload);
       setSettings(updated);
-      setFeedback({ type: 'success', msg: 'Settings saved successfully' });
+      void messageApi.success(t('common:status.success'));
       // Clear key inputs after save
       const cleared: Record<string, string> = {};
       API_KEY_FIELDS.forEach(({ key }) => {
@@ -167,7 +88,7 @@ export default function Settings() {
       });
       setApiKeys(cleared);
     } catch {
-      setFeedback({ type: 'error', msg: 'Failed to save settings' });
+      void messageApi.error(t('common:status.error'));
     } finally {
       setSaving(false);
     }
@@ -176,9 +97,9 @@ export default function Settings() {
   if (loading) {
     return (
       <>
-        <Topbar title="Settings" />
-        <div style={pageStyle}>
-          <div className="spinner" />
+        <Topbar title={t('title')} />
+        <div style={{ padding: 24, display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+          <Spin size="large" />
         </div>
       </>
     );
@@ -186,131 +107,107 @@ export default function Settings() {
 
   return (
     <>
-      <Topbar title="Settings" />
-      <div style={pageStyle} className="fade-in">
-        {/* API Keys */}
-        <div style={cardStyle}>
-          <div style={cardTitle}>API Keys</div>
-          {API_KEY_FIELDS.map(({ key, label }) => (
-            <div key={key} style={fieldRow}>
-              <label style={labelStyle}>
-                {label}
-                {settings?.api_keys[key] && (
-                  <span style={{ marginLeft: 8, color: 'var(--green)', fontSize: 11 }}>
-                    Configured
-                  </span>
-                )}
-              </label>
-              <input
-                type="password"
-                style={inputStyle}
-                placeholder={settings?.api_keys[key] ? '********' : `Enter ${label} API key`}
-                value={apiKeys[key] || ''}
-                onChange={(e) => setApiKeys({ ...apiKeys, [key]: e.target.value })}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Default Configuration */}
-        <div style={cardStyle}>
-          <div style={cardTitle}>Default Configuration</div>
-
-          <div style={fieldRow}>
-            <label style={labelStyle}>Market</label>
-            <select
-              style={selectStyle}
-              value={defaultMarket}
-              onChange={(e) => setDefaultMarket(e.target.value)}
-            >
-              {MARKETS.map((m) => (
-                <option key={m} value={m}>
-                  {m.toUpperCase()}
-                </option>
+      {contextHolder}
+      <Topbar title={t('title')} />
+      <div style={{ padding: 24, maxWidth: 800 }} className="fade-in">
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          {/* API Keys */}
+          <Card>
+            <Title level={5} style={{ marginTop: 0, marginBottom: 16 }}>API Keys</Title>
+            <Form layout="horizontal" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {API_KEY_FIELDS.map(({ key, label }) => (
+                <Form.Item
+                  key={key}
+                  label={
+                    <span>
+                      {label}
+                      {settings?.api_keys[key] && (
+                        <Text type="success" style={{ marginLeft: 8, fontSize: 11 }}>
+                          Configured
+                        </Text>
+                      )}
+                    </span>
+                  }
+                >
+                  <Input.Password
+                    placeholder={settings?.api_keys[key] ? '********' : `Enter ${label} API key`}
+                    value={apiKeys[key] || ''}
+                    onChange={(e) => setApiKeys({ ...apiKeys, [key]: e.target.value })}
+                  />
+                </Form.Item>
               ))}
-            </select>
-          </div>
+            </Form>
+          </Card>
 
-          <div style={fieldRow}>
-            <label style={labelStyle}>Trade Horizon</label>
-            <select
-              style={selectStyle}
-              value={defaultHorizon}
-              onChange={(e) => setDefaultHorizon(e.target.value as TradeHorizon)}
+          {/* Default Configuration */}
+          <Card>
+            <Title level={5} style={{ marginTop: 0, marginBottom: 16 }}>{t('defaults.title')}</Title>
+            <Form layout="horizontal" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              <Form.Item label={t('defaults.defaultMarket')}>
+                <Select
+                  value={defaultMarket}
+                  onChange={(val) => setDefaultMarket(val)}
+                  options={MARKETS.map((m) => ({ value: m, label: m.toUpperCase() }))}
+                />
+              </Form.Item>
+
+              <Form.Item label={t('defaults.defaultHorizon')}>
+                <Select
+                  value={defaultHorizon}
+                  onChange={(val) => setDefaultHorizon(val)}
+                  options={HORIZONS.map((h) => ({ value: h, label: h }))}
+                />
+              </Form.Item>
+
+              <Form.Item label={t('defaults.defaultDepth')}>
+                <Select
+                  value={defaultDepth}
+                  onChange={(val) => setDefaultDepth(val)}
+                  options={DEPTHS.map((d) => ({ value: d, label: d }))}
+                />
+              </Form.Item>
+
+              <Form.Item label="LLM Provider">
+                <Select
+                  value={defaultLLM}
+                  onChange={(val) => setDefaultLLM(val)}
+                  options={LLM_PROVIDERS.map((p) => ({ value: p, label: p }))}
+                />
+              </Form.Item>
+            </Form>
+          </Card>
+
+          {/* Paper Trading */}
+          <Card>
+            <Title level={5} style={{ marginTop: 0, marginBottom: 16 }}>Paper Trading</Title>
+            <Form layout="horizontal" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              <Form.Item label="Starting Balance">
+                <InputNumber
+                  style={{ width: '100%' }}
+                  min={1000}
+                  step={1000}
+                  value={startingBalance}
+                  onChange={(val) => setStartingBalance(val ?? 100000)}
+                />
+              </Form.Item>
+            </Form>
+            <Text type="secondary" style={{ fontSize: 11 }}>
+              Changes apply on next portfolio reset.
+            </Text>
+          </Card>
+
+          {/* Save */}
+          <div>
+            <Button
+              type="primary"
+              size="large"
+              loading={saving}
+              onClick={handleSave}
             >
-              {HORIZONS.map((h) => (
-                <option key={h} value={h}>
-                  {h}
-                </option>
-              ))}
-            </select>
+              {saving ? t('common:status.loading') : t('common:actions.save')}
+            </Button>
           </div>
-
-          <div style={fieldRow}>
-            <label style={labelStyle}>Research Depth</label>
-            <select
-              style={selectStyle}
-              value={defaultDepth}
-              onChange={(e) => setDefaultDepth(e.target.value as ResearchDepth)}
-            >
-              {DEPTHS.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div style={fieldRow}>
-            <label style={labelStyle}>LLM Provider</label>
-            <select
-              style={selectStyle}
-              value={defaultLLM}
-              onChange={(e) => setDefaultLLM(e.target.value)}
-            >
-              {LLM_PROVIDERS.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Paper Trading */}
-        <div style={cardStyle}>
-          <div style={cardTitle}>Paper Trading</div>
-          <div style={fieldRow}>
-            <label style={labelStyle}>Starting Balance</label>
-            <input
-              type="number"
-              style={inputStyle}
-              min={1000}
-              step={1000}
-              value={startingBalance}
-              onChange={(e) => setStartingBalance(Number(e.target.value))}
-            />
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: -4 }}>
-            Changes apply on next portfolio reset.
-          </div>
-        </div>
-
-        {/* Save */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <button
-            style={saving ? btnDisabled : btnStyle}
-            disabled={saving}
-            onClick={handleSave}
-          >
-            {saving ? 'Saving...' : 'Save Settings'}
-          </button>
-          {feedback && (
-            <span style={feedback.type === 'success' ? feedbackSuccess : feedbackError}>
-              {feedback.msg}
-            </span>
-          )}
-        </div>
+        </Space>
       </div>
     </>
   );

@@ -1,4 +1,5 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { getPortfolioAnalytics } from '../../services/api';
 import type { PortfolioAnalyticsResponse } from '../../types';
 import EquityCurve from './EquityCurve';

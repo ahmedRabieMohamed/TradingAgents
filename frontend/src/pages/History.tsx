@@ -1,90 +1,19 @@
-import { CSSProperties, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Space, Spin, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 import Topbar from '../components/layout/Topbar';
 import FilterBar, { type HistoryFilters } from '../components/history/FilterBar';
 import HistoryTable from '../components/history/HistoryTable';
 import CompareModal from '../components/history/CompareModal';
-import { listAnalyses, getAnalysis, exportAnalysis } from '../services/api';
+import { listAnalyses, getAnalysis } from '../services/api';
 import type { AnalysisListItem, AnalysisSession } from '../types';
 
-const pageStyle: CSSProperties = {
-  padding: 24,
-  maxWidth: 1200,
-  margin: '0 auto',
-};
-
-const headerRow: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 12,
-  marginBottom: 4,
-};
-
-const headerTitle: CSSProperties = {
-  fontSize: 18,
-  fontWeight: 600,
-  color: 'var(--text)',
-};
-
-const headerActions: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8,
-};
-
-const btnPrimary: CSSProperties = {
-  padding: '6px 16px',
-  borderRadius: 8,
-  fontSize: 13,
-  fontWeight: 500,
-  border: 'none',
-  background: 'var(--accent)',
-  color: '#fff',
-  cursor: 'pointer',
-  transition: 'opacity 0.12s ease',
-};
-
-const btnOutline: CSSProperties = {
-  padding: '6px 16px',
-  borderRadius: 8,
-  fontSize: 13,
-  fontWeight: 500,
-  border: '1px solid var(--border)',
-  background: 'var(--surface2)',
-  color: 'var(--text2)',
-  cursor: 'pointer',
-  transition: 'all 0.12s ease',
-};
-
-const loadingStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: 60,
-  color: 'var(--text3)',
-  fontSize: 14,
-};
-
-const spinnerStyle: CSSProperties = {
-  width: 20,
-  height: 20,
-  border: '2px solid var(--border)',
-  borderTop: '2px solid var(--accent)',
-  borderRadius: '50%',
-  animation: 'spin 0.8s linear infinite',
-  marginRight: 10,
-};
-
-const totalStyle: CSSProperties = {
-  fontSize: 12,
-  color: 'var(--text3)',
-  marginTop: 12,
-  textAlign: 'right',
-};
+const { Title, Text } = Typography;
 
 export default function History() {
   const navigate = useNavigate();
+  const { t } = useTranslation(['history', 'common']);
   const [filters, setFilters] = useState<HistoryFilters>({});
   const [items, setItems] = useState<AnalysisListItem[]>([]);
   const [total, setTotal] = useState(0);
@@ -163,40 +92,44 @@ export default function History() {
 
   return (
     <>
-      <Topbar title="History" />
-      <div style={pageStyle}>
-        <div style={headerRow}>
-          <span style={headerTitle}>Analysis History</span>
-          <div style={headerActions}>
-            {selectedIds.length === 2 && (
-              <button
-                style={btnPrimary}
-                onClick={handleCompare}
-                disabled={comparing}
-              >
-                {comparing ? 'Loading...' : 'Compare Selected'}
-              </button>
-            )}
+      <Topbar title={t('title')} />
+      <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
+          <Title level={4} style={{ margin: 0 }}>{t('title')}</Title>
+          <Space>
             {selectedIds.length > 0 && selectedIds.length < 2 && (
-              <span style={{ fontSize: 12, color: 'var(--text3)' }}>
+              <Text type="secondary" style={{ fontSize: 12 }}>
                 Select 1 more to compare
-              </span>
+              </Text>
             )}
-            <button style={btnOutline} onClick={handleExportAll}>
-              Export All
-            </button>
-          </div>
+            {selectedIds.length === 2 && (
+              <Button
+                type="primary"
+                onClick={handleCompare}
+                loading={comparing}
+              >
+                {t('common:actions.compare')}
+              </Button>
+            )}
+            <Button onClick={handleExportAll}>
+              {t('common:actions.export')}
+            </Button>
+          </Space>
         </div>
 
         <FilterBar filters={filters} onChange={setFilters} />
 
         {loading ? (
-          <div style={loadingStyle}>
-            <div style={spinnerStyle} />
-            Loading analyses...
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 60 }}>
+            <Spin size="default" />
           </div>
         ) : error ? (
-          <div style={{ ...loadingStyle, color: '#ef4444' }}>{error}</div>
+          <Alert
+            type="error"
+            message={error}
+            style={{ marginTop: 16 }}
+            showIcon
+          />
         ) : (
           <>
             <HistoryTable
@@ -206,9 +139,9 @@ export default function History() {
               selectedIds={selectedIds}
               onToggleSelect={handleToggleSelect}
             />
-            <div style={totalStyle}>
+            <Text type="secondary" style={{ display: 'block', fontSize: 12, marginTop: 12, textAlign: 'right' }}>
               Showing {items.length} of {total} analyses
-            </div>
+            </Text>
           </>
         )}
       </div>
@@ -222,13 +155,6 @@ export default function History() {
           }}
         />
       )}
-
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </>
   );
 }

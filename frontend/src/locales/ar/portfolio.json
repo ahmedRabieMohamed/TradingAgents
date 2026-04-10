@@ -1,0 +1,42 @@
+{
+  "title": "المحفظة",
+  "summary": {
+    "totalValue": "القيمة الإجمالية",
+    "totalPnl": "إجمالي الربح/الخسارة",
+    "winRate": "نسبة الربح",
+    "openPositions": "المراكز المفتوحة",
+    "cashBalance": "الرصيد النقدي"
+  },
+  "positions": {
+    "title": "المراكز",
+    "ticker": "الرمز",
+    "side": "الاتجاه",
+    "quantity": "الكمية",
+    "entryPrice": "سعر الدخول",
+    "currentPrice": "السعر الحالي",
+    "pnl": "الربح/الخسارة",
+    "status": "الحالة",
+    "long": "شراء",
+    "short": "بيع",
+    "open": "مفتوح",
+    "closed": "مغلق"
+  },
+  "trades": {
+    "title": "سجل الصفقات",
+    "date": "التاريخ",
+    "ticker": "الرمز",
+    "action": "الإجراء",
+    "quantity": "الكمية",
+    "price": "السعر",
+    "total": "الإجمالي"
+  },
+  "simulation": {
+    "title": "محاكاة صفقة",
+    "positionSize": "حجم المركز",
+    "entryPrice": "سعر الدخول",
+    "stopLoss": "وقف الخسارة",
+    "takeProfit": "جني الأرباح"
+  },
+  "empty": "لا توجد مراكز بعد. قم بتحليل سهم ومحاكاة صفقة!",
+  "equityCurve": "منحنى رأس المال"
+}

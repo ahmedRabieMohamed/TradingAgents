@@ -1,4 +1,5 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { getPortfolio, executeTrade } from '../../services/api';
 import type { TradeRequest } from '../../types';
 

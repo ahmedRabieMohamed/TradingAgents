@@ -1,4 +1,5 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { fetchMarkets } from '../../services/api';
 import { useMarketStore } from '../../stores/marketStore';
 import type { Market } from '../../types';

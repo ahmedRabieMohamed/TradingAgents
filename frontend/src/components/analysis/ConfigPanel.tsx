@@ -1,4 +1,5 @@
-import { useState, CSSProperties } from 'react';
+import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { AnalysisRequest, TradeHorizon, AnalystType, ResearchDepth } from '../../types';
 
 interface ConfigPanelProps {

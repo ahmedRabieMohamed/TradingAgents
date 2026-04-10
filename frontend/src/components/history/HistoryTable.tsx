@@ -1,4 +1,5 @@
-import { CSSProperties, useState } from 'react';
+import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { AnalysisListItem } from '../../types';
 import { simulateAnalysis } from '../../services/api';
 
