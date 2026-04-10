@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ResultHeroProps {
   recommendation: string;
@@ -13,7 +14,7 @@ function recColor(rec: string): string {
   const upper = rec.toUpperCase();
   if (upper === 'BUY') return '#22c55e';
   if (upper === 'SELL') return '#ef4444';
-  return '#eab308'; // HOLD / yellow
+  return '#eab308';
 }
 
 function recGradient(rec: string): string {
@@ -33,7 +34,15 @@ export default function ResultHero({
   horizon,
   date,
 }: ResultHeroProps) {
+  const { t } = useTranslation(['analysis', 'common']);
   const color = recColor(recommendation);
+
+  // Translate recommendation label
+  const recKey = recommendation.toUpperCase() === 'BUY'
+    ? 'common:recommendation.buy'
+    : recommendation.toUpperCase() === 'SELL'
+      ? 'common:recommendation.sell'
+      : 'common:recommendation.hold';
 
   const containerStyle: CSSProperties = {
     background: recGradient(recommendation),
@@ -86,9 +95,9 @@ export default function ResultHero({
 
   return (
     <div style={containerStyle}>
-      <div style={recStyle}>{recommendation}</div>
+      <div style={recStyle}>{t(recKey)}</div>
       <div style={confStyle}>
-        Confidence: <span style={confValue}>{Math.round(confidence)}%</span>
+        {t('results.confidence')}: <span style={confValue}>{Math.round(confidence)}%</span>
       </div>
       <div style={infoLine}>
         <span style={infoChip}>{ticker}</span>

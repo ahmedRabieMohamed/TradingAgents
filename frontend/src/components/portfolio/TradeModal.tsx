@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { CSSProperties } from 'react';
-import { getPortfolio, executeTrade } from '../../services/api';
+import { useTranslation } from 'react-i18next';
+import { getPortfolio, executeTrade, validateStock } from '../../services/api';
 import type { TradeRequest } from '../../types';
 
 interface TradeModalProps {
@@ -164,12 +165,14 @@ export default function TradeModal({
   direction,
   recommendation,
   confidence,
-  currentPrice,
+  currentPrice: passedPrice,
   analysisSessionId,
   onSuccess,
 }: TradeModalProps) {
+  const { t } = useTranslation(['portfolio', 'common']);
   const [quantity, setQuantity] = useState<string>('1');
   const [availableCash, setAvailableCash] = useState<number | null>(null);
+  const [livePrice, setLivePrice] = useState<number>(passedPrice);
   const [loading, setLoading] = useState(false);
   const [fetchingCash, setFetchingCash] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -177,28 +180,36 @@ export default function TradeModal({
 
   useEffect(() => {
     if (!isOpen) return;
-    // Reset state on open
     setQuantity('1');
     setError(null);
     setSuccess(null);
     setLoading(false);
+    setLivePrice(passedPrice);
 
-    // Fetch available cash
     setFetchingCash(true);
     getPortfolio()
       .then((p) => setAvailableCash(p.cash_balance))
       .catch(() => setAvailableCash(null))
       .finally(() => setFetchingCash(false));
-  }, [isOpen]);
+
+    // Fetch live price if passed price is 0
+    if (!passedPrice && ticker && marketId) {
+      validateStock(ticker, marketId)
+        .then((v) => { if (v.price) setLivePrice(v.price); })
+        .catch(() => {});
+    }
+  }, [isOpen, passedPrice, ticker, marketId]);
 
   if (!isOpen) return null;
 
+  const currentPrice = livePrice;
   const qty = Math.max(0, parseInt(quantity, 10) || 0);
   const totalCost = qty * currentPrice;
   const insufficientCash = availableCash !== null && totalCost > availableCash;
   const canConfirm = qty >= 1 && !insufficientCash && !loading && !success;
 
   const recColor = recommendation.toUpperCase() === 'BUY' ? '#22c55e' : '#ef4444';
+  const currency = marketId === 'egypt' ? 'E£' : '$';
 
   async function handleConfirm() {
     setLoading(true);
@@ -231,7 +242,7 @@ export default function TradeModal({
     <div style={overlayStyle} onClick={onClose}>
       <div style={cardStyle} onClick={(e) => e.stopPropagation()}>
         <div style={headerStyle}>
-          <span style={titleStyle}>Execute Trade</span>
+          <span style={titleStyle}>{t('simulation.title')}</span>
           <button style={closeBtnStyle} onClick={onClose}>&times;</button>
         </div>
 
@@ -245,13 +256,13 @@ export default function TradeModal({
 
         {/* Direction + price */}
         <div style={rowStyle}>
-          <span>Direction: <span style={directionBadge(direction)}>{direction.toUpperCase()}</span></span>
-          <span>Price: <strong style={{ color: 'var(--text)' }}>${currentPrice.toFixed(2)}</strong></span>
+          <span>{t('positions.side')}: <span style={directionBadge(direction)}>{direction.toUpperCase()}</span></span>
+          <span>{t('positions.currentPrice')}: <strong style={{ color: 'var(--text)' }}>{currency}{currentPrice.toFixed(2)}</strong></span>
         </div>
 
         {confidence !== null && (
           <div style={{ fontSize: 12, color: 'var(--text3)' }}>
-            AI Confidence: <strong style={{ color: recColor }}>{Math.round(confidence)}%</strong>
+            {t('common:recommendation.buy') !== 'Buy' ? 'AI' : 'AI'} {t('common:status.success').split(' ')[0]}: <strong style={{ color: recColor }}>{Math.round(confidence)}%</strong>
           </div>
         )}
 
@@ -259,7 +270,7 @@ export default function TradeModal({
 
         {/* Quantity input */}
         <div>
-          <div style={labelStyle}>Quantity</div>
+          <div style={labelStyle}>{t('positions.quantity')}</div>
           <input
             type="number"
             min={1}
@@ -267,7 +278,6 @@ export default function TradeModal({
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             style={inputStyle}
-            placeholder="Enter quantity"
           />
         </div>
 
@@ -275,19 +285,19 @@ export default function TradeModal({
         {availableCash !== null && currentPrice > 0 && (
           <div style={{ background: 'var(--surface2)', borderRadius: 'var(--radius-sm)', padding: 12, fontSize: 12 }}>
             <div style={{ fontWeight: 600, color: 'var(--text3)', marginBottom: 8, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Position Size Guide
+              {t('simulation.positionSize')}
             </div>
             {[1, 2, 5, 10].map((riskPct) => {
               const riskAmount = availableCash * (riskPct / 100);
               const suggestedQty = Math.floor(riskAmount / currentPrice);
               return suggestedQty > 0 ? (
                 <div key={riskPct} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text2)', padding: '3px 0' }}>
-                  <span>{riskPct}% risk (${riskAmount.toFixed(0)})</span>
+                  <span>{riskPct}% ({currency}{riskAmount.toFixed(0)})</span>
                   <button
                     style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}
                     onClick={() => setQuantity(String(suggestedQty))}
                   >
-                    {suggestedQty} shares
+                    {suggestedQty}
                   </button>
                 </div>
               ) : null;
@@ -297,20 +307,20 @@ export default function TradeModal({
 
         {/* Total cost */}
         <div style={rowStyle}>
-          <span>Total Cost</span>
+          <span>{t('trades.total')}</span>
           <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)' }}>
-            ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {currency}{totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </div>
 
         {/* Available cash */}
         <div style={rowStyle}>
-          <span>Available Cash</span>
+          <span>{t('summary.cashBalance')}</span>
           <span style={{ fontWeight: 600, color: 'var(--text)' }}>
             {fetchingCash
               ? '...'
               : availableCash !== null
-                ? `$${availableCash.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                ? `${currency}${availableCash.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A'}
           </span>
         </div>
@@ -318,14 +328,14 @@ export default function TradeModal({
         {/* Warning */}
         {insufficientCash && (
           <div style={warningBox}>
-            Insufficient cash. Reduce quantity or close existing positions.
+            {t('common:status.error')}
           </div>
         )}
 
         {/* Success message */}
         {success && (
           <div style={successBox}>
-            Trade executed! Entry: ${success.entryPrice.toFixed(2)} | Total: ${success.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {t('common:status.success')}! {currency}{success.entryPrice.toFixed(2)} | {currency}{success.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         )}
 
@@ -338,7 +348,7 @@ export default function TradeModal({
           disabled={!canConfirm}
           onClick={handleConfirm}
         >
-          {loading ? 'Executing...' : success ? 'Trade Confirmed' : 'Confirm Trade'}
+          {loading ? t('common:status.loading') : success ? t('common:status.success') : t('common:actions.confirm')}
         </button>
       </div>
     </div>

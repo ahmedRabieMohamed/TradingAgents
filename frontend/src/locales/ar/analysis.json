@@ -9,6 +9,7 @@
   },
   "market": {
     "selectMarket": "اختر السوق",
+    "selectMarketDesc": "اختر السوق الذي تريد تحليل سهم منه.",
     "usMarket": "السوق الأمريكي",
     "egyptMarket": "البورصة المصرية"
   },
@@ -17,9 +18,13 @@
     "searchPlaceholder": "ابحث بالرمز أو الاسم...",
     "price": "السعر",
     "change": "التغيير",
-    "customTicker": "استخدام رمز مخصص"
+    "customTicker": "إدخال رمز مخصص",
+    "marketOverview": "نظرة عامة على السوق",
+    "browseStocks": "تصفح الأسهم أو اختر واحداً للتحليل."
   },
   "config": {
+    "title": "إعدادات التحليل",
+    "description": "حدد معايير تحليل {{name}} ({{ticker}}).",
     "tradeHorizon": "أفق التداول",
     "analysisDate": "تاريخ التحليل",
     "researchDepth": "عمق البحث",
@@ -29,27 +34,39 @@
     "deepThinkModel": "نموذج التفكير العميق"
   },
   "progress": {
-    "analyzing": "جارٍ التحليل",
+    "analyzing": "جارٍ تحليل {{name}}",
+    "connected": "متصل — يتم استقبال تحديثات مباشرة من المحللين.",
+    "connecting": "جارٍ الاتصال بخادم التحليل...",
     "stage": "المرحلة",
     "messages": "الرسائل",
     "tokensUsed": "الرموز المستخدمة",
     "apiCalls": "طلبات API"
   },
   "results": {
+    "complete": "اكتمل التحليل",
+    "completedDesc": "تم إكمال التحليل بنجاح.",
     "recommendation": "التوصية",
     "confidence": "مستوى الثقة",
     "summary": "الملخص",
     "reports": "التقارير التفصيلية",
-    "noRecommendation": "هذا التحليل لا يحتوي على توصية — ربما فشل أو تم إلغاؤه."
+    "noRecommendation": "هذا التحليل لا يحتوي على توصية — ربما فشل أو تم إلغاؤه.",
+    "executeTrade": "تنفيذ صفقة"
   },
   "agents": {
-    "marketAnalyst": "محلل السوق",
-    "fundamentalsAnalyst": "محلل الأساسيات",
-    "sentimentAnalyst": "محلل المشاعر",
-    "newsAnalyst": "محلل الأخبار",
-    "technicalAnalyst": "المحلل الفني",
-    "riskManager": "مدير المخاطر",
-    "portfolioManager": "مدير المحفظة",
-    "researcher": "الباحث"
+    "marketAnalysis": "تحليل السوق",
+    "newsAnalysis": "تحليل الأخبار",
+    "socialSentiment": "تحليل المشاعر",
+    "fundamentals": "التحليل الأساسي",
+    "bullBearDebate": "نقاش الصعود والهبوط",
+    "traderRecommendation": "توصية المتداول",
+    "riskAssessment": "تقييم المخاطر",
+    "portfolioDecision": "قرار المحفظة",
+    "bullResearcher": "باحث الصعود",
+    "bearResearcher": "باحث الهبوط",
+    "researchManager": "مدير الأبحاث",
+    "aggressiveAnalyst": "المحلل الهجومي",
+    "conservativeAnalyst": "المحلل المحافظ",
+    "neutralAnalyst": "المحلل المحايد",
+    "riskManager": "مدير المخاطر"
   }
 }

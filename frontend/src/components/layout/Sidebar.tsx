@@ -189,11 +189,11 @@ export default function Sidebar() {
         style={{ background: 'transparent', borderInlineEnd: 'none' }}
       />
 
-      {/* Market Status */}
+      {/* Market Status — above the collapse trigger (48px) */}
       {!collapsed && (
         <div style={{
           position: 'absolute',
-          bottom: 0,
+          bottom: 48,
           insetInlineStart: 0,
           insetInlineEnd: 0,
           padding: '12px 20px',

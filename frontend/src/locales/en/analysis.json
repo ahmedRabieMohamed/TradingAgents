@@ -9,6 +9,7 @@
   },
   "market": {
     "selectMarket": "Select Market",
+    "selectMarketDesc": "Choose the market you want to analyze a stock from.",
     "usMarket": "US Market",
     "egyptMarket": "Egypt (EGX)"
   },
@@ -17,9 +18,13 @@
     "searchPlaceholder": "Search by ticker or name...",
     "price": "Price",
     "change": "Change",
-    "customTicker": "Use custom ticker"
+    "customTicker": "Enter custom ticker",
+    "marketOverview": "Market Overview",
+    "browseStocks": "Browse stocks or select one to analyze."
   },
   "config": {
+    "title": "Configure Analysis",
+    "description": "Set parameters for analyzing {{name}} ({{ticker}}).",
     "tradeHorizon": "Trade Horizon",
     "analysisDate": "Analysis Date",
     "researchDepth": "Research Depth",
@@ -29,27 +34,39 @@
     "deepThinkModel": "Deep Think Model"
   },
   "progress": {
-    "analyzing": "Analyzing",
+    "analyzing": "Analyzing {{name}}",
+    "connected": "Connected — receiving live updates from agents.",
+    "connecting": "Connecting to analysis stream...",
     "stage": "Stage",
     "messages": "Messages",
     "tokensUsed": "Tokens Used",
     "apiCalls": "API Calls"
   },
   "results": {
+    "complete": "Analysis Complete",
+    "completedDesc": "Your analysis has been completed successfully.",
     "recommendation": "Recommendation",
     "confidence": "Confidence",
     "summary": "Summary",
     "reports": "Detailed Reports",
-    "noRecommendation": "This analysis has no recommendation — it may have failed or been cancelled."
+    "noRecommendation": "This analysis has no recommendation — it may have failed or been cancelled.",
+    "executeTrade": "Execute Trade"
   },
   "agents": {
-    "marketAnalyst": "Market Analyst",
-    "fundamentalsAnalyst": "Fundamentals Analyst",
-    "sentimentAnalyst": "Sentiment Analyst",
-    "newsAnalyst": "News Analyst",
-    "technicalAnalyst": "Technical Analyst",
-    "riskManager": "Risk Manager",
-    "portfolioManager": "Portfolio Manager",
-    "researcher": "Researcher"
+    "marketAnalysis": "Market Analysis",
+    "newsAnalysis": "News Analysis",
+    "socialSentiment": "Social Sentiment",
+    "fundamentals": "Fundamentals",
+    "bullBearDebate": "Bull vs Bear Debate",
+    "traderRecommendation": "Trader Recommendation",
+    "riskAssessment": "Risk Assessment",
+    "portfolioDecision": "Portfolio Decision",
+    "bullResearcher": "Bull Researcher",
+    "bearResearcher": "Bear Researcher",
+    "researchManager": "Research Manager",
+    "aggressiveAnalyst": "Aggressive Analyst",
+    "conservativeAnalyst": "Conservative Analyst",
+    "neutralAnalyst": "Neutral Analyst",
+    "riskManager": "Risk Manager"
   }
 }

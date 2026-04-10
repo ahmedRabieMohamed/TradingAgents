@@ -28,24 +28,32 @@ import type { StockValidation, AnalysisRequest, WSEvent } from '../types';
 
 const { Title, Text, Paragraph } = Typography;
 
-const AGENT_DISPLAY: Record<string, { icon: string; label: string }> = {
-  market_analyst:        { icon: '\ud83d\udcca', label: 'Market Analysis' },
-  'Market Analyst':      { icon: '\ud83d\udcca', label: 'Market Analysis' },
-  news_analyst:          { icon: '\ud83d\udcf0', label: 'News Analysis' },
-  'News Analyst':        { icon: '\ud83d\udcf0', label: 'News Analysis' },
-  social_media_analyst:  { icon: '\ud83d\udcac', label: 'Social Sentiment' },
-  'Social Media Analyst':{ icon: '\ud83d\udcac', label: 'Social Sentiment' },
-  fundamentals_analyst:  { icon: '\ud83d\udcd1', label: 'Fundamentals' },
-  'Fundamentals Analyst':{ icon: '\ud83d\udcd1', label: 'Fundamentals' },
-  bull_researcher:       { icon: '\ud83d\udc02', label: 'Bull vs Bear Debate' },
-  bear_researcher:       { icon: '\ud83d\udc02', label: 'Bull vs Bear Debate' },
-  'Bull vs Bear Debate': { icon: '\ud83d\udc02', label: 'Bull vs Bear Debate' },
-  trader:                { icon: '\ud83d\udcb9', label: 'Trader Recommendation' },
-  Trader:                { icon: '\ud83d\udcb9', label: 'Trader Recommendation' },
-  risk_manager:          { icon: '\ud83d\udee1\ufe0f', label: 'Risk Assessment' },
-  'Risk Assessment':     { icon: '\ud83d\udee1\ufe0f', label: 'Risk Assessment' },
-  portfolio_manager:     { icon: '\ud83d\udcbc', label: 'Portfolio Decision' },
-  'Portfolio Manager':   { icon: '\ud83d\udcbc', label: 'Portfolio Decision' },
+// Agent icons (static) — labels come from t('agents.*')
+const AGENT_ICONS: Record<string, { icon: string; key: string }> = {
+  market_analyst:        { icon: '\ud83d\udcca', key: 'agents.marketAnalysis' },
+  'Market Analyst':      { icon: '\ud83d\udcca', key: 'agents.marketAnalysis' },
+  news_analyst:          { icon: '\ud83d\udcf0', key: 'agents.newsAnalysis' },
+  'News Analyst':        { icon: '\ud83d\udcf0', key: 'agents.newsAnalysis' },
+  social_media_analyst:  { icon: '\ud83d\udcac', key: 'agents.socialSentiment' },
+  'Social Media Analyst':{ icon: '\ud83d\udcac', key: 'agents.socialSentiment' },
+  fundamentals_analyst:  { icon: '\ud83d\udcd1', key: 'agents.fundamentals' },
+  'Fundamentals Analyst':{ icon: '\ud83d\udcd1', key: 'agents.fundamentals' },
+  bull_researcher:       { icon: '\ud83d\udc02', key: 'agents.bullBearDebate' },
+  bear_researcher:       { icon: '\ud83d\udc02', key: 'agents.bullBearDebate' },
+  'Bull vs Bear Debate': { icon: '\ud83d\udc02', key: 'agents.bullBearDebate' },
+  'Bull Researcher':     { icon: '\ud83d\udc02', key: 'agents.bullResearcher' },
+  'Bear Researcher':     { icon: '\ud83d\udc02', key: 'agents.bearResearcher' },
+  'Research Manager':    { icon: '\ud83d\udcca', key: 'agents.researchManager' },
+  trader:                { icon: '\ud83d\udcb9', key: 'agents.traderRecommendation' },
+  Trader:                { icon: '\ud83d\udcb9', key: 'agents.traderRecommendation' },
+  risk_manager:          { icon: '\ud83d\udee1\ufe0f', key: 'agents.riskAssessment' },
+  'Risk Assessment':     { icon: '\ud83d\udee1\ufe0f', key: 'agents.riskAssessment' },
+  'Risk Manager':        { icon: '\ud83d\udee1\ufe0f', key: 'agents.riskManager' },
+  'Aggressive Analyst':  { icon: '\ud83d\udcb9', key: 'agents.aggressiveAnalyst' },
+  'Conservative Analyst':{ icon: '\ud83d\udee1\ufe0f', key: 'agents.conservativeAnalyst' },
+  'Neutral Analyst':     { icon: '\ud83d\udccb', key: 'agents.neutralAnalyst' },
+  portfolio_manager:     { icon: '\ud83d\udcbc', key: 'agents.portfolioDecision' },
+  'Portfolio Manager':   { icon: '\ud83d\udcbc', key: 'agents.portfolioDecision' },
 };
 
 export default function NewAnalysis() {
@@ -265,7 +273,7 @@ export default function NewAnalysis() {
         {step === 0 && (
           <>
             <Title level={4}>{t('market.selectMarket')}</Title>
-            <Paragraph type="secondary">Choose the market you want to analyze a stock from.</Paragraph>
+            <Paragraph type="secondary">{t('market.selectMarketDesc')}</Paragraph>
             <MarketSelector onSelect={handleMarketSelect} />
           </>
         )}
@@ -273,8 +281,8 @@ export default function NewAnalysis() {
         {/* Step 2: Market Overview */}
         {step === 1 && selectedMarket && (
           <>
-            <Title level={4}>Market Overview</Title>
-            <Paragraph type="secondary">Browse stocks or select one to analyze.</Paragraph>
+            <Title level={4}>{t('stock.marketOverview')}</Title>
+            <Paragraph type="secondary">{t('stock.browseStocks')}</Paragraph>
 
             {showCustomTicker ? (
               <>
@@ -299,7 +307,7 @@ export default function NewAnalysis() {
                   onClick={() => wizard.setShowCustomTicker(true)}
                   style={{ marginTop: 16, padding: 0 }}
                 >
-                  Enter custom ticker
+                  {t('stock.customTicker')}
                 </Button>
               </>
             )}
@@ -309,9 +317,9 @@ export default function NewAnalysis() {
         {/* Step 3: Configure */}
         {step === 2 && selectedMarket && selectedStock && (
           <>
-            <Title level={4}>Configure Analysis</Title>
+            <Title level={4}>{t('config.title')}</Title>
             <Paragraph type="secondary">
-              Set parameters for analyzing {selectedStock.name} ({selectedStock.ticker}).
+              {t('config.description', { name: selectedStock.name, ticker: selectedStock.ticker })}
             </Paragraph>
             <CandlestickChart
               ticker={selectedStock.ticker}
@@ -345,11 +353,11 @@ export default function NewAnalysis() {
         {/* Step 4: Analyze */}
         {step === 3 && (
           <>
-            <Title level={4}>Analyzing {selectedStock?.name}</Title>
+            <Title level={4}>{t('progress.analyzing', { name: selectedStock?.name })}</Title>
             <Paragraph type="secondary">
               {connected
-                ? 'Connected - receiving live updates from agents.'
-                : 'Connecting to analysis stream...'}
+                ? t('progress.connected')
+                : t('progress.connecting')}
             </Paragraph>
             <AnalysisProgress />
           </>
@@ -360,9 +368,9 @@ export default function NewAnalysis() {
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <Title level={4} style={{ marginBottom: 4 }}>{t('results.recommendation')}</Title>
+                <Title level={4} style={{ marginBottom: 4 }}>{t('results.complete')}</Title>
                 <Text type="secondary">
-                  {analysisStore.summary || 'Your analysis has been completed successfully.'}
+                  {analysisStore.summary || t('results.completedDesc')}
                 </Text>
               </div>
               <Button
@@ -433,7 +441,7 @@ export default function NewAnalysis() {
                 disabled={analysisStore.recommendation?.toUpperCase() === 'HOLD'}
                 onClick={() => setTradeModalOpen(true)}
               >
-                Execute Trade
+                {t('results.executeTrade')}
               </Button>
             </Space>
 
@@ -442,12 +450,13 @@ export default function NewAnalysis() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
                 <Title level={5}>{t('results.reports')}</Title>
                 {Object.entries(analysisStore.reports).map(([agentName, content], idx) => {
-                  const display = AGENT_DISPLAY[agentName] || { icon: '\ud83d\udccb', label: agentName };
+                  const info = AGENT_ICONS[agentName] || { icon: '\ud83d\udccb', key: '' };
+                  const label = info.key ? t(info.key) : agentName;
                   return (
                     <ReportSection
                       key={agentName}
-                      icon={display.icon}
-                      title={display.label}
+                      icon={info.icon}
+                      title={label}
                       content={content}
                       defaultOpen={idx === 0}
                     />
