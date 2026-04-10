@@ -222,12 +222,12 @@ export default function NewAnalysis() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load past analysis when ?session= is in the URL
+  const sessionParam = searchParams.get('session');
   useEffect(() => {
-    const sessionId = searchParams.get('session');
-    if (!sessionId) return;
+    if (!sessionParam) return;
 
     setLoadingSession(true);
-    getAnalysis(sessionId)
+    getAnalysis(sessionParam)
       .then((session) => {
         analysisStore.reset();
         analysisStore.setSession(session.id);
@@ -260,7 +260,7 @@ export default function NewAnalysis() {
           valid: true,
           ticker: session.ticker,
           name: session.stock_name,
-          price: 0,
+          price: session.stock_price_at_analysis ?? 0,
           currency: session.market_id === 'egypt' ? 'EGP' : 'USD',
           change_pct: 0,
           market_id: session.market_id,
@@ -272,11 +272,13 @@ export default function NewAnalysis() {
       })
       .catch((err) => {
         console.error('Failed to load session:', err);
+        // On failure, reset to step 0 so user isn't stuck on blank screen
+        wizard.reset();
       })
       .finally(() => {
         setLoadingSession(false);
       });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sessionParam]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleEvent = useCallback(
     (event: WSEvent) => {
@@ -641,6 +643,33 @@ export default function NewAnalysis() {
               }}
             />
           </>
+        )}
+
+        {/* Step 5 fallback: session loaded but no recommendation */}
+        {step === 4 && !analysisStore.recommendation && !loadingSession && (
+          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text3)' }}>
+            <p style={{ fontSize: 14, marginBottom: 16 }}>
+              This analysis has no recommendation — it may have failed or been cancelled.
+            </p>
+            <button
+              style={{
+                padding: '10px 24px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border)',
+                background: 'transparent',
+                color: 'var(--text2)',
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                analysisStore.reset();
+                wizard.reset();
+              }}
+            >
+              Start New Analysis
+            </button>
+          </div>
         )}
       </div>
     </>

@@ -1,6 +1,11 @@
-import { useState, CSSProperties } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useState, useMemo, CSSProperties } from 'react';
+import { marked } from 'marked';
+
+// Configure marked for GFM tables and breaks
+marked.setOptions({
+  gfm: true,
+  breaks: false,
+});
 
 interface ReportSectionProps {
   title: string;
@@ -48,6 +53,14 @@ export default function ReportSection({ title, icon, content, defaultOpen = fals
   const [open, setOpen] = useState(defaultOpen);
   const [hovered, setHovered] = useState(false);
 
+  const html = useMemo(() => {
+    try {
+      return marked.parse(content) as string;
+    } catch {
+      return content;
+    }
+  }, [content]);
+
   return (
     <div style={containerStyle}>
       <div
@@ -78,9 +91,10 @@ export default function ReportSection({ title, icon, content, defaultOpen = fals
       </div>
       {open && (
         <div style={bodyStyle}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
-            {content}
-          </ReactMarkdown>
+          <div
+            className="markdown-body"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
         </div>
       )}
     </div>

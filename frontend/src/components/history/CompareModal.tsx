@@ -1,6 +1,5 @@
 import { CSSProperties } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { marked } from 'marked';
 import type { AnalysisSession } from '../../types';
 
 interface CompareModalProps {
@@ -178,11 +177,13 @@ function SessionColumn({ session }: { session: AnalysisSession }) {
               <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent)', marginBottom: 4 }}>
                 {r.agent_name}
               </div>
-              <div style={reportPreview}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
-                  {r.content.slice(0, 600)}
-                </ReactMarkdown>
-              </div>
+              <div
+                style={reportPreview}
+                className="markdown-body"
+                dangerouslySetInnerHTML={{
+                  __html: (() => { try { return marked.parse(r.content.slice(0, 600)) as string; } catch { return r.content.slice(0, 600); } })(),
+                }}
+              />
             </div>
           ))}
         </>
