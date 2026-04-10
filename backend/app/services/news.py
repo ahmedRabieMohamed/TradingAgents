@@ -7,7 +7,7 @@ Produces normalised ``NewsArticle`` dicts:
 import logging
 import re
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any
 
 logger = logging.getLogger(__name__)

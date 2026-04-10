@@ -1,6 +1,5 @@
 """Settings service for reading and writing user preferences and API keys."""
 
-import json
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
