@@ -271,6 +271,7 @@ export default function Dashboard() {
               rowKey="id"
               size="small"
               pagination={false}
+              scroll={{ x: true }}
             />
           </div>
         )}
@@ -294,6 +295,7 @@ export default function Dashboard() {
               rowKey="id"
               size="small"
               pagination={false}
+              scroll={{ x: true }}
               onRow={(record) => ({
                 onClick: () => navigate(`/analysis?session=${record.id}`),
                 style: { cursor: 'pointer' },

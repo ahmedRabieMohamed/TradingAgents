@@ -65,6 +65,7 @@ export default function Sidebar() {
   const { t } = useTranslation('common');
   const navigate = useNavigate();
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
   const [openPositions, setOpenPositions] = useState(0);
   const [marketStatus, setMarketStatus] = useState<Record<string, boolean>>({});
 
@@ -141,6 +142,12 @@ export default function Sidebar() {
   return (
     <Sider
       width={260}
+      collapsedWidth={64}
+      collapsible
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      breakpoint="lg"
+      onBreakpoint={(broken) => setCollapsed(broken)}
       style={{
         height: '100vh',
         position: 'fixed',
@@ -154,16 +161,22 @@ export default function Sidebar() {
       theme="dark"
     >
       {/* Logo */}
-      <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--border)' }}>
-        <Space align="center" size={8}>
-          <RiseOutlined style={{ fontSize: 20, color: 'var(--accent)' }} />
-          <Text strong style={{ fontSize: 16, color: 'var(--text)' }}>
-            {t('app.title')}
-          </Text>
-        </Space>
-        <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2, paddingInlineStart: 28 }}>
-          {t('app.subtitle')}
-        </div>
+      <div style={{ padding: collapsed ? '20px 0 16px' : '20px 20px 16px', borderBottom: '1px solid var(--border)', textAlign: collapsed ? 'center' : undefined }}>
+        {collapsed ? (
+          <RiseOutlined style={{ fontSize: 22, color: 'var(--accent)' }} />
+        ) : (
+          <>
+            <Space align="center" size={8}>
+              <RiseOutlined style={{ fontSize: 20, color: 'var(--accent)' }} />
+              <Text strong style={{ fontSize: 16, color: 'var(--text)' }}>
+                {t('app.title')}
+              </Text>
+            </Space>
+            <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2, paddingInlineStart: 28 }}>
+              {t('app.subtitle')}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Navigation */}
@@ -177,43 +190,45 @@ export default function Sidebar() {
       />
 
       {/* Market Status */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        insetInlineStart: 0,
-        insetInlineEnd: 0,
-        padding: '12px 20px',
-        borderTop: '1px solid var(--border)',
-        background: '#0d1321',
-      }}>
-        {Object.entries(MARKETS).map(([id, schedule]) => (
-          <div
-            key={id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              fontSize: 11,
-              color: 'var(--text3)',
-              marginBottom: 6,
-            }}
-          >
-            <span
+      {!collapsed && (
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          padding: '12px 20px',
+          borderTop: '1px solid var(--border)',
+          background: '#0d1321',
+        }}>
+          {Object.entries(MARKETS).map(([id, schedule]) => (
+            <div
+              key={id}
               style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: marketStatus[id] ? 'var(--green)' : 'var(--red)',
-                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                fontSize: 11,
+                color: 'var(--text3)',
+                marginBottom: 6,
               }}
-            />
-            <span>{schedule.label}</span>
-            <span style={{ marginInlineStart: 'auto', fontSize: 10, opacity: 0.7 }}>
-              {marketStatus[id] ? t('market.open') : t('market.closed')}
-            </span>
-          </div>
-        ))}
-      </div>
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: marketStatus[id] ? 'var(--green)' : 'var(--red)',
+                  flexShrink: 0,
+                }}
+              />
+              <span>{schedule.label}</span>
+              <span style={{ marginInlineStart: 'auto', fontSize: 10, opacity: 0.7 }}>
+                {marketStatus[id] ? t('market.open') : t('market.closed')}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </Sider>
   );
 }

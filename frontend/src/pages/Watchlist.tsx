@@ -190,6 +190,7 @@ export default function WatchlistPage() {
             dataSource={items}
             pagination={false}
             size="middle"
+            scroll={{ x: true }}
           />
         )}
       </div>

@@ -196,7 +196,13 @@ body {
 }
 .markdown-body img { max-width: 100%; border-radius: var(--radius-sm); }
 
-/* Responsive */
+/* Responsive — sidebar collapses at lg breakpoint (992px) */
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 64px;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 0px;
