@@ -22,6 +22,7 @@ import TradeModal from '../components/portfolio/TradeModal';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useAnalysisStore } from '../stores/analysisStore';
 import { useWizardStore } from '../stores/wizardStore';
+import { useLocaleStore } from '../stores/localeStore';
 import { createAnalysis, getAnalysis } from '../services/api';
 import type { StockValidation, AnalysisRequest, WSEvent } from '../types';
 
@@ -49,6 +50,7 @@ const AGENT_DISPLAY: Record<string, { icon: string; label: string }> = {
 
 export default function NewAnalysis() {
   const { t } = useTranslation(['analysis', 'common']);
+  const locale = useLocaleStore((s) => s.locale);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Persisted wizard state (survives navigation)
@@ -188,6 +190,7 @@ export default function NewAnalysis() {
         llm_provider: config.llm_provider || 'openai',
         quick_think_model: config.quick_think_model || 'gpt-4o-mini',
         deep_think_model: config.deep_think_model || 'o1',
+        language: locale,
       };
 
       wizard.setTradeHorizon(fullConfig.trade_horizon);

@@ -57,6 +57,7 @@ class AnalysisSession(Base):
     stock_price_at_analysis: Mapped[float | None] = mapped_column(
         Float, nullable=True
     )
+    language: Mapped[str] = mapped_column(String(5), nullable=False, default="en")
     notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
     tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
 

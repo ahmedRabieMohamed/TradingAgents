@@ -103,6 +103,7 @@ class AnalysisRequest(BaseModel):
     deep_think_model: str
     stock_name: str = ""
     stock_price_at_analysis: Optional[float] = None
+    language: str = "en"
 
 
 class AnalysisCreateResponse(BaseModel):
@@ -130,6 +131,7 @@ class AnalysisSessionResponse(BaseModel):
     reports_path: str
     stock_name: str
     stock_price_at_analysis: Optional[float] = None
+    language: str = "en"
     notes: str = ""
     tags: list[str] = []
     reports: list["AgentReportSchema"] = Field(default=[], validation_alias="agent_reports")

@@ -48,6 +48,7 @@ export interface AnalysisRequest {
   llm_provider: string;
   quick_think_model: string;
   deep_think_model: string;
+  language?: string;
 }
 
 export interface AnalysisCreateResponse {
@@ -85,6 +86,7 @@ export interface AnalysisSession {
   llm_provider: string;
   recommendation: Recommendation | null;
   confidence: number | null;
+  language?: string;
   reports: AgentReport[];
   simulation: SimulationResult | null;
 }

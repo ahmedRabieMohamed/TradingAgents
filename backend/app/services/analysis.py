@@ -64,6 +64,7 @@ class AnalysisManager:
             deep_think_model=request.deep_think_model,
             stock_name=request.stock_name,
             stock_price_at_analysis=request.stock_price_at_analysis,
+            language=request.language,
         )
         db.add(session)
         await db.flush()  # populate session.id via default
@@ -169,6 +170,9 @@ class AnalysisManager:
         # Map market_id to market_region
         config["market_region"] = request.market_id
 
+        # Language for agent output
+        config["language"] = request.language
+
         # Research depth adjustments
         if request.research_depth == "quick":
             config["max_debate_rounds"] = 1
@@ -213,6 +217,28 @@ class AnalysisManager:
         init_state = graph.propagator.create_initial_state(
             request.ticker, str(request.analysis_date)
         )
+
+        # Inject language instruction into initial state so agents respond
+        # in the requested language
+        language = config.get("language", "en")
+        if language != "en":
+            lang_names = {"ar": "Arabic", "en": "English"}
+            lang_name = lang_names.get(language, language)
+            lang_instruction = (
+                f"\n\nIMPORTANT: You MUST write ALL your analysis, "
+                f"reports, and recommendations in {lang_name}. "
+                f"Keep stock ticker symbols, numbers, and financial "
+                f"abbreviations in their original Latin/English form."
+            )
+            # Append language instruction to the human message
+            if init_state.get("messages"):
+                original_msg = init_state["messages"][0]
+                if isinstance(original_msg, tuple):
+                    init_state["messages"][0] = (
+                        original_msg[0],
+                        original_msg[1] + lang_instruction,
+                    )
+
         args = graph.propagator.get_graph_args(callbacks=[stats_handler])
 
         trace: list[dict] = []
