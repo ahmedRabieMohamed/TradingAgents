@@ -1,5 +1,6 @@
 import time
 import json
+from tradingagents.dataflows.config import get_config
 
 
 def create_research_manager(llm, memory):
@@ -42,6 +43,8 @@ Here are your past reflections on mistakes:
 Here is the debate:
 Debate History:
 {history}"""
+
+        prompt += get_config().get("language_instruction", "")
         response = llm.invoke(prompt)
 
         new_investment_debate_state = {

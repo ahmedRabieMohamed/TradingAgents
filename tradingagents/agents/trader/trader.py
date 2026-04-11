@@ -1,6 +1,7 @@
 import functools
 import time
 import json
+from tradingagents.dataflows.config import get_config
 
 
 def create_trader(llm, memory):
@@ -44,6 +45,8 @@ Do not forget to utilize lessons from past decisions to learn from your mistakes
             context,
         ]
 
+        lang = get_config().get("language_instruction", "")
+        messages[0]["content"] += lang
         result = llm.invoke(messages)
 
         return {

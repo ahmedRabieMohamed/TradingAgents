@@ -171,6 +171,17 @@ class AnalysisManager:
 
         # Language for agent output
         config["language"] = request.language
+        if request.language != "en":
+            lang_names = {"ar": "Arabic"}
+            lang_name = lang_names.get(request.language, request.language)
+            config["language_instruction"] = (
+                f"\n\nCRITICAL LANGUAGE REQUIREMENT: You MUST write your ENTIRE "
+                f"response, analysis, and recommendations in {lang_name}. "
+                f"All headings, paragraphs, bullet points, and conclusions must "
+                f"be in {lang_name}. Keep only stock ticker symbols (e.g. AAPL, ETEL), "
+                f"numbers, and standard financial abbreviations (P/E, EPS, RSI) "
+                f"in their original Latin/English form."
+            )
 
         # Research depth adjustments
         if request.research_depth == "quick":
@@ -216,27 +227,6 @@ class AnalysisManager:
         init_state = graph.propagator.create_initial_state(
             request.ticker, str(request.analysis_date)
         )
-
-        # Inject language instruction into initial state so agents respond
-        # in the requested language
-        language = config.get("language", "en")
-        if language != "en":
-            lang_names = {"ar": "Arabic", "en": "English"}
-            lang_name = lang_names.get(language, language)
-            lang_instruction = (
-                f"\n\nIMPORTANT: You MUST write ALL your analysis, "
-                f"reports, and recommendations in {lang_name}. "
-                f"Keep stock ticker symbols, numbers, and financial "
-                f"abbreviations in their original Latin/English form."
-            )
-            # Append language instruction to the human message
-            if init_state.get("messages"):
-                original_msg = init_state["messages"][0]
-                if isinstance(original_msg, tuple):
-                    init_state["messages"][0] = (
-                        original_msg[0],
-                        original_msg[1] + lang_instruction,
-                    )
 
         args = graph.propagator.get_graph_args(callbacks=[stats_handler])
 

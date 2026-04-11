@@ -1,5 +1,6 @@
 import time
 import json
+from tradingagents.dataflows.config import get_config
 
 
 def create_risk_manager(llm, memory):
@@ -50,6 +51,7 @@ Deliverables:
 
 Focus on actionable insights and continuous improvement. Build on past lessons, critically evaluate all perspectives, and ensure each decision advances better outcomes."""
 
+        prompt += get_config().get("language_instruction", "")
         response = llm.invoke(prompt)
 
         new_risk_debate_state = {

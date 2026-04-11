@@ -131,4 +131,6 @@ DEFAULT_CONFIG = {
     "tool_vendors": {
         # Example: "get_stock_data": "alpha_vantage",  # Override category default
     },
+    # Language instruction appended to all agent prompts (empty = English default)
+    "language_instruction": "",
 }

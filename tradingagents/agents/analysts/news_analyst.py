@@ -25,6 +25,7 @@ def create_news_analyst(llm):
             + """ Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read."""
             + (f"\n\nMarket Context: {market_context}" if market_context else "")
             + f"\n\nTrading Horizon: {trade_horizon}. {horizon_desc}"
+            + (get_config().get("language_instruction", ""))
         )
 
         prompt = ChatPromptTemplate.from_messages(
