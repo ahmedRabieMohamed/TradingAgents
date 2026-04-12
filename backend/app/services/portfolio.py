@@ -353,13 +353,11 @@ async def get_trade_history(
 
 
 async def get_analytics(db: AsyncSession) -> PortfolioAnalyticsResponse:
-    """Compute analytics from closed positions."""
-    result = await db.execute(
-        select(Position).where(Position.status == "closed")
-    )
-    closed = result.scalars().all()
+    """Compute analytics from all positions (closed + open with unrealized P&L)."""
+    result = await db.execute(select(Position))
+    all_positions = result.scalars().all()
 
-    total_trades = len(closed)
+    total_trades = len(all_positions)
     if total_trades == 0:
         return PortfolioAnalyticsResponse(
             total_trades=0,
@@ -368,39 +366,54 @@ async def get_analytics(db: AsyncSession) -> PortfolioAnalyticsResponse:
             total_realized_pnl=0.0,
         )
 
-    wins = sum(1 for p in closed if (p.realized_pnl or 0) > 0)
+    # Compute P&L for each position
+    pnl_data: list[tuple[Position, float, float]] = []  # (pos, pnl, pnl_pct)
+    for p in all_positions:
+        if p.status == "closed":
+            pnl = p.realized_pnl or 0
+            pnl_pct = p.realized_pnl_pct or 0
+        else:
+            current = _fetch_current_price(p.ticker, p.market_id)
+            if current is None:
+                current = p.entry_price
+            if p.direction == "long":
+                pnl = (current - p.entry_price) * p.quantity
+            else:
+                pnl = (p.entry_price - current) * p.quantity
+            pnl_pct = (pnl / (p.entry_price * p.quantity)) * 100 if p.entry_price else 0
+        pnl_data.append((p, round(pnl, 2), round(pnl_pct, 2)))
+
+    wins = sum(1 for _, pnl, _ in pnl_data if pnl > 0)
     win_rate = round((wins / total_trades) * 100, 1)
-    total_realized_pnl = sum(p.realized_pnl or 0 for p in closed)
-    avg_return_pct = round(
-        sum(p.realized_pnl_pct or 0 for p in closed) / total_trades, 2
-    )
+    total_realized_pnl = sum(pnl for _, pnl, _ in pnl_data)
+    avg_return_pct = round(sum(pct for _, _, pct in pnl_data) / total_trades, 2)
 
     # Best / worst
-    best = max(closed, key=lambda p: p.realized_pnl or 0)
-    worst = min(closed, key=lambda p: p.realized_pnl or 0)
+    best_item = max(pnl_data, key=lambda x: x[1])
+    worst_item = min(pnl_data, key=lambda x: x[1])
     best_trade = TradeSummary(
-        ticker=best.ticker,
-        pnl=round(best.realized_pnl or 0, 2),
-        pnl_pct=round(best.realized_pnl_pct or 0, 2),
+        ticker=best_item[0].ticker,
+        pnl=best_item[1],
+        pnl_pct=best_item[2],
     )
     worst_trade = TradeSummary(
-        ticker=worst.ticker,
-        pnl=round(worst.realized_pnl or 0, 2),
-        pnl_pct=round(worst.realized_pnl_pct or 0, 2),
+        ticker=worst_item[0].ticker,
+        pnl=worst_item[1],
+        pnl_pct=worst_item[2],
     )
 
     # By market
     by_market: dict[str, MarketBreakdown] = {}
-    market_groups: dict[str, list[Position]] = {}
-    for p in closed:
-        market_groups.setdefault(p.market_id, []).append(p)
+    market_groups: dict[str, list[tuple[Position, float, float]]] = {}
+    for item in pnl_data:
+        market_groups.setdefault(item[0].market_id, []).append(item)
     for mid, group in market_groups.items():
-        m_wins = sum(1 for p in group if (p.realized_pnl or 0) > 0)
+        m_wins = sum(1 for _, pnl, _ in group if pnl > 0)
         by_market[mid] = MarketBreakdown(
             count=len(group),
             win_rate=round((m_wins / len(group)) * 100, 1),
             avg_return_pct=round(
-                sum(p.realized_pnl_pct or 0 for p in group) / len(group), 2
+                sum(pct for _, _, pct in group) / len(group), 2
             ),
         )
 
@@ -436,19 +449,37 @@ async def get_ai_comparison(db: AsyncSession) -> AIComparisonResponse:
     - **Ignored**: Completed AnalysisSessions that have no linked position but
       do have a SimulationResult (so we can infer what would have happened).
     """
-    # Followed: closed positions with an analysis session
+    # Followed: all positions (open + closed) with an analysis session
     followed_result = await db.execute(
         select(Position).where(
-            Position.status == "closed",
             Position.analysis_session_id.isnot(None),
         )
     )
     followed_positions = followed_result.scalars().all()
 
+    # Compute P&L for each position (realized for closed, unrealized for open)
     followed_count = len(followed_positions)
-    followed_pnl = sum(p.realized_pnl or 0 for p in followed_positions)
-    followed_returns = [p.realized_pnl_pct or 0 for p in followed_positions]
-    followed_wins = sum(1 for p in followed_positions if (p.realized_pnl or 0) > 0)
+    followed_pnl = 0.0
+    followed_returns: list[float] = []
+    followed_wins = 0
+    for p in followed_positions:
+        if p.status == "closed":
+            pnl = p.realized_pnl or 0
+            pnl_pct = p.realized_pnl_pct or 0
+        else:
+            # Open position — compute unrealized P&L with live price
+            current = _fetch_current_price(p.ticker, p.market_id)
+            if current is None:
+                current = p.entry_price
+            if p.direction == "long":
+                pnl = (current - p.entry_price) * p.quantity
+            else:
+                pnl = (p.entry_price - current) * p.quantity
+            pnl_pct = (pnl / (p.entry_price * p.quantity)) * 100 if p.entry_price else 0
+        followed_pnl += pnl
+        followed_returns.append(pnl_pct)
+        if pnl > 0:
+            followed_wins += 1
 
     followed_avg = (
         round(sum(followed_returns) / followed_count, 2) if followed_count else 0.0

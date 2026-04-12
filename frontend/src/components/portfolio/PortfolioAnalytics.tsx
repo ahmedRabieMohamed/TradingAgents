@@ -141,14 +141,14 @@ export default function PortfolioAnalytics() {
     return <div style={{ ...emptyStyle, color: '#ef4444' }}>{error}</div>;
   }
 
-  if (!data || data.total_trades < 3) {
+  if (!data || data.total_trades === 0) {
     return (
       <div style={emptyStyle}>
         <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
         <div style={{ fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
           Not Enough Data
         </div>
-        <div>Close at least 3 trades to see analytics.</div>
+        <div>Execute at least one trade to see analytics.</div>
       </div>
     );
   }
