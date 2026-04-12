@@ -49,7 +49,11 @@ def _get_yf_symbol(ticker: str, market_id: str) -> str:
 
 
 def _fetch_current_price(ticker: str, market_id: str) -> float | None:
-    """Fetch the current market price via yfinance (synchronous).
+    """Fetch the current/latest market price via yfinance (synchronous).
+
+    Uses history API as primary source (more reliable for EGX and other
+    emerging-market exchanges where .info can return stale prices), with
+    .info as fallback.
 
     Returns *None* when the price cannot be determined so callers can fall
     back gracefully.
@@ -58,7 +62,15 @@ def _fetch_current_price(ticker: str, market_id: str) -> float | None:
 
     symbol = _get_yf_symbol(ticker, market_id)
     try:
-        info: dict = yfinance.Ticker(symbol).info or {}
+        yf_ticker = yfinance.Ticker(symbol)
+
+        # Primary: last close from recent history (most reliable across all markets)
+        hist = yf_ticker.history(period="5d")
+        if not hist.empty:
+            return float(hist["Close"].iloc[-1])
+
+        # Fallback: .info fields
+        info: dict = yf_ticker.info or {}
         price = info.get("regularMarketPrice") or info.get("currentPrice")
         return float(price) if price is not None else None
     except Exception:
