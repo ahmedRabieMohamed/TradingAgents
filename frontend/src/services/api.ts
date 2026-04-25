@@ -120,6 +120,20 @@ export function getPriceHistory(ticker: string, marketId: string, period: string
   );
 }
 
+// --- Engines ---
+
+export function getEngineScore(ticker: string, marketId: string, days = 7): Promise<any> {
+  return get<any>(`/engines/score/${encodeURIComponent(ticker)}?market_id=${encodeURIComponent(marketId)}&days=${days}`);
+}
+
+export function getSmartPicks(marketId = 'egypt', limit = 10): Promise<any> {
+  return get<any>(`/engines/smart-picks?market_id=${encodeURIComponent(marketId)}&limit=${limit}`);
+}
+
+export function getDangerAlerts(): Promise<any> {
+  return get<any>('/engines/danger-alerts');
+}
+
 // --- Analysis ---
 
 export function createAnalysis(req: AnalysisRequest): Promise<AnalysisCreateResponse> {

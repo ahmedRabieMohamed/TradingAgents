@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme F — Robinhood Modern</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #1c2b4a;
+    --surface3: #233456;
+    --border: #2a3a5c;
+    --accent: #00d395;
+    --accent-hover: #00b880;
+    --green: #00d395;
+    --green-bg: rgba(0,211,149,0.1);
+    --red: #ff6b8a;
+    --red-bg: rgba(255,107,138,0.1);
+    --yellow: #ffd166;
+    --text: #f0f4ff;
+    --text2: #8899bb;
+    --text3: #556688;
+    --sidebar-w: 250px;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+
+  /* Sidebar — Robinhood-style with sections */
+  .sidebar {
+    width: var(--sidebar-w);
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+    z-index: 100;
+    overflow-y: auto;
+  }
+  .sidebar .logo { display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 28px; }
+  .sidebar .logo-circle {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), #00a8e8);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .sidebar .logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+
+  .sidebar .group-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding: 12px 12px 6px; }
+  .sidebar .item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text2);
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .sidebar .item:hover { background: var(--surface2); color: var(--text); }
+  .sidebar .item.active { background: var(--green-bg); color: var(--accent); font-weight: 600; }
+  .sidebar .item .icon { font-size: 18px; width: 24px; text-align: center; }
+  .sidebar .item .badge { margin-inline-start: auto; background: var(--accent); color: #000; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+
+  .sidebar .bottom { margin-top: auto; padding: 12px 8px; }
+  .sidebar .market-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); padding: 4px 0; }
+  .sidebar .m-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .sidebar .m-dot.open { background: var(--green); box-shadow: 0 0 8px rgba(0,211,149,0.4); }
+  .sidebar .m-dot.closed { background: var(--text3); }
+  .sidebar .m-status { margin-inline-start: auto; font-size: 10px; }
+
+  .main { margin-left: var(--sidebar-w); }
+
+  /* Topbar */
+  .topbar {
+    height: 56px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar h1 { font-size: 18px; font-weight: 700; }
+  .topbar .right { display: flex; gap: 12px; align-items: center; }
+  .topbar .tag { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .topbar .tag.market { background: var(--green-bg); color: var(--accent); }
+  .topbar .lang-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text2);
+    font-size: 12px;
+    padding: 5px 14px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .content { padding: 24px; max-width: 1000px; }
+
+  /* Portfolio overview — Robinhood big number */
+  .portfolio-hero {
+    margin-bottom: 28px;
+    padding: 8px 0;
+  }
+  .portfolio-hero .big-value { font-size: 40px; font-weight: 800; letter-spacing: -1px; }
+  .portfolio-hero .change { font-size: 15px; font-weight: 600; margin-top: 4px; }
+  .portfolio-hero .change.green { color: var(--green); }
+  .portfolio-hero .period { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  /* Chart placeholder */
+  .chart-box {
+    height: 180px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 20px;
+    color: var(--text3); font-size: 13px;
+    position: relative;
+    overflow: hidden;
+  }
+  .chart-box::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0,211,149,0.06), transparent);
+  }
+
+  /* Quick stats row */
+  .stats-row { display: flex; gap: 12px; margin-bottom: 28px; }
+  .stat-card {
+    flex: 1;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+  .stat-card .label { font-size: 12px; color: var(--text3); margin-bottom: 4px; }
+  .stat-card .val { font-size: 20px; font-weight: 700; }
+  .stat-card .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* Result card — Robinhood green */
+  .result-card {
+    background: linear-gradient(135deg, rgba(0,211,149,0.08), rgba(0,168,232,0.04));
+    border: 1px solid rgba(0,211,149,0.15);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .result-card .left { text-align: center; min-width: 120px; }
+  .result-card .rec { font-size: 36px; font-weight: 800; color: var(--green); }
+  .result-card .conf { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  .result-card .conf strong { color: var(--green); }
+  .result-card .details { flex: 1; }
+  .result-card .detail-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid rgba(42,58,92,0.5); }
+  .result-card .detail-row:last-child { border: none; }
+  .result-card .detail-row .key { color: var(--text3); }
+  .result-card .detail-row .val { color: var(--text); font-weight: 600; }
+  .result-card .btns { display: flex; flex-direction: column; gap: 8px; min-width: 150px; }
+
+  /* Buttons */
+  .btn { padding: 10px 24px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; width: 100%; text-align: center; }
+  .btn:hover { opacity: 0.9; }
+  .btn.green { background: var(--accent); color: #000; }
+  .btn.green:hover { background: var(--accent-hover); }
+  .btn.white { background: var(--text); color: var(--bg); }
+  .btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+  .btn-inline { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; width: auto; }
+
+  /* Reports */
+  .section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .report { background: var(--surface); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; }
+  .report .head { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; font-size: 14px; }
+  .report .head:hover { background: var(--surface2); }
+  .report .head .left { display: flex; align-items: center; gap: 10px; }
+  .report .body { padding: 16px 20px; font-size: 13px; line-height: 1.8; color: var(--text2); border-top: 1px solid var(--border); }
+
+  /* Table */
+  .table-box { background: var(--surface); border-radius: var(--radius); overflow: hidden; margin-top: 28px; }
+  .table-box .th { padding: 14px 20px; font-size: 15px; font-weight: 700; border-bottom: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text3); }
+  td { padding: 12px 20px; border-top: 1px solid rgba(42,58,92,0.3); font-size: 13px; }
+  tr:hover td { background: var(--surface2); }
+  .t-ticker { font-weight: 700; }
+  .rec-pill { padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .rec-pill.buy { background: var(--green-bg); color: var(--green); }
+  .rec-pill.sell { background: var(--red-bg); color: var(--red); }
+  .rec-pill.hold { background: rgba(255,209,102,0.12); color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-circle">📈</div>
+    <span class="logo-name">TradingAgents</span>
+  </div>
+
+  <div class="group-label">Markets</div>
+  <div class="item active"><span class="icon">🏠</span> Dashboard</div>
+  <div class="item"><span class="icon">📊</span> New Analysis</div>
+
+  <div class="group-label">Manage</div>
+  <div class="item"><span class="icon">⭐</span> Watchlist</div>
+  <div class="item"><span class="icon">📋</span> History</div>
+  <div class="item"><span class="icon">💰</span> Portfolio <span class="badge">3</span></div>
+  <div class="item"><span class="icon">📈</span> Performance</div>
+
+  <div class="group-label">System</div>
+  <div class="item"><span class="icon">⚙️</span> Settings</div>
+
+  <div class="bottom">
+    <div class="market-item"><span class="m-dot open"></span> Egypt (EGX) <span class="m-status">Open</span></div>
+    <div class="market-item"><span class="m-dot closed"></span> US (NYSE) <span class="m-status">Closed</span></div>
+  </div>
+</nav>
+
+<div class="main">
+  <header class="topbar">
+    <h1>Dashboard</h1>
+    <div class="right">
+      <span class="tag market">EGX</span>
+      <button class="lang-btn">🌐 العربية</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- Portfolio hero — Robinhood style -->
+    <div class="portfolio-hero">
+      <div class="big-value">$102,450.00</div>
+      <div class="change green">+$2,450.00 (+2.45%) today</div>
+      <div class="period">Paper Trading Portfolio</div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-box">
+      [ Portfolio Equity Curve ]
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Open Positions</div>
+        <div class="val">3</div>
+        <div class="sub">Cash: $87,200</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Analyses</div>
+        <div class="val">24</div>
+        <div class="sub">8 simulated</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Win Rate</div>
+        <div class="val" style="color:var(--green)">67.5%</div>
+        <div class="sub">Avg return: +3.2%</div>
+      </div>
+    </div>
+
+    <!-- Result card -->
+    <div class="result-card">
+      <div class="left">
+        <div class="rec">BUY</div>
+        <div class="conf">Confidence: <strong>85%</strong></div>
+      </div>
+      <div class="details">
+        <div class="detail-row"><span class="key">Ticker</span><span class="val">ETEL</span></div>
+        <div class="detail-row"><span class="key">Market</span><span class="val">EGX</span></div>
+        <div class="detail-row"><span class="key">Horizon</span><span class="val">Short-Term</span></div>
+        <div class="detail-row"><span class="key">Date</span><span class="val">2026-04-10</span></div>
+      </div>
+      <div class="btns">
+        <button class="btn green">Execute Trade</button>
+        <button class="btn white">Save Report</button>
+        <button class="btn outline">Re-analyze</button>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="section-title">Detailed Reports</div>
+    <div class="report">
+      <div class="head"><span class="left">📊 Market Analysis</span><span style="color:var(--text3)">▼</span></div>
+      <div class="body">ETEL shows strong bullish momentum with RSI at 62 and MACD crossing above signal line. The 50-day SMA is trending upward and price recently broke above the 200-day SMA, forming a golden cross. Volume has increased 35%...</div>
+    </div>
+    <div class="report"><div class="head"><span class="left">📰 News Analysis</span><span style="color:var(--text3)">▶</span></div></div>
+    <div class="report"><div class="head"><span class="left">💬 Social Sentiment</span><span style="color:var(--text3)">▶</span></div></div>
+    <div class="report"><div class="head"><span class="left">📑 Fundamentals</span><span style="color:var(--text3)">▶</span></div></div>
+    <div class="report"><div class="head"><span class="left">💼 Portfolio Decision</span><span style="color:var(--text3)">▶</span></div></div>
+
+    <!-- Recent -->
+    <div class="table-box">
+      <div class="th">Recent Analyses</div>
+      <table>
+        <thead><tr><th>Ticker</th><th>Market</th><th>Date</th><th>Horizon</th><th>Result</th><th>Confidence</th></tr></thead>
+        <tbody>
+          <tr><td class="t-ticker">ETEL</td><td>EGX</td><td>2026-04-10</td><td>Short-Term</td><td><span class="rec-pill buy">BUY</span></td><td>85%</td></tr>
+          <tr><td class="t-ticker">COMI</td><td>EGX</td><td>2026-04-09</td><td>Medium-Term</td><td><span class="rec-pill buy">BUY</span></td><td>72%</td></tr>
+          <tr><td class="t-ticker">AAPL</td><td>US</td><td>2026-04-08</td><td>Short-Term</td><td><span class="rec-pill hold">HOLD</span></td><td>58%</td></tr>
+          <tr><td class="t-ticker">HRHO</td><td>EGX</td><td>2026-04-07</td><td>Long-Term</td><td><span class="rec-pill sell">SELL</span></td><td>64%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

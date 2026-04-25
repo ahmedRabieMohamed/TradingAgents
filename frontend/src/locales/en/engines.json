@@ -1,0 +1,58 @@
+{
+  "title": "Smart Picks",
+  "subtitle": "Today's best chances based on 7 trading engines + news",
+  "refresh": "Refresh",
+  "loading": "Scoring stocks...",
+  "noData": "No strong opportunities detected today — markets are quiet.",
+  "score": "Score",
+  "signal": "Signal",
+  "mcProb": "MC Prob",
+  "momentum": "Momentum",
+  "volumeRatio": "Volume",
+  "rank": "Rank",
+  "ticker": "Ticker",
+  "company": "Company",
+  "analyze": "Analyze",
+  "scoreAny": "Score Any Stock",
+  "scoreBtn": "Score",
+  "engineBreakdown": "Engine Breakdown",
+  "combinedScore": "Combined Score",
+  "enginesAgree": "{{count}} of 7 engines agree",
+  "engines": {
+    "monteCarlo": "Monte Carlo",
+    "momentum": "Momentum",
+    "volume": "Volume Confirmation",
+    "supportResistance": "Support / Resistance",
+    "meanReversion": "Mean Reversion",
+    "bollinger": "Bollinger Bands",
+    "correlation": "Correlation"
+  },
+  "verdicts": {
+    "BULLISH": "Bullish",
+    "BEARISH": "Bearish",
+    "NEUTRAL": "Neutral"
+  },
+  "signals": {
+    "STRONG BUY": "Strong Buy",
+    "BUY": "Buy",
+    "HOLD": "Hold",
+    "NEUTRAL": "Neutral",
+    "SELL": "Sell",
+    "STRONG SELL": "Strong Sell"
+  },
+  "danger": {
+    "title": "Danger Alerts",
+    "subtitle": "Monitoring your open positions",
+    "red": "SELL NOW",
+    "yellow": "WATCH",
+    "green": "SAFE",
+    "noPositions": "No open positions to monitor."
+  },
+  "mc": {
+    "probUp": "Prob. Up",
+    "expected": "Expected",
+    "bestCase": "Best (95th)",
+    "worstCase": "Worst (5th)",
+    "simulations": "Based on 10,000 simulations"
+  }
+}

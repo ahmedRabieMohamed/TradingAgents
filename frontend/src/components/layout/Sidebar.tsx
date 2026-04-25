@@ -10,6 +10,7 @@ import {
   WalletOutlined,
   SettingOutlined,
   RiseOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { getPortfolio } from '../../services/api';
@@ -104,6 +105,11 @@ export default function Sidebar() {
       key: '/analysis',
       icon: <LineChartOutlined />,
       label: t('nav.newAnalysis'),
+    },
+    {
+      key: '/smart-picks',
+      icon: <ThunderboltOutlined />,
+      label: t('nav.smartPicks') || 'Smart Picks',
     },
     { type: 'divider' as const },
     {

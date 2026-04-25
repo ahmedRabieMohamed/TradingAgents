@@ -1,0 +1,58 @@
+{
+  "title": "الفرص الذكية",
+  "subtitle": "أفضل الفرص اليوم بناءً على 7 محركات تحليل + الأخبار",
+  "refresh": "تحديث",
+  "loading": "جارٍ تقييم الأسهم...",
+  "noData": "لا توجد فرص قوية اليوم — الأسواق هادئة.",
+  "score": "التقييم",
+  "signal": "الإشارة",
+  "mcProb": "احتمال MC",
+  "momentum": "الزخم",
+  "volumeRatio": "الحجم",
+  "rank": "الترتيب",
+  "ticker": "الرمز",
+  "company": "الشركة",
+  "analyze": "تحليل",
+  "scoreAny": "تقييم أي سهم",
+  "scoreBtn": "تقييم",
+  "engineBreakdown": "تفاصيل المحركات",
+  "combinedScore": "التقييم المجمع",
+  "enginesAgree": "{{count}} من 7 محركات متفقة",
+  "engines": {
+    "monteCarlo": "مونتي كارلو",
+    "momentum": "الزخم",
+    "volume": "تأكيد الحجم",
+    "supportResistance": "الدعم / المقاومة",
+    "meanReversion": "العودة للمتوسط",
+    "bollinger": "بولنجر باند",
+    "correlation": "الارتباط"
+  },
+  "verdicts": {
+    "BULLISH": "صعودي",
+    "BEARISH": "هبوطي",
+    "NEUTRAL": "محايد"
+  },
+  "signals": {
+    "STRONG BUY": "شراء قوي",
+    "BUY": "شراء",
+    "HOLD": "احتفاظ",
+    "NEUTRAL": "محايد",
+    "SELL": "بيع",
+    "STRONG SELL": "بيع قوي"
+  },
+  "danger": {
+    "title": "تنبيهات الخطر",
+    "subtitle": "مراقبة مراكزك المفتوحة",
+    "red": "بيع الآن",
+    "yellow": "مراقبة",
+    "green": "آمن",
+    "noPositions": "لا توجد مراكز مفتوحة للمراقبة."
+  },
+  "mc": {
+    "probUp": "احتمال الصعود",
+    "expected": "المتوقع",
+    "bestCase": "أفضل حالة (95)",
+    "worstCase": "أسوأ حالة (5)",
+    "simulations": "بناءً على 10,000 محاكاة"
+  }
+}

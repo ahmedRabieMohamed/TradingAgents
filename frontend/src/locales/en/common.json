@@ -6,7 +6,8 @@
     "performance": "Performance",
     "watchlist": "Watchlist",
     "portfolio": "Portfolio",
-    "settings": "Settings"
+    "settings": "Settings",
+    "smartPicks": "Smart Picks"
   },
   "actions": {
     "save": "Save",

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme D — Neon Cyber Trading</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #06060a;
+    --surface: #0d0d14;
+    --surface2: #13131f;
+    --surface3: #1a1a2e;
+    --border: #1f1f35;
+    --accent: #00f0ff;
+    --accent2: #7b61ff;
+    --green: #00ff88;
+    --red: #ff3860;
+    --yellow: #ffe066;
+    --text: #e0e0f0;
+    --text2: #8888aa;
+    --text3: #4a4a66;
+    --glow-accent: 0 0 20px rgba(0,240,255,0.15);
+    --glow-green: 0 0 20px rgba(0,255,136,0.1);
+    --sidebar-w: 72px;
+  }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 13px;
+    background-image:
+      radial-gradient(ellipse at 10% 90%, rgba(0,240,255,0.03) 0%, transparent 40%),
+      radial-gradient(ellipse at 90% 10%, rgba(123,97,255,0.03) 0%, transparent 40%);
+  }
+
+  /* Sidebar — neon icon strip */
+  .sidebar {
+    width: var(--sidebar-w);
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    gap: 4px;
+    z-index: 100;
+  }
+  .sidebar .logo {
+    width: 40px; height: 40px;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; color: var(--accent);
+    margin-bottom: 20px;
+    box-shadow: var(--glow-accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .sidebar .nav-btn {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .sidebar .nav-btn:hover { background: var(--surface2); color: var(--text); }
+  .sidebar .nav-btn.active {
+    color: var(--accent);
+    background: rgba(0,240,255,0.06);
+    box-shadow: inset 0 0 12px rgba(0,240,255,0.05);
+  }
+  .sidebar .nav-btn.active::after {
+    content: '';
+    position: absolute;
+    right: -1px; top: 12px; bottom: 12px;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .sidebar .sep { width: 28px; height: 1px; background: var(--border); margin: 8px 0; }
+  .sidebar .spacer { flex: 1; }
+  .sidebar .status-dot { width: 8px; height: 8px; border-radius: 50%; margin: 3px 0; }
+  .sidebar .status-dot.on { background: var(--green); box-shadow: 0 0 10px rgba(0,255,136,0.5); }
+  .sidebar .status-dot.off { background: var(--red); box-shadow: 0 0 10px rgba(255,56,96,0.3); }
+
+  /* Main */
+  .main { margin-left: var(--sidebar-w); }
+
+  /* Topbar */
+  .topbar {
+    height: 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar .title { font-size: 14px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; }
+  .topbar .right { display: flex; gap: 10px; align-items: center; }
+  .topbar .chip { padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  .topbar .chip.live { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .topbar .chip.ver { background: rgba(123,97,255,0.1); color: var(--accent2); border: 1px solid rgba(123,97,255,0.2); }
+  .topbar .lang-btn {
+    background: rgba(0,240,255,0.06);
+    border: 1px solid rgba(0,240,255,0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    padding: 3px 12px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .content { padding: 20px; }
+
+  /* Neon cards */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.4;
+  }
+  .card .label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+  .card .value { font-size: 24px; font-weight: 700; }
+  .card .sub { font-size: 11px; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  .card .sub.green { color: var(--green); }
+  .card .sub.red { color: var(--red); }
+
+  /* Result hero — neon glow */
+  .result-hero {
+    background: var(--surface);
+    border: 1px solid rgba(0,255,136,0.15);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--glow-green);
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; right: -50%; bottom: -50%;
+    background: radial-gradient(circle at center, rgba(0,255,136,0.03), transparent 60%);
+  }
+  .result-hero .rec {
+    font-size: 52px; font-weight: 700; color: var(--green);
+    text-shadow: 0 0 30px rgba(0,255,136,0.3);
+    position: relative;
+  }
+  .result-hero .conf { font-size: 16px; color: var(--text2); margin-top: 8px; position: relative; }
+  .result-hero .conf strong { color: var(--green); }
+  .result-hero .chips { display: flex; gap: 8px; justify-content: center; margin-top: 12px; position: relative; }
+  .result-hero .chip-tag {
+    padding: 4px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .result-hero .actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; position: relative; }
+
+  /* Buttons — neon style */
+  .btn {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.primary {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 16px rgba(0,240,255,0.2);
+  }
+  .btn.success {
+    background: var(--green);
+    color: #000;
+    box-shadow: 0 0 16px rgba(0,255,136,0.2);
+  }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.purple { background: var(--accent2); color: #fff; box-shadow: 0 0 16px rgba(123,97,255,0.2); }
+
+  /* Reports */
+  .section-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  .report-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .report-header {
+    padding: 12px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer;
+    font-size: 13px; font-weight: 600;
+  }
+  .report-header:hover { background: var(--surface2); }
+  .report-header .name { display: flex; align-items: center; gap: 8px; }
+  .report-header .status { font-size: 9px; padding: 2px 8px; border-radius: 3px; background: rgba(0,255,136,0.08); color: var(--green); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+  .report-body { padding: 14px 16px; font-size: 12px; line-height: 1.8; color: var(--text2); border-top: 1px solid var(--border); }
+
+  /* Table */
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 20px; }
+  .table-wrap .header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+  .table-wrap .header h3 { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 8px 16px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; }
+  td { padding: 10px 16px; border-bottom: 1px solid rgba(31,31,53,0.5); font-size: 12px; }
+  tr:hover td { background: rgba(0,240,255,0.02); }
+  .t-ticker { font-weight: 700; color: var(--accent); }
+  .rec-tag { padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .rec-tag.buy { background: rgba(0,255,136,0.1); color: var(--green); }
+  .rec-tag.sell { background: rgba(255,56,96,0.1); color: var(--red); }
+  .rec-tag.hold { background: rgba(255,224,102,0.1); color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo">TA</div>
+  <div class="nav-btn active">🏠</div>
+  <div class="nav-btn">📊</div>
+  <div class="sep"></div>
+  <div class="nav-btn">⭐</div>
+  <div class="nav-btn">📋</div>
+  <div class="nav-btn">💰</div>
+  <div class="nav-btn">📈</div>
+  <div class="spacer"></div>
+  <div class="status-dot on" title="EGX Open"></div>
+  <div class="status-dot off" title="US Closed"></div>
+  <div style="height:12px"></div>
+  <div class="nav-btn">⚙️</div>
+</nav>
+
+<div class="main">
+  <header class="topbar">
+    <span class="title">TRADINGAGENTS</span>
+    <div class="right">
+      <span class="chip live">● EGX LIVE</span>
+      <span class="chip ver">v0.1.0</span>
+      <button class="lang-btn">العربية</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div style="display:flex;gap:10px;margin-bottom:20px;">
+      <button class="btn primary">+ New Analysis</button>
+      <button class="btn ghost">History</button>
+      <button class="btn ghost">Portfolio</button>
+    </div>
+
+    <div class="grid-4">
+      <div class="card">
+        <div class="label">Portfolio Value</div>
+        <div class="value" style="color:var(--text)">$102,450</div>
+        <div class="sub green">+$2,450 (+2.45%)</div>
+      </div>
+      <div class="card">
+        <div class="label">Open Positions</div>
+        <div class="value">3</div>
+        <div class="sub">Cash: $87,200</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Analyses</div>
+        <div class="value">24</div>
+        <div class="sub">8 simulated</div>
+      </div>
+      <div class="card">
+        <div class="label">Win Rate</div>
+        <div class="value" style="color:var(--green)">67.5%</div>
+        <div class="sub green">Avg: +3.2%</div>
+      </div>
+    </div>
+
+    <div class="result-hero">
+      <div class="rec">BUY</div>
+      <div class="conf">Confidence: <strong>85%</strong></div>
+      <div class="chips">
+        <span class="chip-tag">ETEL</span>
+        <span class="chip-tag">EGX</span>
+        <span class="chip-tag">Short-Term</span>
+        <span class="chip-tag">2026-04-10</span>
+      </div>
+      <div class="actions">
+        <button class="btn purple">📥 Save Report</button>
+        <button class="btn ghost">🔄 Re-analyze</button>
+        <button class="btn success">💰 Execute Trade</button>
+      </div>
+    </div>
+
+    <div class="section-label">Agent Reports</div>
+    <div class="report-section">
+      <div class="report-header">
+        <span class="name">📊 Market Analysis <span class="status">done</span></span>
+        <span style="color:var(--text3);font-size:11px">▼</span>
+      </div>
+      <div class="report-body">
+        ETEL shows strong bullish momentum with RSI at 62 and MACD crossing above signal line. The 50-day SMA is trending upward and price recently broke above the 200-day SMA, forming a golden cross. Volume has increased 35% above the 20-day average...
+      </div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">📰 News Analysis <span class="status">done</span></span><span style="color:var(--text3);font-size:11px">▶</span></div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">💬 Social Sentiment <span class="status">done</span></span><span style="color:var(--text3);font-size:11px">▶</span></div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">📑 Fundamentals <span class="status">done</span></span><span style="color:var(--text3);font-size:11px">▶</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="header"><h3>Recent Analyses</h3></div>
+      <table>
+        <thead><tr><th>Ticker</th><th>Market</th><th>Date</th><th>Horizon</th><th>Signal</th><th>Conf</th></tr></thead>
+        <tbody>
+          <tr><td class="t-ticker">ETEL</td><td>EGX</td><td>2026-04-10</td><td>Short-Term</td><td><span class="rec-tag buy">BUY</span></td><td>85%</td></tr>
+          <tr><td class="t-ticker">COMI</td><td>EGX</td><td>2026-04-09</td><td>Medium-Term</td><td><span class="rec-tag buy">BUY</span></td><td>72%</td></tr>
+          <tr><td class="t-ticker">AAPL</td><td>US</td><td>2026-04-08</td><td>Short-Term</td><td><span class="rec-tag hold">HOLD</span></td><td>58%</td></tr>
+          <tr><td class="t-ticker">HRHO</td><td>EGX</td><td>2026-04-07</td><td>Long-Term</td><td><span class="rec-tag sell">SELL</span></td><td>64%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -10,6 +10,7 @@ import portfolioEn from './locales/en/portfolio.json';
 import watchlistEn from './locales/en/watchlist.json';
 import performanceEn from './locales/en/performance.json';
 import settingsEn from './locales/en/settings.json';
+import enginesEn from './locales/en/engines.json';
 
 // Import Arabic translations
 import commonAr from './locales/ar/common.json';
@@ -20,6 +21,7 @@ import portfolioAr from './locales/ar/portfolio.json';
 import watchlistAr from './locales/ar/watchlist.json';
 import performanceAr from './locales/ar/performance.json';
 import settingsAr from './locales/ar/settings.json';
+import enginesAr from './locales/ar/engines.json';
 
 const savedLocale = localStorage.getItem('locale') || 'en';
 
@@ -34,6 +36,7 @@ i18n.use(initReactI18next).init({
       watchlist: watchlistEn,
       performance: performanceEn,
       settings: settingsEn,
+      engines: enginesEn,
     },
     ar: {
       common: commonAr,
@@ -44,6 +47,7 @@ i18n.use(initReactI18next).init({
       watchlist: watchlistAr,
       performance: performanceAr,
       settings: settingsAr,
+      engines: enginesAr,
     },
   },
   lng: savedLocale,

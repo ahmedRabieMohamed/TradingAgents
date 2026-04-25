@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme B — Glass Morphism Premium</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f0f1a;
+    --surface: rgba(22, 22, 40, 0.7);
+    --surface2: rgba(30, 30, 55, 0.6);
+    --glass: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --green: #00cec9;
+    --red: #ff6b6b;
+    --yellow: #feca57;
+    --text: #f0f0f8;
+    --text2: #a0a0c0;
+    --text3: #606080;
+    --sidebar-w: 240px;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    /* Gradient mesh background */
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(0, 206, 201, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(162, 155, 254, 0.04) 0%, transparent 50%);
+  }
+
+  /* Sidebar — frosted glass */
+  .sidebar {
+    width: var(--sidebar-w);
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background: var(--surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    z-index: 100;
+  }
+  .sidebar .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+  .sidebar .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .sidebar .logo-text { font-size: 16px; font-weight: 700; }
+  .sidebar .logo-sub { font-size: 10px; color: var(--text3); margin-top: 1px; }
+
+  .sidebar .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding: 16px 12px 6px; }
+
+  .sidebar .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    color: var(--text2); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+    text-decoration: none;
+  }
+  .sidebar .nav-item:hover { background: var(--glass); color: var(--text); }
+  .sidebar .nav-item.active {
+    background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(162,155,254,0.08));
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .sidebar .nav-icon { font-size: 16px; width: 22px; text-align: center; }
+  .sidebar .badge { margin-inline-start: auto; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+
+  .sidebar .bottom {
+    margin-top: auto;
+    padding: 12px;
+    border-top: 1px solid var(--glass-border);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sidebar .market-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); }
+  .sidebar .market-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .sidebar .market-dot.open { background: var(--green); box-shadow: 0 0 8px rgba(0,206,201,0.4); }
+  .sidebar .market-dot.closed { background: var(--red); }
+
+  /* Main */
+  .main { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+  /* Topbar */
+  .topbar {
+    height: 56px;
+    background: var(--surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar h1 { font-size: 16px; font-weight: 700; }
+  .topbar .right { display: flex; gap: 10px; align-items: center; }
+  .topbar .tag { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .topbar .tag.blue { background: rgba(108,92,231,0.15); color: var(--accent2); }
+  .topbar .tag.purple { background: rgba(162,155,254,0.12); color: var(--accent2); }
+  .topbar .lang-btn { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; color: var(--text2); font-size: 12px; padding: 4px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+  .content { padding: 24px; }
+
+  /* Glass cards */
+  .card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,92,231,0.08); }
+  .card .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 8px; }
+  .card .value { font-size: 28px; font-weight: 800; }
+  .card .sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .card .sub.green { color: var(--green); }
+  .card .sub.red { color: var(--red); }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+  /* Result hero — gradient glass */
+  .result-hero {
+    background: linear-gradient(135deg, rgba(0,206,201,0.08), rgba(108,92,231,0.06));
+    border: 1px solid rgba(0,206,201,0.2);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .result-hero .rec { font-size: 56px; font-weight: 800; color: var(--green); letter-spacing: 3px; }
+  .result-hero .conf { font-size: 18px; font-weight: 600; margin-top: 8px; }
+  .result-hero .conf span { color: var(--green); }
+  .result-hero .chips { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+  .result-hero .chip { padding: 6px 14px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; font-size: 12px; color: var(--text2); }
+  .result-hero .actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+
+  /* Buttons */
+  .btn { padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+  .btn.ghost { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text2); }
+  .btn.success { background: linear-gradient(135deg, var(--green), #00b894); color: #000; font-weight: 700; }
+
+  /* Table */
+  .table-card { padding: 0; overflow: hidden; }
+  .table-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .table-header h3 { font-size: 14px; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 20px; color: var(--text3); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--glass-border); }
+  td { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  tr:hover td { background: rgba(108,92,231,0.04); }
+  .ticker-cell { font-weight: 700; color: var(--accent2); }
+
+  .rec-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .rec-badge.buy { background: rgba(0,206,201,0.12); color: var(--green); }
+  .rec-badge.sell { background: rgba(255,107,107,0.12); color: var(--red); }
+  .rec-badge.hold { background: rgba(254,202,87,0.12); color: var(--yellow); }
+
+  /* Report sections */
+  .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .report-section { background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); margin-bottom: 10px; overflow: hidden; }
+  .report-header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .report-header .name { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .report-body { padding: 16px 18px; font-size: 13px; line-height: 1.8; color: var(--text2); border-top: 1px solid var(--glass-border); }
+
+  /* Chart placeholder */
+  .chart-area {
+    height: 240px;
+    background: var(--surface);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">📈</div>
+    <div>
+      <div class="logo-text">TradingAgents</div>
+      <div class="logo-sub">AI Analysis Platform</div>
+    </div>
+  </div>
+
+  <div class="section-label">Markets</div>
+  <a class="nav-item active"><span class="nav-icon">🏠</span> Dashboard</a>
+  <a class="nav-item"><span class="nav-icon">📊</span> New Analysis</a>
+
+  <div class="section-label">Analysis</div>
+  <a class="nav-item"><span class="nav-icon">⭐</span> Watchlist</a>
+  <a class="nav-item"><span class="nav-icon">📋</span> History</a>
+  <a class="nav-item"><span class="nav-icon">💰</span> Portfolio <span class="badge">3</span></a>
+  <a class="nav-item"><span class="nav-icon">📈</span> Performance</a>
+
+  <div class="section-label">System</div>
+  <a class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+
+  <div class="bottom">
+    <div class="market-row"><span class="market-dot open"></span> Egypt (EGX) <span style="margin-inline-start:auto;font-size:10px;opacity:0.6">Open</span></div>
+    <div class="market-row"><span class="market-dot closed"></span> US (NYSE) <span style="margin-inline-start:auto;font-size:10px;opacity:0.6">Closed</span></div>
+  </div>
+</nav>
+
+<div class="main">
+  <header class="topbar">
+    <h1>Dashboard</h1>
+    <div class="right">
+      <span class="tag blue">Egypt (EGX)</span>
+      <span class="tag purple">v0.1.0</span>
+      <button class="lang-btn">🌐 العربية</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- Actions -->
+    <div style="display:flex;gap:12px;margin-bottom:24px;">
+      <button class="btn primary">+ New Analysis</button>
+      <button class="btn ghost">View History</button>
+      <button class="btn ghost">Portfolio</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-4">
+      <div class="card">
+        <div class="label">Portfolio Value</div>
+        <div class="value">$102,450</div>
+        <div class="sub green">+$2,450.00 (+2.45%)</div>
+      </div>
+      <div class="card">
+        <div class="label">Open Positions</div>
+        <div class="value">3</div>
+        <div class="sub">Cash: $87,200.00</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Analyses</div>
+        <div class="value">24</div>
+        <div class="sub">8 simulated</div>
+      </div>
+      <div class="card">
+        <div class="label">Win Rate</div>
+        <div class="value" style="color:var(--green)">67.5%</div>
+        <div class="sub green">Avg: +3.2%</div>
+      </div>
+    </div>
+
+    <!-- Result Hero -->
+    <div class="result-hero">
+      <div class="rec">BUY</div>
+      <div class="conf">Confidence: <span>85%</span></div>
+      <div class="chips">
+        <span class="chip">ETEL</span>
+        <span class="chip">EGX</span>
+        <span class="chip">Short-Term</span>
+        <span class="chip">2026-04-10</span>
+      </div>
+      <div class="actions">
+        <button class="btn primary">Save Report</button>
+        <button class="btn ghost">Re-analyze</button>
+        <button class="btn success">💰 Execute Trade</button>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="section-title">Detailed Reports</div>
+    <div class="report-section">
+      <div class="report-header">
+        <span class="name">📊 Market Analysis</span>
+        <span style="color:var(--text3);font-size:12px">▼</span>
+      </div>
+      <div class="report-body">
+        ETEL shows strong bullish momentum with RSI at 62 and MACD crossing above signal line. The 50-day SMA is trending upward and price recently broke above the 200-day SMA. Volume has increased 35% above the 20-day average...
+      </div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">📰 News Analysis</span><span style="color:var(--text3);font-size:12px">▶</span></div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">💬 Social Sentiment</span><span style="color:var(--text3);font-size:12px">▶</span></div>
+    </div>
+    <div class="report-section">
+      <div class="report-header"><span class="name">📑 Fundamentals</span><span style="color:var(--text3);font-size:12px">▶</span></div>
+    </div>
+
+    <!-- Recent table -->
+    <div style="margin-top:24px">
+      <div class="section-title">Recent Analyses</div>
+      <div class="card table-card">
+        <table>
+          <thead>
+            <tr><th>Ticker</th><th>Market</th><th>Date</th><th>Horizon</th><th>Result</th><th>Confidence</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="ticker-cell">ETEL</td><td>EGX</td><td>2026-04-10</td><td>Short-Term</td><td><span class="rec-badge buy">BUY</span></td><td>85%</td></tr>
+            <tr><td class="ticker-cell">COMI</td><td>EGX</td><td>2026-04-09</td><td>Medium-Term</td><td><span class="rec-badge buy">BUY</span></td><td>72%</td></tr>
+            <tr><td class="ticker-cell">AAPL</td><td>US</td><td>2026-04-08</td><td>Short-Term</td><td><span class="rec-badge hold">HOLD</span></td><td>58%</td></tr>
+            <tr><td class="ticker-cell">HRHO</td><td>EGX</td><td>2026-04-07</td><td>Long-Term</td><td><span class="rec-badge sell">SELL</span></td><td>64%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

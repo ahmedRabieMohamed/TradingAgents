@@ -12,6 +12,7 @@ import History from './pages/History'
 import Performance from './pages/Performance'
 import Portfolio from './pages/Portfolio'
 import Watchlist from './pages/Watchlist'
+import SmartPicks from './pages/SmartPicks'
 
 export default function App() {
   const { locale, direction } = useLocaleStore()
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/history" element={<History />} />
             <Route path="/performance" element={<Performance />} />
             <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/smart-picks" element={<SmartPicks />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>

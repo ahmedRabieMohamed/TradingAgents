@@ -58,6 +58,7 @@ class AnalysisSession(Base):
         Float, nullable=True
     )
     language: Mapped[str] = mapped_column(String(5), nullable=False, default="en")
+    engine_scores: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
     tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
 
