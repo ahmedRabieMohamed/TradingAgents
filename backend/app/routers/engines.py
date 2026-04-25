@@ -195,19 +195,35 @@ def _discover_candidates(market_id: str) -> list[tuple[str, str]]:
 
 
 def _compute_smart_picks(market_id: str, limit: int) -> dict:
-    """Discover candidates, score them, rank. Runs in a thread."""
+    """Discover candidates, batch-fetch prices, score all, rank. Runs in a thread."""
     from tradingagents.dataflows.egypt_tickers import EGX_TICKERS
+    from app.services.engines import batch_fetch_price_data, compute_all_engines_from_data
 
-    # Step 1: Discover candidates (NOT all 228 — only stocks with a reason)
+    # Step 1: Discover candidates (NOT all 228)
     candidate_list = _discover_candidates(market_id)
+    tickers = [t for t, _ in candidate_list]
+    reasons = {t: r for t, r in candidate_list}
 
+    # Step 2: Batch download ALL price data in ONE call (~3-5 seconds)
+    logger.info("Smart picks: batch downloading %d tickers...", len(tickers))
+    price_data = batch_fetch_price_data(tickers, market_id, days=250)
+    logger.info("Smart picks: got data for %d tickers", len(price_data))
+
+    # Step 3: Run engines on each (pure math, no API calls — very fast)
     picks = []
     scored = 0
     failed = 0
 
-    for ticker, reason in candidate_list:
+    for ticker in tickers:
+        reason = reasons.get(ticker, "")
+        data = price_data.get(ticker)
+        if data is None:
+            failed += 1
+            continue
+
+        prices, volumes = data
         try:
-            result = compute_all_engines(ticker, market_id)
+            result = compute_all_engines_from_data(ticker, prices, volumes, market_id)
             if result.get("error"):
                 failed += 1
                 continue

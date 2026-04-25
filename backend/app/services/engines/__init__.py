@@ -42,6 +42,137 @@ def _fetch_price_data(ticker: str, market_id: str, days: int = 250) -> tuple[np.
     return prices[:min_len], volumes[:min_len]
 
 
+def batch_fetch_price_data(
+    tickers: list[str], market_id: str, days: int = 250
+) -> dict[str, tuple[np.ndarray, np.ndarray]]:
+    """Batch download price data for multiple tickers in ONE yfinance call.
+
+    Returns dict of {ticker: (prices, volumes)}.
+    """
+    import yfinance as yf
+
+    from tradingagents.default_config import MARKET_REGIONS
+
+    suffix = MARKET_REGIONS.get(market_id, {}).get("ticker_suffix", "")
+    symbols = [f"{t.upper()}{suffix}" for t in tickers]
+
+    result: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+
+    if not symbols:
+        return result
+
+    try:
+        data = yf.download(
+            " ".join(symbols),
+            period=f"{days}d",
+            progress=False,
+            threads=True,
+        )
+
+        if data.empty:
+            return result
+
+        close = data["Close"] if "Close" in data.columns else None
+        vol = data["Volume"] if "Volume" in data.columns else None
+
+        if close is None:
+            return result
+
+        # Handle single ticker (no MultiIndex)
+        if not hasattr(close, "columns"):
+            ticker = tickers[0]
+            prices = close.dropna().values.astype(float)
+            volumes = vol.dropna().values.astype(float) if vol is not None else np.zeros_like(prices)
+            min_len = min(len(prices), len(volumes))
+            if min_len > 0:
+                result[ticker] = (prices[:min_len], volumes[:min_len])
+            return result
+
+        # Multiple tickers
+        for sym in close.columns:
+            clean_ticker = str(sym).replace(suffix, "")
+            prices = close[sym].dropna().values.astype(float)
+            volumes_col = vol[sym].dropna().values.astype(float) if vol is not None and sym in vol.columns else np.zeros_like(prices)
+            min_len = min(len(prices), len(volumes_col))
+            if min_len > 10:
+                result[clean_ticker] = (prices[:min_len], volumes_col[:min_len])
+
+    except Exception as exc:
+        logger.warning("Batch download failed: %s", exc)
+
+    return result
+
+
+def compute_all_engines_from_data(
+    ticker: str,
+    prices: np.ndarray,
+    volumes: np.ndarray,
+    market_id: str = "egypt",
+    mc_days: int = 7,
+    news_score: int | None = None,
+    peer_changes: dict[str, float] | None = None,
+) -> dict[str, Any]:
+    """Run all 7 engines using pre-fetched price data (no API calls).
+
+    This is the fast path used by smart picks to avoid individual fetches.
+    """
+    if len(prices) < 10:
+        return {
+            "computed_at": datetime.now(timezone.utc).isoformat(),
+            "combined_score": 0,
+            "combined_signal": "N/A",
+            "error": f"Insufficient data for {ticker} ({len(prices)} days)",
+            "engines": {},
+        }
+
+    engines: dict[str, dict] = {}
+
+    try:
+        engines["monte_carlo"] = monte_carlo.compute(prices, days=mc_days)
+    except Exception as e:
+        engines["monte_carlo"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["momentum"] = momentum.compute(prices)
+    except Exception as e:
+        engines["momentum"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["volume"] = volume.compute(prices, volumes)
+    except Exception as e:
+        engines["volume"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["support_resistance"] = support_resistance.compute(prices)
+    except Exception as e:
+        engines["support_resistance"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["mean_reversion"] = mean_reversion.compute(prices)
+    except Exception as e:
+        engines["mean_reversion"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["bollinger"] = bollinger.compute(prices)
+    except Exception as e:
+        engines["bollinger"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    try:
+        engines["correlation"] = correlation.compute(prices, ticker, peer_changes)
+    except Exception as e:
+        engines["correlation"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
+
+    combined = _compute_combined_score(engines, news_score)
+
+    return {
+        "computed_at": datetime.now(timezone.utc).isoformat(),
+        "combined_score": combined["score"],
+        "combined_signal": combined["signal"],
+        "engines": engines,
+        "news_sentiment": {"score": news_score},
+    }
+
+
 def _fetch_peer_changes(peers: list[str], market_id: str) -> dict[str, float]:
     """Fetch 5-day price changes for sector peers."""
     import yfinance as yf
