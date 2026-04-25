@@ -149,6 +149,14 @@ export default function SmartPicks() {
       ),
     },
     {
+      title: 'Why',
+      dataIndex: 'reason',
+      key: 'reason',
+      width: 140,
+      ellipsis: true,
+      render: (v: string) => <Text type="secondary" style={{ fontSize: 11 }}>{v}</Text>,
+    },
+    {
       title: t('score'),
       dataIndex: 'combined_score',
       key: 'combined_score',

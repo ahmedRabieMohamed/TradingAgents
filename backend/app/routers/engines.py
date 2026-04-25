@@ -155,21 +155,57 @@ async def get_danger_alerts(
     }
 
 
+def _discover_candidates(market_id: str) -> list[tuple[str, str]]:
+    """Discover candidate stocks from multiple sources. Returns [(ticker, reason)]."""
+    import yfinance as yf
+    from tradingagents.default_config import MARKET_REGIONS
+
+    suffix = MARKET_REGIONS.get(market_id, {}).get("ticker_suffix", "")
+    candidates: dict[str, str] = {}  # ticker → reason
+
+    # Source 1: EGX30 blue chips (always interesting)
+    egx30 = ["COMI", "TMGH", "SWDY", "ETEL", "MFPC", "EGAL", "EAST", "ABUK",
+             "ALCN", "HDBK", "EFIH", "FWRY", "ORAS", "ADIB", "HRHO", "EMFD"]
+    for t in egx30:
+        candidates[t] = "EGX30 component"
+
+    # Source 2: Top movers — stocks with biggest price changes
+    try:
+        extra_tickers = ["IRON", "CLHO", "JUFO", "SKPC", "ORWE", "PHDC", "OCDI",
+                         "ARCC", "MCQE", "POUL", "EGCH", "RAYA", "CIRA", "DOMT",
+                         "ISPH", "AMOC", "SUGR", "BINV", "TALM", "MASR"]
+        symbols = [f"{t}{suffix}" for t in extra_tickers]
+        data = yf.download(" ".join(symbols), period="5d", progress=False)
+        if not data.empty and "Close" in data.columns:
+            close = data["Close"]
+            if hasattr(close, "columns"):
+                for sym in close.columns:
+                    col = close[sym].dropna()
+                    if len(col) >= 2:
+                        change = ((col.iloc[-1] / col.iloc[0]) - 1) * 100
+                        clean = str(sym).replace(suffix, "")
+                        # Only add if significant move (>2% in 5 days)
+                        if abs(change) > 2:
+                            reason = f"Top mover: {change:+.1f}% in 5d"
+                            candidates[clean] = reason
+    except Exception:
+        pass
+
+    return list(candidates.items())
+
+
 def _compute_smart_picks(market_id: str, limit: int) -> dict:
-    """Score all available tickers and rank them. Runs in a thread."""
+    """Discover candidates, score them, rank. Runs in a thread."""
     from tradingagents.dataflows.egypt_tickers import EGX_TICKERS
 
-    # Score ALL tickers in the database — no limit on candidates
-    all_tickers = list(EGX_TICKERS.keys())
-
-    # Filter out known aliases/duplicates (tickers ending with A are usually class-A shares)
-    tickers_to_score = [t for t in all_tickers if not t.endswith("A") or t in ("ORAS", "TMGH")]
+    # Step 1: Discover candidates (NOT all 228 — only stocks with a reason)
+    candidate_list = _discover_candidates(market_id)
 
     picks = []
     scored = 0
     failed = 0
 
-    for ticker in tickers_to_score:
+    for ticker, reason in candidate_list:
         try:
             result = compute_all_engines(ticker, market_id)
             if result.get("error"):
@@ -197,6 +233,7 @@ def _compute_smart_picks(market_id: str, limit: int) -> dict:
                 "company_name_ar": company_info.get("name_ar", ticker),
                 "sector": company_info.get("sector", "Unknown"),
                 "market_id": market_id,
+                "reason": reason,
                 "combined_score": result["combined_score"],
                 "signal": result["combined_signal"],
                 "bullish_engines": bullish_count,
