@@ -47,7 +47,7 @@ async def get_engine_score(
 @router.get("/smart-picks")
 async def get_smart_picks(
     market_id: str = Query("egypt"),
-    limit: int = Query(10, ge=1, le=15),
+    limit: int = Query(50, ge=1, le=228),
 ):
     """Get today's ranked stock opportunities based on news + engines.
 
@@ -156,25 +156,40 @@ async def get_danger_alerts(
 
 
 def _compute_smart_picks(market_id: str, limit: int) -> dict:
-    """Discover candidate stocks and score them. Runs in a thread."""
+    """Score all available tickers and rank them. Runs in a thread."""
     from tradingagents.dataflows.egypt_tickers import EGX_TICKERS
 
-    # Candidates: use top EGX30 stocks + a few others (simulating news + movers discovery)
-    # In the future, this will be replaced by real news mention extraction
-    # For now, use EGX30 components as candidates
-    egx30 = [
-        "COMI", "TMGH", "SWDY", "ETEL", "MFPC", "EGAL", "EAST", "ABUK",
-        "ALCN", "HDBK", "EFIH", "FWRY", "ORAS", "ADIB", "HRHO",
-    ]
+    # Score ALL tickers in the database — no limit on candidates
+    all_tickers = list(EGX_TICKERS.keys())
+
+    # Filter out known aliases/duplicates (tickers ending with A are usually class-A shares)
+    tickers_to_score = [t for t in all_tickers if not t.endswith("A") or t in ("ORAS", "TMGH")]
 
     picks = []
-    for ticker in egx30[:limit + 5]:  # score a few extra, then trim
+    scored = 0
+    failed = 0
+
+    for ticker in tickers_to_score:
         try:
             result = compute_all_engines(ticker, market_id)
             if result.get("error"):
+                failed += 1
                 continue
 
             company_info = EGX_TICKERS.get(ticker, {})
+            mc = result["engines"].get("monte_carlo", {})
+            mom = result["engines"].get("momentum", {})
+            vol = result["engines"].get("volume", {})
+            sr = result["engines"].get("support_resistance", {})
+            mr = result["engines"].get("mean_reversion", {})
+            bb = result["engines"].get("bollinger", {})
+            corr = result["engines"].get("correlation", {})
+
+            # Count bullish engines
+            bullish_count = sum(
+                1 for eng in result["engines"].values()
+                if eng.get("verdict") == "BULLISH"
+            )
 
             picks.append({
                 "ticker": ticker,
@@ -184,18 +199,59 @@ def _compute_smart_picks(market_id: str, limit: int) -> dict:
                 "market_id": market_id,
                 "combined_score": result["combined_score"],
                 "signal": result["combined_signal"],
-                "mc_probability": result["engines"].get("monte_carlo", {}).get("prob_up"),
-                "mc_expected": result["engines"].get("monte_carlo", {}).get("expected_change"),
-                "momentum_score": result["engines"].get("momentum", {}).get("score"),
-                "volume_ratio": result["engines"].get("volume", {}).get("volume_ratio"),
+                "bullish_engines": bullish_count,
+                "total_engines": 7,
+                # Monte Carlo details
+                "mc_probability": mc.get("prob_up"),
+                "mc_expected": mc.get("expected_change"),
+                "mc_best_case": mc.get("best_case"),
+                "mc_worst_case": mc.get("worst_case"),
+                # Momentum details
+                "momentum_score": mom.get("score"),
+                "momentum_roc_5d": mom.get("roc_5d"),
+                "momentum_roc_20d": mom.get("roc_20d"),
+                "momentum_trend": mom.get("trend_strength"),
+                # Volume details
+                "volume_score": vol.get("score"),
+                "volume_ratio": vol.get("volume_ratio"),
+                "volume_is_real": vol.get("is_real_move"),
+                "price_change_pct": vol.get("price_change_pct"),
+                # Support/Resistance
+                "sr_score": sr.get("score"),
+                "sr_support": sr.get("support"),
+                "sr_resistance": sr.get("resistance"),
+                "sr_current": sr.get("current"),
+                "sr_risk_reward": sr.get("risk_reward"),
+                "sr_upside_pct": sr.get("upside_pct"),
+                "sr_downside_pct": sr.get("downside_pct"),
+                # Mean Reversion
+                "mr_score": mr.get("score"),
+                "mr_distance_pct": mr.get("distance_pct"),
+                "mr_is_oversold": mr.get("is_oversold"),
+                "mr_is_overbought": mr.get("is_overbought"),
+                # Bollinger
+                "bb_score": bb.get("score"),
+                "bb_band_width": bb.get("band_width"),
+                "bb_position": bb.get("position"),
+                # Correlation
+                "corr_score": corr.get("score"),
+                "corr_sector": corr.get("sector"),
+                "corr_peers_bullish": corr.get("peers_bullish"),
+                "corr_peers_total": corr.get("peers_total"),
+                # Full engines for expandable detail
                 "engines": result["engines"],
             })
+            scored += 1
         except Exception as exc:
             logger.warning("Failed to score %s: %s", ticker, exc)
+            failed += 1
 
     # Sort by combined score descending
     picks.sort(key=lambda p: p["combined_score"], reverse=True)
-    picks = picks[:limit]
+
+    # Apply limit if requested
+    if limit and limit < len(picks):
+        picks = picks[:limit]
 
     # Assign ranks
     for i, pick in enumerate(picks):
@@ -204,6 +260,8 @@ def _compute_smart_picks(market_id: str, limit: int) -> dict:
     return {
         "market_id": market_id,
         "computed_at": datetime.now(timezone.utc).isoformat(),
+        "total_scored": scored,
+        "total_failed": failed,
         "picks": picks,
     }
 
