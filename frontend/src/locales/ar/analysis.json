@@ -1,0 +1,72 @@
+{
+  "title": "تحليل جديد",
+  "steps": {
+    "market": "اختر السوق",
+    "stock": "اختر السهم",
+    "configure": "إعدادات",
+    "analyze": "تحليل",
+    "results": "النتائج"
+  },
+  "market": {
+    "selectMarket": "اختر السوق",
+    "selectMarketDesc": "اختر السوق الذي تريد تحليل سهم منه.",
+    "usMarket": "السوق الأمريكي",
+    "egyptMarket": "البورصة المصرية"
+  },
+  "stock": {
+    "enterTicker": "أدخل رمز السهم",
+    "searchPlaceholder": "ابحث بالرمز أو الاسم...",
+    "price": "السعر",
+    "change": "التغيير",
+    "customTicker": "إدخال رمز مخصص",
+    "marketOverview": "نظرة عامة على السوق",
+    "browseStocks": "تصفح الأسهم أو اختر واحداً للتحليل."
+  },
+  "config": {
+    "title": "إعدادات التحليل",
+    "description": "حدد معايير تحليل {{name}} ({{ticker}}).",
+    "tradeHorizon": "أفق التداول",
+    "analysisDate": "تاريخ التحليل",
+    "researchDepth": "عمق البحث",
+    "analysts": "المحللون",
+    "llmProvider": "مزود النموذج",
+    "quickThinkModel": "نموذج التفكير السريع",
+    "deepThinkModel": "نموذج التفكير العميق"
+  },
+  "progress": {
+    "analyzing": "جارٍ تحليل {{name}}",
+    "connected": "متصل — يتم استقبال تحديثات مباشرة من المحللين.",
+    "connecting": "جارٍ الاتصال بخادم التحليل...",
+    "stage": "المرحلة",
+    "messages": "الرسائل",
+    "tokensUsed": "الرموز المستخدمة",
+    "apiCalls": "طلبات API"
+  },
+  "results": {
+    "complete": "اكتمل التحليل",
+    "completedDesc": "تم إكمال التحليل بنجاح.",
+    "recommendation": "التوصية",
+    "confidence": "مستوى الثقة",
+    "summary": "الملخص",
+    "reports": "التقارير التفصيلية",
+    "noRecommendation": "هذا التحليل لا يحتوي على توصية — ربما فشل أو تم إلغاؤه.",
+    "executeTrade": "تنفيذ صفقة"
+  },
+  "agents": {
+    "marketAnalysis": "تحليل السوق",
+    "newsAnalysis": "تحليل الأخبار",
+    "socialSentiment": "تحليل المشاعر",
+    "fundamentals": "التحليل الأساسي",
+    "bullBearDebate": "نقاش الصعود والهبوط",
+    "traderRecommendation": "توصية المتداول",
+    "riskAssessment": "تقييم المخاطر",
+    "portfolioDecision": "قرار المحفظة",
+    "bullResearcher": "باحث الصعود",
+    "bearResearcher": "باحث الهبوط",
+    "researchManager": "مدير الأبحاث",
+    "aggressiveAnalyst": "المحلل الهجومي",
+    "conservativeAnalyst": "المحلل المحافظ",
+    "neutralAnalyst": "المحلل المحايد",
+    "riskManager": "مدير المخاطر"
+  }
+}

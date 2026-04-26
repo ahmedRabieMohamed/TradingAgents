@@ -1,0 +1,30 @@
+{
+  "title": "سجل التحليلات",
+  "filters": {
+    "all": "الكل",
+    "status": "الحالة",
+    "market": "السوق",
+    "recommendation": "التوصية",
+    "dateRange": "نطاق التاريخ",
+    "from": "من",
+    "to": "إلى"
+  },
+  "table": {
+    "ticker": "الرمز",
+    "stockName": "اسم السهم",
+    "market": "السوق",
+    "date": "التاريخ",
+    "horizon": "الأفق",
+    "recommendation": "التوصية",
+    "confidence": "الثقة",
+    "status": "الحالة",
+    "actions": "الإجراءات"
+  },
+  "compare": {
+    "title": "مقارنة التحليلات",
+    "selectTwo": "اختر تحليلين للمقارنة",
+    "noReports": "لا توجد تقارير متاحة"
+  },
+  "empty": "لم يتم العثور على تحليلات مطابقة للتصفية.",
+  "deleteConfirm": "هل أنت متأكد من حذف هذا التحليل؟"
+}

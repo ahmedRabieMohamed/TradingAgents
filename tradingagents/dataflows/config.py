@@ -27,5 +27,40 @@ def get_config() -> Dict:
     return _config.copy()
 
 
+def get_market_region() -> Dict:
+    """Get the market region configuration for the current region."""
+    config = get_config()
+    region_name = config.get("market_region", "us")
+    regions = default_config.MARKET_REGIONS
+    if region_name not in regions:
+        raise ValueError(
+            f"Unknown market region '{region_name}'. "
+            f"Available regions: {list(regions.keys())}"
+        )
+    return regions[region_name]
+
+
+def get_trade_horizon() -> Dict:
+    """Get the trade horizon configuration for the current horizon."""
+    config = get_config()
+    horizon_name = config.get("trade_horizon", "short-term")
+    horizons = default_config.TRADE_HORIZONS
+    if horizon_name not in horizons:
+        raise ValueError(
+            f"Unknown trade horizon '{horizon_name}'. "
+            f"Available horizons: {list(horizons.keys())}"
+        )
+    return horizons[horizon_name]
+
+
+def get_ticker_with_suffix(symbol: str) -> str:
+    """Apply the market region's ticker suffix if needed."""
+    region = get_market_region()
+    suffix = region.get("ticker_suffix", "")
+    if suffix and not symbol.upper().endswith(suffix):
+        return symbol.upper() + suffix
+    return symbol.upper()
+
+
 # Initialize with default config
 initialize_config()

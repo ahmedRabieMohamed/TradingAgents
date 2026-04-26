@@ -1,0 +1,23 @@
+{
+  "title": "Settings",
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred language"
+  },
+  "theme": {
+    "title": "Theme",
+    "dark": "Dark",
+    "light": "Light"
+  },
+  "defaults": {
+    "title": "Analysis Defaults",
+    "defaultMarket": "Default Market",
+    "defaultHorizon": "Default Horizon",
+    "defaultDepth": "Default Research Depth"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "description": "AI-Powered Trading Analysis Platform"
+  }
+}

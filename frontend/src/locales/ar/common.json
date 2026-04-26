@@ -1,0 +1,76 @@
+{
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "newAnalysis": "تحليل جديد",
+    "history": "السجل",
+    "performance": "الأداء",
+    "watchlist": "قائمة المتابعة",
+    "portfolio": "المحفظة",
+    "settings": "الإعدادات",
+    "smartPicks": "الفرص الذكية"
+  },
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "search": "بحث",
+    "filter": "تصفية",
+    "export": "تصدير",
+    "refresh": "تحديث",
+    "add": "إضافة",
+    "remove": "إزالة",
+    "submit": "إرسال",
+    "back": "رجوع",
+    "next": "التالي",
+    "retry": "إعادة المحاولة",
+    "viewDetails": "عرض التفاصيل",
+    "startAnalysis": "بدء التحليل",
+    "reAnalyze": "إعادة التحليل",
+    "compare": "مقارنة",
+    "startNewAnalysis": "بدء تحليل جديد"
+  },
+  "status": {
+    "loading": "جارٍ التحميل...",
+    "error": "خطأ",
+    "success": "تم بنجاح",
+    "pending": "قيد الانتظار",
+    "running": "قيد التشغيل",
+    "completed": "مكتمل",
+    "failed": "فشل",
+    "cancelled": "ملغى",
+    "noData": "لا توجد بيانات",
+    "empty": "لا يوجد شيء هنا بعد"
+  },
+  "market": {
+    "us": "السوق الأمريكي",
+    "egypt": "البورصة المصرية",
+    "open": "مفتوح",
+    "closed": "مغلق"
+  },
+  "recommendation": {
+    "buy": "شراء",
+    "sell": "بيع",
+    "hold": "احتفاظ"
+  },
+  "time": {
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "thisWeek": "هذا الأسبوع",
+    "thisMonth": "هذا الشهر",
+    "shortTerm": "قصير المدى",
+    "mediumTerm": "متوسط المدى",
+    "longTerm": "طويل المدى"
+  },
+  "language": {
+    "en": "English",
+    "ar": "العربية",
+    "switchLanguage": "اللغة"
+  },
+  "app": {
+    "title": "TradingAgents",
+    "subtitle": "تحليل تداول مدعوم بالذكاء الاصطناعي"
+  }
+}

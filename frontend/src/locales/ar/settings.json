@@ -1,0 +1,23 @@
+{
+  "title": "الإعدادات",
+  "language": {
+    "title": "اللغة",
+    "description": "اختر لغتك المفضلة"
+  },
+  "theme": {
+    "title": "المظهر",
+    "dark": "داكن",
+    "light": "فاتح"
+  },
+  "defaults": {
+    "title": "إعدادات التحليل الافتراضية",
+    "defaultMarket": "السوق الافتراضي",
+    "defaultHorizon": "الأفق الافتراضي",
+    "defaultDepth": "عمق البحث الافتراضي"
+  },
+  "about": {
+    "title": "حول",
+    "version": "الإصدار",
+    "description": "منصة تحليل تداول مدعومة بالذكاء الاصطناعي"
+  }
+}

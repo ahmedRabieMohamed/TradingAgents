@@ -1,0 +1,26 @@
+{
+  "title": "الأداء",
+  "metrics": {
+    "totalTrades": "إجمالي الصفقات",
+    "winRate": "نسبة الربح",
+    "avgReturn": "متوسط العائد",
+    "bestTrade": "أفضل صفقة",
+    "worstTrade": "أسوأ صفقة",
+    "sharpeRatio": "نسبة شارب"
+  },
+  "comparison": {
+    "title": "مقارنة بالسوق",
+    "vsMarket": "مقابل السوق",
+    "alpha": "ألفا",
+    "beta": "بيتا"
+  },
+  "simulations": {
+    "title": "نتائج المحاكاة",
+    "ticker": "الرمز",
+    "entryDate": "تاريخ الدخول",
+    "exitDate": "تاريخ الخروج",
+    "return": "العائد",
+    "status": "الحالة"
+  },
+  "empty": "لا توجد بيانات أداء بعد. أكمل بعض التحليلات أولاً!"
+}

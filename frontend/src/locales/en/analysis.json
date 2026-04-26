@@ -1,0 +1,72 @@
+{
+  "title": "New Analysis",
+  "steps": {
+    "market": "Select Market",
+    "stock": "Choose Stock",
+    "configure": "Configure",
+    "analyze": "Analyze",
+    "results": "Results"
+  },
+  "market": {
+    "selectMarket": "Select Market",
+    "selectMarketDesc": "Choose the market you want to analyze a stock from.",
+    "usMarket": "US Market",
+    "egyptMarket": "Egypt (EGX)"
+  },
+  "stock": {
+    "enterTicker": "Enter stock ticker",
+    "searchPlaceholder": "Search by ticker or name...",
+    "price": "Price",
+    "change": "Change",
+    "customTicker": "Enter custom ticker",
+    "marketOverview": "Market Overview",
+    "browseStocks": "Browse stocks or select one to analyze."
+  },
+  "config": {
+    "title": "Configure Analysis",
+    "description": "Set parameters for analyzing {{name}} ({{ticker}}).",
+    "tradeHorizon": "Trade Horizon",
+    "analysisDate": "Analysis Date",
+    "researchDepth": "Research Depth",
+    "analysts": "Analysts",
+    "llmProvider": "LLM Provider",
+    "quickThinkModel": "Quick Think Model",
+    "deepThinkModel": "Deep Think Model"
+  },
+  "progress": {
+    "analyzing": "Analyzing {{name}}",
+    "connected": "Connected — receiving live updates from agents.",
+    "connecting": "Connecting to analysis stream...",
+    "stage": "Stage",
+    "messages": "Messages",
+    "tokensUsed": "Tokens Used",
+    "apiCalls": "API Calls"
+  },
+  "results": {
+    "complete": "Analysis Complete",
+    "completedDesc": "Your analysis has been completed successfully.",
+    "recommendation": "Recommendation",
+    "confidence": "Confidence",
+    "summary": "Summary",
+    "reports": "Detailed Reports",
+    "noRecommendation": "This analysis has no recommendation — it may have failed or been cancelled.",
+    "executeTrade": "Execute Trade"
+  },
+  "agents": {
+    "marketAnalysis": "Market Analysis",
+    "newsAnalysis": "News Analysis",
+    "socialSentiment": "Social Sentiment",
+    "fundamentals": "Fundamentals",
+    "bullBearDebate": "Bull vs Bear Debate",
+    "traderRecommendation": "Trader Recommendation",
+    "riskAssessment": "Risk Assessment",
+    "portfolioDecision": "Portfolio Decision",
+    "bullResearcher": "Bull Researcher",
+    "bearResearcher": "Bear Researcher",
+    "researchManager": "Research Manager",
+    "aggressiveAnalyst": "Aggressive Analyst",
+    "conservativeAnalyst": "Conservative Analyst",
+    "neutralAnalyst": "Neutral Analyst",
+    "riskManager": "Risk Manager"
+  }
+}
