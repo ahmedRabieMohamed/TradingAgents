@@ -64,6 +64,11 @@ body {
   50% { opacity: 0.8; }
 }
 
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .fade-in {
   animation: fadeIn 0.3s ease;
 }
@@ -206,5 +211,15 @@ body {
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 0px;
+  }
+}
+
+/* Reduced-motion fallback for any CSS animations not driven by motion/. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

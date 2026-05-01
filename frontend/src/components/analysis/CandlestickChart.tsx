@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
+import { motion } from 'motion/react';
 import { createChart, CandlestickSeries, HistogramSeries, type IChartApi, type ISeriesApi, ColorType } from 'lightweight-charts';
 import { getPriceHistory } from '../../services/api';
 import type { OHLCBar } from '../../types';
+import { useMotionTokens } from '../../motion';
 
 interface CandlestickChartProps {
   ticker: string;
@@ -204,10 +206,18 @@ export default function CandlestickChart({ ticker, marketId, currency }: Candles
     chartRef.current?.timeScale().fitContent();
   }, [bars, period]);
 
+  const tokens = useMotionTokens();
+  const containerEnterMs = tokens.chart.container.enter.duration;
   const showOverlay = loading || error !== null || bars.length === 0;
 
   return (
-    <div style={containerStyle}>
+    <motion.div
+      style={containerStyle}
+      initial={{ opacity: 0, scale: 0.985 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: containerEnterMs / 1000, ease: [0.22, 1, 0.36, 1] }}
+      key={`${ticker}-${period}`}
+    >
       <div style={headerStyle}>
         <span style={titleStyle}>
           {ticker} Price Chart ({currency})
@@ -242,6 +252,6 @@ export default function CandlestickChart({ ticker, marketId, currency }: Candles
         )}
         <div ref={chartContainerRef} style={{ height: 300 }} />
       </div>
-    </div>
+    </motion.div>
   );
 }

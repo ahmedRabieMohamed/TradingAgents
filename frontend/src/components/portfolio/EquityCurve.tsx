@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import type { EquityPoint } from '../../types';
+import { useMotionTokens } from '../../motion';
 
 interface EquityCurveProps {
   data: EquityPoint[];
@@ -41,12 +42,14 @@ function formatTooltipValue(v: number): string {
 }
 
 export default function EquityCurve({ data }: EquityCurveProps) {
+  const tokens = useMotionTokens();
   if (data.length < 2) return null;
 
   const first = data[0].value;
   const last = data[data.length - 1].value;
   const isPositive = last >= first;
   const color = isPositive ? '#22c55e' : '#ef4444';
+  const animationActive = tokens.chart.enter.duration > 0;
 
   return (
     <div style={containerStyle}>
@@ -92,6 +95,9 @@ export default function EquityCurve({ data }: EquityCurveProps) {
             fill="url(#equityGrad)"
             dot={false}
             activeDot={{ r: 4, fill: color, stroke: 'var(--surface)', strokeWidth: 2 }}
+            isAnimationActive={animationActive}
+            animationDuration={tokens.chart.enter.duration}
+            animationEasing={tokens.chart.enter.easing as 'ease-out'}
           />
         </AreaChart>
       </ResponsiveContainer>

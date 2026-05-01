@@ -2,6 +2,10 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Motion
+
+Page transitions, list enter/exit, value flashes, press feedback, and chart entrances are driven by the motion module under `src/motion/`. Components consume motion through the `useMotionTokens()` hook and the shared primitives (`PageTransition`, `EnterStagger`, `AnimatedList`, `ValueFlash`, `PressFeedback`, `SkeletonShimmer`); raw durations and easings should not be hard-coded in components. The full token catalog and the rules for adding new tokens are in `specs/011-animated-ui-redesign/contracts/motion-tokens.md`.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

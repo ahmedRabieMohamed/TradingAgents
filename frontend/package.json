@@ -16,6 +16,7 @@
     "i18next": "^26.0.4",
     "lightweight-charts": "^5.1.0",
     "marked": "^18.0.0",
+    "motion": "^12.38.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-i18next": "^17.0.2",
