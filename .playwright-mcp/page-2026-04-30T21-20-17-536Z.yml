@@ -1,0 +1,148 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: AI-Powered Trading Analysis
+      - menu [ref=e16]:
+        - menuitem "dashboard Dashboard" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: Dashboard
+        - menuitem "line-chart New Analysis" [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: New Analysis
+        - menuitem "thunderbolt Smart Picks" [active] [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: Smart Picks
+        - separator [ref=e32]
+        - menuitem "star Watchlist" [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: Watchlist
+        - menuitem "history History" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: History
+        - menuitem "wallet Portfolio 4" [ref=e98] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e48]:
+            - generic [ref=e49]: Portfolio
+            - superscript [ref=e101]:
+              - generic [ref=e103]: "4"
+        - menuitem "fund Performance" [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: Performance
+        - separator [ref=e55]
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: Settings
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: Closed
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: Closed
+    - img "left" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e309]:
+      - generic [ref=e310]:
+        - heading "Smart Picks" [level=4] [ref=e311]
+        - generic [ref=e312]:
+          - generic [ref=e314]: No market selected
+          - generic [ref=e316]: v0.1.0
+          - button "global العربية" [ref=e318] [cursor=pointer]:
+            - img "global" [ref=e320]:
+              - img [ref=e321]
+            - generic [ref=e323]: العربية
+      - generic [ref=e324]:
+        - generic [ref=e325]:
+          - generic [ref=e326]:
+            - heading "thunderbolt Smart Picks" [level=4] [ref=e327]:
+              - img "thunderbolt" [ref=e328]:
+                - img [ref=e329]
+              - text: Smart Picks
+            - text: Today's best chances based on 7 trading engines + news
+            - generic [ref=e331]: "Last updated: 5/1/2026, 12:20:15 AM · 0 stocks scored"
+          - button "reload Refresh" [ref=e332] [cursor=pointer]:
+            - img "reload" [ref=e334]:
+              - img [ref=e335]
+            - generic [ref=e337]: Refresh
+        - generic [ref=e338]:
+          - img "No data" [ref=e340]
+          - generic [ref=e351]: No strong opportunities detected today — markets are quiet.
+        - generic [ref=e353]:
+          - strong [ref=e357]:
+            - img "search" [ref=e358]:
+              - img [ref=e359]
+            - text: Score Any Stock
+          - generic [ref=e361]:
+            - generic [ref=e363] [cursor=pointer]:
+              - generic "EGX" [ref=e364]:
+                - text: EGX
+                - combobox [ref=e365]
+              - img "down" [ref=e367]:
+                - img [ref=e368]
+            - generic [ref=e371]:
+              - img "search" [ref=e373]:
+                - img [ref=e374]
+              - textbox "ETEL, COMI, AAPL..." [ref=e376]
+            - button "Score" [ref=e378] [cursor=pointer]:
+              - generic [ref=e379]: Score
+        - generic [ref=e380]:
+          - generic [ref=e381]:
+            - img "warning" [ref=e383]:
+              - img [ref=e384]
+            - heading "Danger Alerts" [level=5] [ref=e387]
+            - generic [ref=e388]: Monitoring your open positions
+          - generic [ref=e389]:
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - img "warning" [ref=e395]:
+                  - img [ref=e396]
+                - strong [ref=e400]: EAST
+                - generic [ref=e402]: SHORT
+                - generic [ref=e403]: Multiple bearish signals
+              - generic [ref=e404]:
+                - strong [ref=e407]: "0"
+                - generic [ref=e409]: SELL NOW
+            - generic [ref=e412]:
+              - generic [ref=e413]:
+                - img "warning" [ref=e415]:
+                  - img [ref=e416]
+                - strong [ref=e420]: EAST
+                - generic [ref=e422]: LONG
+                - generic [ref=e423]: Multiple bearish signals
+              - generic [ref=e424]:
+                - strong [ref=e427]: "0"
+                - generic [ref=e429]: SELL NOW
+            - generic [ref=e432]:
+              - generic [ref=e433]:
+                - img "exclamation-circle" [ref=e435]:
+                  - img [ref=e436]
+                - strong [ref=e441]: MFPC
+                - generic [ref=e443]: LONG
+                - generic [ref=e444]: "Engine computation failed: unable to open database file"
+              - generic [ref=e445]:
+                - strong [ref=e448]: "50"
+                - generic [ref=e450]: WATCH
+            - generic [ref=e453]:
+              - generic [ref=e454]:
+                - img "exclamation-circle" [ref=e456]:
+                  - img [ref=e457]
+                - strong [ref=e462]: EAST
+                - generic [ref=e464]: LONG
+                - generic [ref=e465]: "Engine computation failed: unable to open database file"
+              - generic [ref=e466]:
+                - strong [ref=e469]: "50"
+                - generic [ref=e471]: WATCH

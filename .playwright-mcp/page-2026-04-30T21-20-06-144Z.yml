@@ -1,0 +1,115 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: AI-Powered Trading Analysis
+      - menu [ref=e16]:
+        - menuitem "dashboard Dashboard" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: Dashboard
+        - menuitem "line-chart New Analysis" [active] [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: New Analysis
+        - menuitem "thunderbolt Smart Picks" [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: Smart Picks
+        - separator [ref=e32]
+        - menuitem "star Watchlist" [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: Watchlist
+        - menuitem "history History" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: History
+        - menuitem "wallet Portfolio 4" [ref=e98] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e48]:
+            - generic [ref=e49]: Portfolio
+            - superscript [ref=e101]:
+              - generic [ref=e103]: "4"
+        - menuitem "fund Performance" [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: Performance
+        - separator [ref=e55]
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: Settings
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: Closed
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: Closed
+    - img "left" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e222]:
+      - generic [ref=e223]:
+        - heading "New Analysis" [level=4] [ref=e224]
+        - generic [ref=e225]:
+          - generic [ref=e227]: No market selected
+          - generic [ref=e229]: v0.1.0
+          - button "global العربية" [ref=e231] [cursor=pointer]:
+            - img "global" [ref=e233]:
+              - img [ref=e234]
+            - generic [ref=e236]: العربية
+      - generic [ref=e237]:
+        - generic [ref=e238]:
+          - generic [ref=e240]:
+            - generic [ref=e242]: "1"
+            - generic [ref=e245]: Select Market
+          - generic [ref=e248]:
+            - generic [ref=e250]: "2"
+            - generic [ref=e253]: Choose Stock
+          - generic [ref=e256]:
+            - generic [ref=e258]: "3"
+            - generic [ref=e261]: Configure
+          - generic [ref=e264]:
+            - generic [ref=e266]: "4"
+            - generic [ref=e269]: Analyze
+          - generic [ref=e272]:
+            - generic [ref=e274]: "5"
+            - generic [ref=e277]: Results
+        - heading "Select Market" [level=4] [ref=e278]
+        - generic [ref=e279]: Choose the market you want to analyze a stock from.
+        - generic [ref=e280]:
+          - generic [ref=e281] [cursor=pointer]:
+            - generic [ref=e282]: 🇺🇸
+            - generic [ref=e283]: United States
+            - generic [ref=e284]: NYSE/NASDAQ
+            - generic [ref=e285]:
+              - generic [ref=e286]: USD
+              - generic [ref=e287]: ·
+              - generic [ref=e288]: Monday, Tuesday, Wednesday, Thursday, Friday
+            - generic [ref=e289]:
+              - generic [ref=e290]: AAPL
+              - generic [ref=e291]: NVDA
+              - generic [ref=e292]: TSLA
+              - generic [ref=e293]: MSFT
+              - generic [ref=e294]: SPY
+          - generic [ref=e295] [cursor=pointer]:
+            - generic [ref=e296]: 🇪🇬
+            - generic [ref=e297]: Egypt
+            - generic [ref=e298]: EGX (Egyptian Exchange)
+            - generic [ref=e299]:
+              - generic [ref=e300]: EGP
+              - generic [ref=e301]: ·
+              - generic [ref=e302]: Sunday, Monday, Tuesday, Wednesday, Thursday
+            - generic [ref=e303]:
+              - generic [ref=e304]: COMI
+              - generic [ref=e305]: HRHO
+              - generic [ref=e306]: TMGH
+              - generic [ref=e307]: EFIH
+              - generic [ref=e308]: SWDY

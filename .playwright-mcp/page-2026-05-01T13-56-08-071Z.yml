@@ -1,0 +1,932 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - img "rise" [ref=e9]:
+              - img [ref=e10]
+            - strong [ref=e14]: TradingAgents
+          - generic [ref=e15]: تحليل تداول مدعوم بالذكاء الاصطناعي
+        - menu [ref=e16]:
+          - menuitem "dashboard لوحة التحكم" [ref=e17] [cursor=pointer]:
+            - img "dashboard" [ref=e18]:
+              - img [ref=e19]
+            - generic [ref=e21]: لوحة التحكم
+          - menuitem "line-chart تحليل جديد" [ref=e22] [cursor=pointer]:
+            - img "line-chart" [ref=e23]:
+              - img [ref=e24]
+            - generic [ref=e26]: تحليل جديد
+          - menuitem "thunderbolt الفرص الذكية" [ref=e27] [cursor=pointer]:
+            - img "thunderbolt" [ref=e28]:
+              - img [ref=e29]
+            - generic [ref=e31]: الفرص الذكية
+          - separator [ref=e32]
+          - menuitem "star قائمة المتابعة" [ref=e33] [cursor=pointer]:
+            - img "star" [ref=e34]:
+              - img [ref=e35]
+            - generic [ref=e37]: قائمة المتابعة
+          - menuitem "history السجل" [ref=e38] [cursor=pointer]:
+            - img "history" [ref=e39]:
+              - img [ref=e40]
+            - generic [ref=e42]: السجل
+          - menuitem "wallet المحفظة 4" [ref=e156] [cursor=pointer]:
+            - img "wallet" [ref=e44]:
+              - img [ref=e45]
+            - generic [ref=e48]:
+              - generic [ref=e49]: المحفظة
+              - superscript [ref=e159]:
+                - generic [ref=e161]: "4"
+          - menuitem "fund الأداء" [ref=e50] [cursor=pointer]:
+            - img "fund" [ref=e51]:
+              - img [ref=e52]
+            - generic [ref=e54]: الأداء
+          - separator [ref=e55]
+          - menuitem "setting الإعدادات" [ref=e56] [cursor=pointer]:
+            - img "setting" [ref=e57]:
+              - img [ref=e58]
+            - generic [ref=e60]: الإعدادات
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e64]: US (NYSE/NASDAQ)
+            - generic [ref=e65]: مفتوح
+          - generic [ref=e66]:
+            - generic [ref=e68]: Egypt (EGX)
+            - generic [ref=e69]: مغلق
+      - img "right" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - heading "الفرص الذكية" [level=4] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e80]: No market selected
+            - generic [ref=e82]: v0.1.0
+            - button "global English" [ref=e84] [cursor=pointer]:
+              - img "global" [ref=e86]:
+                - img [ref=e87]
+              - generic [ref=e89]: English
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - heading "thunderbolt الفرص الذكية" [level=4] [ref=e93]:
+                - img "thunderbolt" [ref=e94]:
+                  - img [ref=e95]
+                - text: الفرص الذكية
+              - text: أفضل الفرص اليوم بناءً على المحركات الكمية + الأخبار
+              - generic [ref=e162]: "Last updated: 5/1/2026, 4:55:22 PM · 27 stocks scored"
+            - button "reload تحديث" [ref=e163] [cursor=pointer]:
+              - img "reload" [ref=e165]:
+                - img [ref=e166]
+              - generic [ref=e102]: تحديث
+          - generic [ref=e170]:
+            - table [ref=e174]:
+              - rowgroup [ref=e185]:
+                - row "# الرمز الشركة الإشارة filter التقييم النظام المحركات" [ref=e186]:
+                  - columnheader [ref=e187]
+                  - columnheader "#" [ref=e188]
+                  - columnheader "الرمز" [ref=e189]
+                  - columnheader "الشركة" [ref=e190]
+                  - columnheader "الإشارة filter" [ref=e191]:
+                    - generic [ref=e192]:
+                      - generic [ref=e193]: الإشارة
+                      - button "filter" [ref=e194] [cursor=pointer]:
+                        - img "filter" [ref=e195]:
+                          - img [ref=e196]
+                  - columnheader "التقييم" [ref=e198] [cursor=pointer]:
+                    - generic [ref=e199]:
+                      - generic [ref=e200]: التقييم
+                      - generic [ref=e202]:
+                        - img [ref=e203]:
+                          - img [ref=e204]
+                        - img [ref=e206]:
+                          - img [ref=e207]
+                  - columnheader "النظام" [ref=e209]
+                  - columnheader "المحركات" [ref=e210]
+                  - columnheader [ref=e211]
+              - rowgroup [ref=e212]:
+                - row "#1 EGCH Egyptian Chemical Industries Chemicals HOLD 60 · طبيعي 3/7 تحليل →" [ref=e213]:
+                  - cell [ref=e214]:
+                    - button [ref=e215] [cursor=pointer]
+                  - cell "#1" [ref=e216]:
+                    - strong [ref=e218]: "#1"
+                  - cell "EGCH" [ref=e219]:
+                    - button "EGCH" [ref=e220] [cursor=pointer]:
+                      - generic [ref=e221]: EGCH
+                  - cell "Egyptian Chemical Industries Chemicals" [ref=e222]:
+                    - generic [ref=e223]:
+                      - generic [ref=e224]: Egyptian Chemical Industries
+                      - text: Chemicals
+                  - cell "HOLD" [ref=e225]:
+                    - generic [ref=e226]: HOLD
+                  - cell "60" [ref=e227]:
+                    - strong [ref=e230]: "60"
+                  - cell "· طبيعي" [ref=e231]:
+                    - generic [ref=e232]: · طبيعي
+                  - cell "3/7" [ref=e233]:
+                    - generic [ref=e234]: 3/7
+                  - cell "تحليل →" [ref=e235]:
+                    - button "تحليل →" [ref=e236] [cursor=pointer]:
+                      - generic [ref=e237]: تحليل →
+                - row "#2 CLHO Cleopatra Hospitals Group Healthcare HOLD 57 · طبيعي 4/7 تحليل →" [ref=e238]:
+                  - cell [ref=e239]:
+                    - button [ref=e240] [cursor=pointer]
+                  - cell "#2" [ref=e241]:
+                    - strong [ref=e243]: "#2"
+                  - cell "CLHO" [ref=e244]:
+                    - button "CLHO" [ref=e245] [cursor=pointer]:
+                      - generic [ref=e246]: CLHO
+                  - cell "Cleopatra Hospitals Group Healthcare" [ref=e247]:
+                    - generic [ref=e248]:
+                      - generic [ref=e249]: Cleopatra Hospitals Group
+                      - text: Healthcare
+                  - cell "HOLD" [ref=e250]:
+                    - generic [ref=e251]: HOLD
+                  - cell "57" [ref=e252]:
+                    - strong [ref=e255]: "57"
+                  - cell "· طبيعي" [ref=e256]:
+                    - generic [ref=e257]: · طبيعي
+                  - cell "4/7" [ref=e258]:
+                    - generic [ref=e259]: 4/7
+                  - cell "تحليل →" [ref=e260]:
+                    - button "تحليل →" [ref=e261] [cursor=pointer]:
+                      - generic [ref=e262]: تحليل →
+                - row "#3 RAYA Raya Holding Technology HOLD 55 · طبيعي 3/7 تحليل →" [ref=e263]:
+                  - cell [ref=e264]:
+                    - button [ref=e265] [cursor=pointer]
+                  - cell "#3" [ref=e266]:
+                    - strong [ref=e268]: "#3"
+                  - cell "RAYA" [ref=e269]:
+                    - button "RAYA" [ref=e270] [cursor=pointer]:
+                      - generic [ref=e271]: RAYA
+                  - cell "Raya Holding Technology" [ref=e272]:
+                    - generic [ref=e273]:
+                      - generic [ref=e274]: Raya Holding
+                      - text: Technology
+                  - cell "HOLD" [ref=e275]:
+                    - generic [ref=e276]: HOLD
+                  - cell "55" [ref=e277]:
+                    - strong [ref=e280]: "55"
+                  - cell "· طبيعي" [ref=e281]:
+                    - generic [ref=e282]: · طبيعي
+                  - cell "3/7" [ref=e283]:
+                    - generic [ref=e284]: 3/7
+                  - cell "تحليل →" [ref=e285]:
+                    - button "تحليل →" [ref=e286] [cursor=pointer]:
+                      - generic [ref=e287]: تحليل →
+                - row "#4 ETEL Telecom Egypt Telecom NEUTRAL 54 · طبيعي 2/7 تحليل →" [ref=e288]:
+                  - cell [ref=e289]:
+                    - button [ref=e290] [cursor=pointer]
+                  - cell "#4" [ref=e291]:
+                    - strong [ref=e293]: "#4"
+                  - cell "ETEL" [ref=e294]:
+                    - button "ETEL" [ref=e295] [cursor=pointer]:
+                      - generic [ref=e296]: ETEL
+                  - cell "Telecom Egypt Telecom" [ref=e297]:
+                    - generic [ref=e298]:
+                      - generic [ref=e299]: Telecom Egypt
+                      - text: Telecom
+                  - cell "NEUTRAL" [ref=e300]:
+                    - generic [ref=e301]: NEUTRAL
+                  - cell "54" [ref=e302]:
+                    - strong [ref=e305]: "54"
+                  - cell "· طبيعي" [ref=e306]:
+                    - generic [ref=e307]: · طبيعي
+                  - cell "2/7" [ref=e308]:
+                    - generic [ref=e309]: 2/7
+                  - cell "تحليل →" [ref=e310]:
+                    - button "تحليل →" [ref=e311] [cursor=pointer]:
+                      - generic [ref=e312]: تحليل →
+                - row "#5 ALCN Alexandria Container & Cargo Handling Transportation NEUTRAL 54 · طبيعي 1/7 تحليل →" [ref=e313]:
+                  - cell [ref=e314]:
+                    - button [ref=e315] [cursor=pointer]
+                  - cell "#5" [ref=e316]:
+                    - strong [ref=e318]: "#5"
+                  - cell "ALCN" [ref=e319]:
+                    - button "ALCN" [ref=e320] [cursor=pointer]:
+                      - generic [ref=e321]: ALCN
+                  - cell "Alexandria Container & Cargo Handling Transportation" [ref=e322]:
+                    - generic [ref=e323]:
+                      - generic [ref=e324]: Alexandria Container & Cargo Handling
+                      - text: Transportation
+                  - cell "NEUTRAL" [ref=e325]:
+                    - generic [ref=e326]: NEUTRAL
+                  - cell "54" [ref=e327]:
+                    - strong [ref=e330]: "54"
+                  - cell "· طبيعي" [ref=e331]:
+                    - generic [ref=e332]: · طبيعي
+                  - cell "1/7" [ref=e333]:
+                    - generic [ref=e334]: 1/7
+                  - cell "تحليل →" [ref=e335]:
+                    - button "تحليل →" [ref=e336] [cursor=pointer]:
+                      - generic [ref=e337]: تحليل →
+                - row "#6 HDBK Housing & Development Bank Banking NEUTRAL 54 · طبيعي 2/7 تحليل →" [ref=e338]:
+                  - cell [ref=e339]:
+                    - button [ref=e340] [cursor=pointer]
+                  - cell "#6" [ref=e341]:
+                    - strong [ref=e343]: "#6"
+                  - cell "HDBK" [ref=e344]:
+                    - button "HDBK" [ref=e345] [cursor=pointer]:
+                      - generic [ref=e346]: HDBK
+                  - cell "Housing & Development Bank Banking" [ref=e347]:
+                    - generic [ref=e348]:
+                      - generic [ref=e349]: Housing & Development Bank
+                      - text: Banking
+                  - cell "NEUTRAL" [ref=e350]:
+                    - generic [ref=e351]: NEUTRAL
+                  - cell "54" [ref=e352]:
+                    - strong [ref=e355]: "54"
+                  - cell "· طبيعي" [ref=e356]:
+                    - generic [ref=e357]: · طبيعي
+                  - cell "2/7" [ref=e358]:
+                    - generic [ref=e359]: 2/7
+                  - cell "تحليل →" [ref=e360]:
+                    - button "تحليل →" [ref=e361] [cursor=pointer]:
+                      - generic [ref=e362]: تحليل →
+                - row "#7 FWRY Fawry for Banking Technology Fintech NEUTRAL 54 · طبيعي 1/7 تحليل →" [ref=e363]:
+                  - cell [ref=e364]:
+                    - button [ref=e365] [cursor=pointer]
+                  - cell "#7" [ref=e366]:
+                    - strong [ref=e368]: "#7"
+                  - cell "FWRY" [ref=e369]:
+                    - button "FWRY" [ref=e370] [cursor=pointer]:
+                      - generic [ref=e371]: FWRY
+                  - cell "Fawry for Banking Technology Fintech" [ref=e372]:
+                    - generic [ref=e373]:
+                      - generic [ref=e374]: Fawry for Banking Technology
+                      - text: Fintech
+                  - cell "NEUTRAL" [ref=e375]:
+                    - generic [ref=e376]: NEUTRAL
+                  - cell "54" [ref=e377]:
+                    - strong [ref=e380]: "54"
+                  - cell "· طبيعي" [ref=e381]:
+                    - generic [ref=e382]: · طبيعي
+                  - cell "1/7" [ref=e383]:
+                    - generic [ref=e384]: 1/7
+                  - cell "تحليل →" [ref=e385]:
+                    - button "تحليل →" [ref=e386] [cursor=pointer]:
+                      - generic [ref=e387]: تحليل →
+                - row "#8 ORAS Orascom Construction Construction NEUTRAL 54 · طبيعي 1/7 تحليل →" [ref=e388]:
+                  - cell [ref=e389]:
+                    - button [ref=e390] [cursor=pointer]
+                  - cell "#8" [ref=e391]:
+                    - strong [ref=e393]: "#8"
+                  - cell "ORAS" [ref=e394]:
+                    - button "ORAS" [ref=e395] [cursor=pointer]:
+                      - generic [ref=e396]: ORAS
+                  - cell "Orascom Construction Construction" [ref=e397]:
+                    - generic [ref=e398]:
+                      - generic [ref=e399]: Orascom Construction
+                      - text: Construction
+                  - cell "NEUTRAL" [ref=e400]:
+                    - generic [ref=e401]: NEUTRAL
+                  - cell "54" [ref=e402]:
+                    - strong [ref=e405]: "54"
+                  - cell "· طبيعي" [ref=e406]:
+                    - generic [ref=e407]: · طبيعي
+                  - cell "1/7" [ref=e408]:
+                    - generic [ref=e409]: 1/7
+                  - cell "تحليل →" [ref=e410]:
+                    - button "تحليل →" [ref=e411] [cursor=pointer]:
+                      - generic [ref=e412]: تحليل →
+                - row "#9 COMI Commercial International Bank (CIB) Banking NEUTRAL 53 · طبيعي 2/7 تحليل →" [ref=e413]:
+                  - cell [ref=e414]:
+                    - button [ref=e415] [cursor=pointer]
+                  - cell "#9" [ref=e416]:
+                    - strong [ref=e418]: "#9"
+                  - cell "COMI" [ref=e419]:
+                    - button "COMI" [ref=e420] [cursor=pointer]:
+                      - generic [ref=e421]: COMI
+                  - cell "Commercial International Bank (CIB) Banking" [ref=e422]:
+                    - generic [ref=e423]:
+                      - generic [ref=e424]: Commercial International Bank (CIB)
+                      - text: Banking
+                  - cell "NEUTRAL" [ref=e425]:
+                    - generic [ref=e426]: NEUTRAL
+                  - cell "53" [ref=e427]:
+                    - strong [ref=e430]: "53"
+                  - cell "· طبيعي" [ref=e431]:
+                    - generic [ref=e432]: · طبيعي
+                  - cell "2/7" [ref=e433]:
+                    - generic [ref=e434]: 2/7
+                  - cell "تحليل →" [ref=e435]:
+                    - button "تحليل →" [ref=e436] [cursor=pointer]:
+                      - generic [ref=e437]: تحليل →
+                - row "#10 EFIH e-finance for Digital & Financial Investments Fintech NEUTRAL 53 · طبيعي 1/7 تحليل →" [ref=e438]:
+                  - cell [ref=e439]:
+                    - button [ref=e440] [cursor=pointer]
+                  - cell "#10" [ref=e441]:
+                    - strong [ref=e443]: "#10"
+                  - cell "EFIH" [ref=e444]:
+                    - button "EFIH" [ref=e445] [cursor=pointer]:
+                      - generic [ref=e446]: EFIH
+                  - cell "e-finance for Digital & Financial Investments Fintech" [ref=e447]:
+                    - generic [ref=e448]:
+                      - generic [ref=e449]: e-finance for Digital & Financial Investments
+                      - text: Fintech
+                  - cell "NEUTRAL" [ref=e450]:
+                    - generic [ref=e451]: NEUTRAL
+                  - cell "53" [ref=e452]:
+                    - strong [ref=e455]: "53"
+                  - cell "· طبيعي" [ref=e456]:
+                    - generic [ref=e457]: · طبيعي
+                  - cell "1/7" [ref=e458]:
+                    - generic [ref=e459]: 1/7
+                  - cell "تحليل →" [ref=e460]:
+                    - button "تحليل →" [ref=e461] [cursor=pointer]:
+                      - generic [ref=e462]: تحليل →
+                - row "#11 PHDC Palm Hills Developments Real Estate NEUTRAL 52 · طبيعي 3/7 تحليل →" [ref=e463]:
+                  - cell [ref=e464]:
+                    - button [ref=e465] [cursor=pointer]
+                  - cell "#11" [ref=e466]:
+                    - strong [ref=e468]: "#11"
+                  - cell "PHDC" [ref=e469]:
+                    - button "PHDC" [ref=e470] [cursor=pointer]:
+                      - generic [ref=e471]: PHDC
+                  - cell "Palm Hills Developments Real Estate" [ref=e472]:
+                    - generic [ref=e473]:
+                      - generic [ref=e474]: Palm Hills Developments
+                      - text: Real Estate
+                  - cell "NEUTRAL" [ref=e475]:
+                    - generic [ref=e476]: NEUTRAL
+                  - cell "52" [ref=e477]:
+                    - strong [ref=e480]: "52"
+                  - cell "· طبيعي" [ref=e481]:
+                    - generic [ref=e482]: · طبيعي
+                  - cell "3/7" [ref=e483]:
+                    - generic [ref=e484]: 3/7
+                  - cell "تحليل →" [ref=e485]:
+                    - button "تحليل →" [ref=e486] [cursor=pointer]:
+                      - generic [ref=e487]: تحليل →
+                - row "#12 TMGH Talaat Moustafa Group Real Estate NEUTRAL 51 · طبيعي 3/7 تحليل →" [ref=e488]:
+                  - cell [ref=e489]:
+                    - button [ref=e490] [cursor=pointer]
+                  - cell "#12" [ref=e491]:
+                    - strong [ref=e493]: "#12"
+                  - cell "TMGH" [ref=e494]:
+                    - button "TMGH" [ref=e495] [cursor=pointer]:
+                      - generic [ref=e496]: TMGH
+                  - cell "Talaat Moustafa Group Real Estate" [ref=e497]:
+                    - generic [ref=e498]:
+                      - generic [ref=e499]: Talaat Moustafa Group
+                      - text: Real Estate
+                  - cell "NEUTRAL" [ref=e500]:
+                    - generic [ref=e501]: NEUTRAL
+                  - cell "51" [ref=e502]:
+                    - strong [ref=e505]: "51"
+                  - cell "· طبيعي" [ref=e506]:
+                    - generic [ref=e507]: · طبيعي
+                  - cell "3/7" [ref=e508]:
+                    - generic [ref=e509]: 3/7
+                  - cell "تحليل →" [ref=e510]:
+                    - button "تحليل →" [ref=e511] [cursor=pointer]:
+                      - generic [ref=e512]: تحليل →
+                - row "#13 MFPC Misr Fertilizer Production (MOPCO) Chemicals NEUTRAL 51 · طبيعي 3/7 تحليل →" [ref=e513]:
+                  - cell [ref=e514]:
+                    - button [ref=e515] [cursor=pointer]
+                  - cell "#13" [ref=e516]:
+                    - strong [ref=e518]: "#13"
+                  - cell "MFPC" [ref=e519]:
+                    - button "MFPC" [ref=e520] [cursor=pointer]:
+                      - generic [ref=e521]: MFPC
+                  - cell "Misr Fertilizer Production (MOPCO) Chemicals" [ref=e522]:
+                    - generic [ref=e523]:
+                      - generic [ref=e524]: Misr Fertilizer Production (MOPCO)
+                      - text: Chemicals
+                  - cell "NEUTRAL" [ref=e525]:
+                    - generic [ref=e526]: NEUTRAL
+                  - cell "51" [ref=e527]:
+                    - strong [ref=e530]: "51"
+                  - cell "· طبيعي" [ref=e531]:
+                    - generic [ref=e532]: · طبيعي
+                  - cell "3/7" [ref=e533]:
+                    - generic [ref=e534]: 3/7
+                  - cell "تحليل →" [ref=e535]:
+                    - button "تحليل →" [ref=e536] [cursor=pointer]:
+                      - generic [ref=e537]: تحليل →
+                - row "#14 CIRA CIRA Education Education NEUTRAL 51 · طبيعي 2/7 تحليل →" [ref=e538]:
+                  - cell [ref=e539]:
+                    - button [ref=e540] [cursor=pointer]
+                  - cell "#14" [ref=e541]:
+                    - strong [ref=e543]: "#14"
+                  - cell "CIRA" [ref=e544]:
+                    - button "CIRA" [ref=e545] [cursor=pointer]:
+                      - generic [ref=e546]: CIRA
+                  - cell "CIRA Education Education" [ref=e547]:
+                    - generic [ref=e548]:
+                      - generic [ref=e549]: CIRA Education
+                      - text: Education
+                  - cell "NEUTRAL" [ref=e550]:
+                    - generic [ref=e551]: NEUTRAL
+                  - cell "51" [ref=e552]:
+                    - strong [ref=e555]: "51"
+                  - cell "· طبيعي" [ref=e556]:
+                    - generic [ref=e557]: · طبيعي
+                  - cell "2/7" [ref=e558]:
+                    - generic [ref=e559]: 2/7
+                  - cell "تحليل →" [ref=e560]:
+                    - button "تحليل →" [ref=e561] [cursor=pointer]:
+                      - generic [ref=e562]: تحليل →
+                - row "#15 TALM Taaleem Management Services Education NEUTRAL 51 · طبيعي 1/7 تحليل →" [ref=e563]:
+                  - cell [ref=e564]:
+                    - button [ref=e565] [cursor=pointer]
+                  - cell "#15" [ref=e566]:
+                    - strong [ref=e568]: "#15"
+                  - cell "TALM" [ref=e569]:
+                    - button "TALM" [ref=e570] [cursor=pointer]:
+                      - generic [ref=e571]: TALM
+                  - cell "Taaleem Management Services Education" [ref=e572]:
+                    - generic [ref=e573]:
+                      - generic [ref=e574]: Taaleem Management Services
+                      - text: Education
+                  - cell "NEUTRAL" [ref=e575]:
+                    - generic [ref=e576]: NEUTRAL
+                  - cell "51" [ref=e577]:
+                    - strong [ref=e580]: "51"
+                  - cell "· طبيعي" [ref=e581]:
+                    - generic [ref=e582]: · طبيعي
+                  - cell "1/7" [ref=e583]:
+                    - generic [ref=e584]: 1/7
+                  - cell "تحليل →" [ref=e585]:
+                    - button "تحليل →" [ref=e586] [cursor=pointer]:
+                      - generic [ref=e587]: تحليل →
+                - row "#16 EAST Eastern Company Consumer NEUTRAL 50 · طبيعي 0/7 تحليل →" [ref=e588]:
+                  - cell [ref=e589]:
+                    - button [ref=e590] [cursor=pointer]
+                  - cell "#16" [ref=e591]:
+                    - strong [ref=e593]: "#16"
+                  - cell "EAST" [ref=e594]:
+                    - button "EAST" [ref=e595] [cursor=pointer]:
+                      - generic [ref=e596]: EAST
+                  - cell "Eastern Company Consumer" [ref=e597]:
+                    - generic [ref=e598]:
+                      - generic [ref=e599]: Eastern Company
+                      - text: Consumer
+                  - cell "NEUTRAL" [ref=e600]:
+                    - generic [ref=e601]: NEUTRAL
+                  - cell "50" [ref=e602]:
+                    - strong [ref=e605]: "50"
+                  - cell "· طبيعي" [ref=e606]:
+                    - generic [ref=e607]: · طبيعي
+                  - cell "0/7" [ref=e608]:
+                    - generic [ref=e609]: 0/7
+                  - cell "تحليل →" [ref=e610]:
+                    - button "تحليل →" [ref=e611] [cursor=pointer]:
+                      - generic [ref=e612]: تحليل →
+                - row "#17 POUL Cairo Poultry Company Consumer NEUTRAL 50 · طبيعي 2/7 تحليل →" [ref=e613]:
+                  - cell [ref=e614]:
+                    - button [ref=e615] [cursor=pointer]
+                  - cell "#17" [ref=e616]:
+                    - strong [ref=e618]: "#17"
+                  - cell "POUL" [ref=e619]:
+                    - button "POUL" [ref=e620] [cursor=pointer]:
+                      - generic [ref=e621]: POUL
+                  - cell "Cairo Poultry Company Consumer" [ref=e622]:
+                    - generic [ref=e623]:
+                      - generic [ref=e624]: Cairo Poultry Company
+                      - text: Consumer
+                  - cell "NEUTRAL" [ref=e625]:
+                    - generic [ref=e626]: NEUTRAL
+                  - cell "50" [ref=e627]:
+                    - strong [ref=e630]: "50"
+                  - cell "· طبيعي" [ref=e631]:
+                    - generic [ref=e632]: · طبيعي
+                  - cell "2/7" [ref=e633]:
+                    - generic [ref=e634]: 2/7
+                  - cell "تحليل →" [ref=e635]:
+                    - button "تحليل →" [ref=e636] [cursor=pointer]:
+                      - generic [ref=e637]: تحليل →
+                - row "#18 SWDY Elsewedy Electric Industrials NEUTRAL 49 · طبيعي 2/7 تحليل →" [ref=e638]:
+                  - cell [ref=e639]:
+                    - button [ref=e640] [cursor=pointer]
+                  - cell "#18" [ref=e641]:
+                    - strong [ref=e643]: "#18"
+                  - cell "SWDY" [ref=e644]:
+                    - button "SWDY" [ref=e645] [cursor=pointer]:
+                      - generic [ref=e646]: SWDY
+                  - cell "Elsewedy Electric Industrials" [ref=e647]:
+                    - generic [ref=e648]:
+                      - generic [ref=e649]: Elsewedy Electric
+                      - text: Industrials
+                  - cell "NEUTRAL" [ref=e650]:
+                    - generic [ref=e651]: NEUTRAL
+                  - cell "49" [ref=e652]:
+                    - strong [ref=e655]: "49"
+                  - cell "· طبيعي" [ref=e656]:
+                    - generic [ref=e657]: · طبيعي
+                  - cell "2/7" [ref=e658]:
+                    - generic [ref=e659]: 2/7
+                  - cell "تحليل →" [ref=e660]:
+                    - button "تحليل →" [ref=e661] [cursor=pointer]:
+                      - generic [ref=e662]: تحليل →
+                - row "#19 ABUK Abu Qir Fertilizers Chemicals NEUTRAL 49 · طبيعي 2/7 تحليل →" [ref=e663]:
+                  - cell [ref=e664]:
+                    - button [ref=e665] [cursor=pointer]
+                  - cell "#19" [ref=e666]:
+                    - strong [ref=e668]: "#19"
+                  - cell "ABUK" [ref=e669]:
+                    - button "ABUK" [ref=e670] [cursor=pointer]:
+                      - generic [ref=e671]: ABUK
+                  - cell "Abu Qir Fertilizers Chemicals" [ref=e672]:
+                    - generic [ref=e673]:
+                      - generic [ref=e674]: Abu Qir Fertilizers
+                      - text: Chemicals
+                  - cell "NEUTRAL" [ref=e675]:
+                    - generic [ref=e676]: NEUTRAL
+                  - cell "49" [ref=e677]:
+                    - strong [ref=e680]: "49"
+                  - cell "· طبيعي" [ref=e681]:
+                    - generic [ref=e682]: · طبيعي
+                  - cell "2/7" [ref=e683]:
+                    - generic [ref=e684]: 2/7
+                  - cell "تحليل →" [ref=e685]:
+                    - button "تحليل →" [ref=e686] [cursor=pointer]:
+                      - generic [ref=e687]: تحليل →
+                - row "#20 ADIB Abu Dhabi Islamic Bank Egypt Banking NEUTRAL 49 · طبيعي 1/7 تحليل →" [ref=e688]:
+                  - cell [ref=e689]:
+                    - button [ref=e690] [cursor=pointer]
+                  - cell "#20" [ref=e691]:
+                    - strong [ref=e693]: "#20"
+                  - cell "ADIB" [ref=e694]:
+                    - button "ADIB" [ref=e695] [cursor=pointer]:
+                      - generic [ref=e696]: ADIB
+                  - cell "Abu Dhabi Islamic Bank Egypt Banking" [ref=e697]:
+                    - generic [ref=e698]:
+                      - generic [ref=e699]: Abu Dhabi Islamic Bank Egypt
+                      - text: Banking
+                  - cell "NEUTRAL" [ref=e700]:
+                    - generic [ref=e701]: NEUTRAL
+                  - cell "49" [ref=e702]:
+                    - strong [ref=e705]: "49"
+                  - cell "· طبيعي" [ref=e706]:
+                    - generic [ref=e707]: · طبيعي
+                  - cell "1/7" [ref=e708]:
+                    - generic [ref=e709]: 1/7
+                  - cell "تحليل →" [ref=e710]:
+                    - button "تحليل →" [ref=e711] [cursor=pointer]:
+                      - generic [ref=e712]: تحليل →
+                - row "#21 HRHO EFG Holding Financial Services NEUTRAL 49 · طبيعي 1/7 تحليل →" [ref=e713]:
+                  - cell [ref=e714]:
+                    - button [ref=e715] [cursor=pointer]
+                  - cell "#21" [ref=e716]:
+                    - strong [ref=e718]: "#21"
+                  - cell "HRHO" [ref=e719]:
+                    - button "HRHO" [ref=e720] [cursor=pointer]:
+                      - generic [ref=e721]: HRHO
+                  - cell "EFG Holding Financial Services" [ref=e722]:
+                    - generic [ref=e723]:
+                      - generic [ref=e724]: EFG Holding
+                      - text: Financial Services
+                  - cell "NEUTRAL" [ref=e725]:
+                    - generic [ref=e726]: NEUTRAL
+                  - cell "49" [ref=e727]:
+                    - strong [ref=e730]: "49"
+                  - cell "· طبيعي" [ref=e731]:
+                    - generic [ref=e732]: · طبيعي
+                  - cell "1/7" [ref=e733]:
+                    - generic [ref=e734]: 1/7
+                  - cell "تحليل →" [ref=e735]:
+                    - button "تحليل →" [ref=e736] [cursor=pointer]:
+                      - generic [ref=e737]: تحليل →
+                - row "#22 AMOC Alexandria Mineral Oils Energy NEUTRAL 49 · طبيعي 2/7 تحليل →" [ref=e738]:
+                  - cell [ref=e739]:
+                    - button [ref=e740] [cursor=pointer]
+                  - cell "#22" [ref=e741]:
+                    - strong [ref=e743]: "#22"
+                  - cell "AMOC" [ref=e744]:
+                    - button "AMOC" [ref=e745] [cursor=pointer]:
+                      - generic [ref=e746]: AMOC
+                  - cell "Alexandria Mineral Oils Energy" [ref=e747]:
+                    - generic [ref=e748]:
+                      - generic [ref=e749]: Alexandria Mineral Oils
+                      - text: Energy
+                  - cell "NEUTRAL" [ref=e750]:
+                    - generic [ref=e751]: NEUTRAL
+                  - cell "49" [ref=e752]:
+                    - strong [ref=e755]: "49"
+                  - cell "· طبيعي" [ref=e756]:
+                    - generic [ref=e757]: · طبيعي
+                  - cell "2/7" [ref=e758]:
+                    - generic [ref=e759]: 2/7
+                  - cell "تحليل →" [ref=e760]:
+                    - button "تحليل →" [ref=e761] [cursor=pointer]:
+                      - generic [ref=e762]: تحليل →
+                - row "#23 EGAL Egypt Aluminum Industrials NEUTRAL 48 · طبيعي 1/7 تحليل →" [ref=e763]:
+                  - cell [ref=e764]:
+                    - button [ref=e765] [cursor=pointer]
+                  - cell "#23" [ref=e766]:
+                    - strong [ref=e768]: "#23"
+                  - cell "EGAL" [ref=e769]:
+                    - button "EGAL" [ref=e770] [cursor=pointer]:
+                      - generic [ref=e771]: EGAL
+                  - cell "Egypt Aluminum Industrials" [ref=e772]:
+                    - generic [ref=e773]:
+                      - generic [ref=e774]: Egypt Aluminum
+                      - text: Industrials
+                  - cell "NEUTRAL" [ref=e775]:
+                    - generic [ref=e776]: NEUTRAL
+                  - cell "48" [ref=e777]:
+                    - strong [ref=e780]: "48"
+                  - cell "· طبيعي" [ref=e781]:
+                    - generic [ref=e782]: · طبيعي
+                  - cell "1/7" [ref=e783]:
+                    - generic [ref=e784]: 1/7
+                  - cell "تحليل →" [ref=e785]:
+                    - button "تحليل →" [ref=e786] [cursor=pointer]:
+                      - generic [ref=e787]: تحليل →
+                - row "#24 EMFD Emaar Misr for Development Real Estate NEUTRAL 48 · طبيعي 2/7 تحليل →" [ref=e788]:
+                  - cell [ref=e789]:
+                    - button [ref=e790] [cursor=pointer]
+                  - cell "#24" [ref=e791]:
+                    - strong [ref=e793]: "#24"
+                  - cell "EMFD" [ref=e794]:
+                    - button "EMFD" [ref=e795] [cursor=pointer]:
+                      - generic [ref=e796]: EMFD
+                  - cell "Emaar Misr for Development Real Estate" [ref=e797]:
+                    - generic [ref=e798]:
+                      - generic [ref=e799]: Emaar Misr for Development
+                      - text: Real Estate
+                  - cell "NEUTRAL" [ref=e800]:
+                    - generic [ref=e801]: NEUTRAL
+                  - cell "48" [ref=e802]:
+                    - strong [ref=e805]: "48"
+                  - cell "· طبيعي" [ref=e806]:
+                    - generic [ref=e807]: · طبيعي
+                  - cell "2/7" [ref=e808]:
+                    - generic [ref=e809]: 2/7
+                  - cell "تحليل →" [ref=e810]:
+                    - button "تحليل →" [ref=e811] [cursor=pointer]:
+                      - generic [ref=e812]: تحليل →
+                - row "#25 JUFO Juhayna Food Industries Consumer NEUTRAL 48 · طبيعي 2/7 تحليل →" [ref=e813]:
+                  - cell [ref=e814]:
+                    - button [ref=e815] [cursor=pointer]
+                  - cell "#25" [ref=e816]:
+                    - strong [ref=e818]: "#25"
+                  - cell "JUFO" [ref=e819]:
+                    - button "JUFO" [ref=e820] [cursor=pointer]:
+                      - generic [ref=e821]: JUFO
+                  - cell "Juhayna Food Industries Consumer" [ref=e822]:
+                    - generic [ref=e823]:
+                      - generic [ref=e824]: Juhayna Food Industries
+                      - text: Consumer
+                  - cell "NEUTRAL" [ref=e825]:
+                    - generic [ref=e826]: NEUTRAL
+                  - cell "48" [ref=e827]:
+                    - strong [ref=e830]: "48"
+                  - cell "· طبيعي" [ref=e831]:
+                    - generic [ref=e832]: · طبيعي
+                  - cell "2/7" [ref=e833]:
+                    - generic [ref=e834]: 2/7
+                  - cell "تحليل →" [ref=e835]:
+                    - button "تحليل →" [ref=e836] [cursor=pointer]:
+                      - generic [ref=e837]: تحليل →
+            - list [ref=e838]:
+              - listitem [ref=e839]: 27 stocks
+              - listitem "Previous Page" [ref=e840]:
+                - button "right" [disabled] [ref=e841]:
+                  - img "right" [ref=e842]:
+                    - img [ref=e843]
+              - listitem "1" [ref=e845] [cursor=pointer]:
+                - generic [ref=e846]: "1"
+              - listitem "2" [ref=e847] [cursor=pointer]:
+                - generic [ref=e848]: "2"
+              - listitem "Next Page" [ref=e849] [cursor=pointer]:
+                - button "left" [ref=e850]:
+                  - img "left" [ref=e851]:
+                    - img [ref=e852]
+          - generic [ref=e113]:
+            - strong [ref=e117]:
+              - img "search" [ref=e118]:
+                - img [ref=e119]
+              - text: تقييم أي سهم
+            - generic [ref=e121]:
+              - generic [ref=e123] [cursor=pointer]:
+                - generic "EGX" [ref=e124]:
+                  - text: EGX
+                  - combobox [ref=e125]
+                - img "down" [ref=e127]:
+                  - img [ref=e128]
+              - generic [ref=e131]:
+                - img "search" [ref=e133]:
+                  - img [ref=e134]
+                - textbox "ETEL, COMI, AAPL..." [ref=e136]
+              - button "تقييم" [ref=e138] [cursor=pointer]:
+                - generic [ref=e139]: تقييم
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - img "warning" [ref=e143]:
+                - img [ref=e144]
+              - heading "تنبيهات الخطر" [level=5] [ref=e147]
+              - generic [ref=e148]: مراقبة مراكزك المفتوحة
+            - generic [ref=e854]:
+              - generic [ref=e856]:
+                - generic [ref=e857]:
+                  - generic [ref=e858]:
+                    - img "exclamation-circle" [ref=e860]:
+                      - img [ref=e861]
+                    - strong [ref=e866]: MFPC
+                    - generic [ref=e868]: LONG
+                    - generic [ref=e869]: Overbought — may pull back · Approaching resistance
+                  - generic [ref=e870]:
+                    - strong [ref=e873]: "53"
+                    - generic [ref=e875]: مراقبة
+                - generic [ref=e876]:
+                  - generic [ref=e877]:
+                    - generic [ref=e878]: 🎲
+                    - progressbar [ref=e879]
+                    - generic [ref=e883]: "54"
+                  - generic [ref=e884]:
+                    - generic [ref=e885]: 🚀
+                    - progressbar [ref=e886]
+                    - generic [ref=e890]: "93"
+                  - generic [ref=e891]:
+                    - generic [ref=e892]: 📊
+                    - progressbar [ref=e893]
+                    - generic [ref=e897]: "73"
+                  - generic [ref=e898]:
+                    - generic [ref=e899]: 🎯
+                    - progressbar [ref=e900]
+                    - generic [ref=e903]: "0"
+                  - generic [ref=e904]:
+                    - generic [ref=e905]: 🔄
+                    - progressbar [ref=e906]
+                    - generic [ref=e909]: "0"
+                  - generic [ref=e910]:
+                    - generic [ref=e911]: 💥
+                    - progressbar [ref=e912]
+                    - generic [ref=e916]: "80"
+                  - generic [ref=e917]:
+                    - generic [ref=e918]: 🔗
+                    - progressbar [ref=e919]
+                    - generic [ref=e923]: "72"
+              - generic [ref=e925]:
+                - generic [ref=e926]:
+                  - generic [ref=e927]:
+                    - img "exclamation-circle" [ref=e929]:
+                      - img [ref=e930]
+                    - strong [ref=e935]: EAST
+                    - generic [ref=e937]: SHORT
+                    - generic [ref=e938]: Approaching resistance
+                  - generic [ref=e939]:
+                    - strong [ref=e942]: "51"
+                    - generic [ref=e944]: مراقبة
+                - generic [ref=e945]:
+                  - generic [ref=e946]:
+                    - generic [ref=e947]: 🎲
+                    - progressbar [ref=e948]
+                    - generic [ref=e952]: "54"
+                  - generic [ref=e953]:
+                    - generic [ref=e954]: 🚀
+                    - progressbar [ref=e955]
+                    - generic [ref=e959]: "58"
+                  - generic [ref=e960]:
+                    - generic [ref=e961]: 📊
+                    - progressbar [ref=e962]
+                    - generic [ref=e966]: "45"
+                  - generic [ref=e967]:
+                    - generic [ref=e968]: 🎯
+                    - progressbar [ref=e969]
+                    - generic [ref=e973]: "38"
+                  - generic [ref=e974]:
+                    - generic [ref=e975]: 🔄
+                    - progressbar [ref=e976]
+                    - generic [ref=e980]: "35"
+                  - generic [ref=e981]:
+                    - generic [ref=e982]: 💥
+                    - progressbar [ref=e983]
+                    - generic [ref=e987]: "50"
+                  - generic [ref=e988]:
+                    - generic [ref=e989]: 🔗
+                    - progressbar [ref=e990]
+                    - generic [ref=e994]: "58"
+              - generic [ref=e996]:
+                - generic [ref=e997]:
+                  - generic [ref=e998]:
+                    - img "exclamation-circle" [ref=e1000]:
+                      - img [ref=e1001]
+                    - strong [ref=e1006]: EAST
+                    - generic [ref=e1008]: LONG
+                    - generic [ref=e1009]: Approaching resistance
+                  - generic [ref=e1010]:
+                    - strong [ref=e1013]: "51"
+                    - generic [ref=e1015]: مراقبة
+                - generic [ref=e1016]:
+                  - generic [ref=e1017]:
+                    - generic [ref=e1018]: 🎲
+                    - progressbar [ref=e1019]
+                    - generic [ref=e1023]: "55"
+                  - generic [ref=e1024]:
+                    - generic [ref=e1025]: 🚀
+                    - progressbar [ref=e1026]
+                    - generic [ref=e1030]: "58"
+                  - generic [ref=e1031]:
+                    - generic [ref=e1032]: 📊
+                    - progressbar [ref=e1033]
+                    - generic [ref=e1037]: "45"
+                  - generic [ref=e1038]:
+                    - generic [ref=e1039]: 🎯
+                    - progressbar [ref=e1040]
+                    - generic [ref=e1044]: "38"
+                  - generic [ref=e1045]:
+                    - generic [ref=e1046]: 🔄
+                    - progressbar [ref=e1047]
+                    - generic [ref=e1051]: "35"
+                  - generic [ref=e1052]:
+                    - generic [ref=e1053]: 💥
+                    - progressbar [ref=e1054]
+                    - generic [ref=e1058]: "50"
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]: 🔗
+                    - progressbar [ref=e1061]
+                    - generic [ref=e1065]: "58"
+              - generic [ref=e1067]:
+                - generic [ref=e1068]:
+                  - generic [ref=e1069]:
+                    - img "exclamation-circle" [ref=e1071]:
+                      - img [ref=e1072]
+                    - strong [ref=e1077]: EAST
+                    - generic [ref=e1079]: LONG
+                    - generic [ref=e1080]: Approaching resistance
+                  - generic [ref=e1081]:
+                    - strong [ref=e1084]: "50"
+                    - generic [ref=e1086]: مراقبة
+                - generic [ref=e1087]:
+                  - generic [ref=e1088]:
+                    - generic [ref=e1089]: 🎲
+                    - progressbar [ref=e1090]
+                    - generic [ref=e1094]: "53"
+                  - generic [ref=e1095]:
+                    - generic [ref=e1096]: 🚀
+                    - progressbar [ref=e1097]
+                    - generic [ref=e1101]: "58"
+                  - generic [ref=e1102]:
+                    - generic [ref=e1103]: 📊
+                    - progressbar [ref=e1104]
+                    - generic [ref=e1108]: "45"
+                  - generic [ref=e1109]:
+                    - generic [ref=e1110]: 🎯
+                    - progressbar [ref=e1111]
+                    - generic [ref=e1115]: "38"
+                  - generic [ref=e1116]:
+                    - generic [ref=e1117]: 🔄
+                    - progressbar [ref=e1118]
+                    - generic [ref=e1122]: "35"
+                  - generic [ref=e1123]:
+                    - generic [ref=e1124]: 💥
+                    - progressbar [ref=e1125]
+                    - generic [ref=e1129]: "50"
+                  - generic [ref=e1130]:
+                    - generic [ref=e1131]: 🔗
+                    - progressbar [ref=e1132]
+                    - generic [ref=e1136]: "58"
+  - dialog "EGCH Egyptian Chemical Industries · طبيعي" [ref=e1138]:
+    - generic [ref=e1140]:
+      - button "Close" [ref=e1141] [cursor=pointer]:
+        - img "close" [ref=e1142]:
+          - img [ref=e1143]
+      - generic [ref=e1146]:
+        - strong [ref=e1148]: EGCH
+        - generic [ref=e1149]: Egyptian Chemical Industries
+        - generic [ref=e1150]: · طبيعي
+    - generic [ref=e1151]:
+      - generic [ref=e1152]:
+        - strong [ref=e1154]: "60"
+        - generic [ref=e1155]: / 100
+        - generic [ref=e1156]: HOLD
+      - generic [ref=e1157]: 3/7 engines bullish · Chemicals
+      - heading "تفاصيل المحركات" [level=5] [ref=e1158]
+      - generic [ref=e1159]:
+        - generic "مونتي كارلو engine score" [ref=e1160]:
+          - generic [ref=e1161]: 🎲
+          - generic [ref=e1162]: مونتي كارلو
+          - strong [ref=e1164]: "56"
+          - generic [ref=e1165]: NEUTRAL
+        - generic "الزخم engine score" [ref=e1166]:
+          - generic [ref=e1167]: 🚀
+          - generic [ref=e1168]: الزخم
+          - strong [ref=e1170]: "67"
+          - generic [ref=e1171]: BULLISH
+        - generic "تأكيد الحجم engine score" [ref=e1172]:
+          - generic [ref=e1173]: 📊
+          - generic [ref=e1174]: تأكيد الحجم
+          - strong [ref=e1176]: "79"
+          - generic [ref=e1177]: BULLISH
+        - generic "الدعم / المقاومة engine score" [ref=e1178]:
+          - generic [ref=e1179]: 🎯
+          - generic [ref=e1180]: الدعم / المقاومة
+          - strong [ref=e1182]: "94"
+          - generic [ref=e1183]: BULLISH
+        - generic "العودة للمتوسط engine score" [ref=e1184]:
+          - generic [ref=e1185]: 🔄
+          - generic [ref=e1186]: العودة للمتوسط
+          - strong [ref=e1188]: "50"
+          - generic [ref=e1189]: NEUTRAL
+        - generic "بولنجر باند engine score" [ref=e1190]:
+          - generic [ref=e1191]: 💥
+          - generic [ref=e1192]: بولنجر باند
+          - strong [ref=e1194]: "35"
+          - generic [ref=e1195]: NEUTRAL
+        - generic "ارتباط القطاع engine score" [ref=e1196]:
+          - generic [ref=e1197]: 🔗
+          - generic [ref=e1198]: ارتباط القطاع
+          - generic [ref=e1199]: —

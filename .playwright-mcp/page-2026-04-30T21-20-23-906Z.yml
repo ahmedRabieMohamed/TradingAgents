@@ -1,0 +1,114 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: AI-Powered Trading Analysis
+      - menu [ref=e16]:
+        - menuitem "dashboard Dashboard" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: Dashboard
+        - menuitem "line-chart New Analysis" [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: New Analysis
+        - menuitem "thunderbolt Smart Picks" [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: Smart Picks
+        - separator [ref=e32]
+        - menuitem "star Watchlist" [active] [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: Watchlist
+        - menuitem "history History" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: History
+        - menuitem "wallet Portfolio 4" [ref=e98] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e48]:
+            - generic [ref=e49]: Portfolio
+            - superscript [ref=e101]:
+              - generic [ref=e103]: "4"
+        - menuitem "fund Performance" [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: Performance
+        - separator [ref=e55]
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: Settings
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: Closed
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: Closed
+    - img "left" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e472]:
+      - generic [ref=e473]:
+        - heading "Watchlist" [level=4] [ref=e474]
+        - generic [ref=e475]:
+          - generic [ref=e477]: No market selected
+          - generic [ref=e479]: v0.1.0
+          - button "global العربية" [ref=e481] [cursor=pointer]:
+            - img "global" [ref=e483]:
+              - img [ref=e484]
+            - generic [ref=e486]: العربية
+      - generic [ref=e487]:
+        - generic [ref=e488]:
+          - generic [ref=e490] [cursor=pointer]:
+            - generic "US" [ref=e491]:
+              - text: US
+              - combobox [ref=e492]
+            - img "down" [ref=e494]:
+              - img [ref=e495]
+          - textbox "Enter ticker symbol" [ref=e498]
+          - button "Add" [ref=e500] [cursor=pointer]:
+            - generic [ref=e501]: Add
+        - table [ref=e508]:
+          - rowgroup [ref=e509]:
+            - row "Ticker Name Market Price Change Actions" [ref=e510]:
+              - columnheader "Ticker" [ref=e511]
+              - columnheader "Name" [ref=e512]
+              - columnheader "Market" [ref=e513]
+              - columnheader "Price" [ref=e514]
+              - columnheader "Change" [ref=e515]
+              - columnheader "Actions" [ref=e516]
+          - rowgroup [ref=e517]:
+            - row "JUFO JUFO.CA,0P0000OQCS,886250 EGX — — Start Analysis Remove" [ref=e518]:
+              - cell "JUFO" [ref=e519]:
+                - strong [ref=e520]: JUFO
+              - cell "JUFO.CA,0P0000OQCS,886250" [ref=e521]
+              - cell "EGX" [ref=e522]
+              - cell "—" [ref=e523]
+              - cell "—" [ref=e524]
+              - cell "Start Analysis Remove" [ref=e525]:
+                - generic [ref=e526]:
+                  - button "Start Analysis" [ref=e528] [cursor=pointer]:
+                    - generic [ref=e529]: Start Analysis
+                  - button "Remove" [ref=e531] [cursor=pointer]:
+                    - generic [ref=e532]: Remove
+            - row "ETEL ETEL.CA,0P0000AG5O,1477639 EGX — — Start Analysis Remove" [ref=e533]:
+              - cell "ETEL" [ref=e534]:
+                - strong [ref=e535]: ETEL
+              - cell "ETEL.CA,0P0000AG5O,1477639" [ref=e536]
+              - cell "EGX" [ref=e537]
+              - cell "—" [ref=e538]
+              - cell "—" [ref=e539]
+              - cell "Start Analysis Remove" [ref=e540]:
+                - generic [ref=e541]:
+                  - button "Start Analysis" [ref=e543] [cursor=pointer]:
+                    - generic [ref=e544]: Start Analysis
+                  - button "Remove" [ref=e546] [cursor=pointer]:
+                    - generic [ref=e547]: Remove
