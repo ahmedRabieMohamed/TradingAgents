@@ -251,6 +251,8 @@ def _compute_smart_picks(market_id: str, limit: int) -> dict:
                 "market_id": market_id,
                 "reason": reason,
                 "combined_score": result["combined_score"],
+                "combined_score_raw": result.get("combined_score_raw", result["combined_score"]),
+                "volatility_regime_tag": result.get("volatility_regime_tag", "normal"),
                 "signal": result["combined_signal"],
                 "bullish_engines": bullish_count,
                 "total_engines": 7,
