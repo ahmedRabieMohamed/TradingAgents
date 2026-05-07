@@ -162,15 +162,33 @@ def compute_all_engines_from_data(
     except Exception as e:
         engines["correlation"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
 
+    _normalize_engine_results(engines)
     combined = _compute_combined_score(engines, news_score)
 
     return {
         "computed_at": datetime.now(timezone.utc).isoformat(),
         "combined_score": combined["score"],
+        "combined_score_raw": combined["score"],  # placeholder; equals combined_score until Phase 6 dampening
         "combined_signal": combined["signal"],
+        "volatility_regime_tag": "normal",  # placeholder; replaced by volatility_regime engine in Phase 5
         "engines": engines,
         "news_sentiment": {"score": news_score},
     }
+
+
+def _normalize_engine_results(engines: dict[str, dict]) -> None:
+    """Ensure every engine result carries `data_sufficient` and `weight` fields.
+
+    For Phase 2 (foundational), `data_sufficient` defaults to True unless the
+    engine returned an `error`. `weight` defaults to 0.0 — the orchestrator
+    overrides per-engine weights once Phase 6 (combined-score integration)
+    populates real fractional shares.
+    """
+    for result in engines.values():
+        if "data_sufficient" not in result:
+            result["data_sufficient"] = "error" not in result
+        if "weight" not in result:
+            result["weight"] = 0.0
 
 
 def _fetch_peer_changes(peers: list[str], market_id: str) -> dict[str, float]:
@@ -278,12 +296,15 @@ def compute_all_engines(
         engines["correlation"] = {"score": 50, "verdict": "NEUTRAL", "error": str(e)}
 
     # Compute combined score
+    _normalize_engine_results(engines)
     combined = _compute_combined_score(engines, news_score)
 
     return {
         "computed_at": datetime.now(timezone.utc).isoformat(),
         "combined_score": combined["score"],
+        "combined_score_raw": combined["score"],  # placeholder; equals combined_score until Phase 6 dampening
         "combined_signal": combined["signal"],
+        "volatility_regime_tag": "normal",  # placeholder; replaced by volatility_regime engine in Phase 5
         "engines": engines,
         "news_sentiment": {
             "score": news_score if news_score is not None else None,

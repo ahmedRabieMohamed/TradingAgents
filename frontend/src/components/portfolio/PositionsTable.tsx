@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import { closePosition } from '../../services/api';
 import type { PositionResponse } from '../../types';
+import { ValueFlash } from '../../motion';
 
 interface PositionsTableProps {
   positions: PositionResponse[];
@@ -199,9 +200,9 @@ export default function PositionsTable({ positions, onRefresh }: PositionsTableP
               <td style={tdStyle}><span style={dirBadge(pos.direction)}>{pos.direction.toUpperCase()}</span></td>
               <td style={tdStyle}>{pos.quantity}</td>
               <td style={tdStyle}>${pos.entry_price.toFixed(2)}</td>
-              <td style={tdStyle}>${pos.current_price.toFixed(2)}</td>
+              <td style={tdStyle}>$<ValueFlash value={pos.current_price} decimals={2} /></td>
               <td style={{ ...tdStyle, color: pnlColor(pos.unrealized_pnl), fontWeight: 600 }}>
-                {pos.unrealized_pnl >= 0 ? '+' : ''}${pos.unrealized_pnl.toFixed(2)}
+                {pos.unrealized_pnl >= 0 ? '+' : ''}$<ValueFlash value={pos.unrealized_pnl} decimals={2} />
               </td>
               <td style={{ ...tdStyle, color: pnlColor(pos.unrealized_pnl_pct), fontWeight: 700 }}>
                 {pos.unrealized_pnl_pct >= 0 ? '+' : ''}{pos.unrealized_pnl_pct.toFixed(2)}%

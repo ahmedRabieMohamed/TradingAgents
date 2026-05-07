@@ -1,0 +1,490 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: تحليل تداول مدعوم بالذكاء الاصطناعي
+      - menu [ref=e16]:
+        - menuitem "dashboard لوحة التحكم" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: لوحة التحكم
+        - menuitem "line-chart تحليل جديد" [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: تحليل جديد
+        - menuitem "thunderbolt الفرص الذكية" [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: الفرص الذكية
+        - separator [ref=e32]
+        - menuitem "star قائمة المتابعة" [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: قائمة المتابعة
+        - menuitem "history السجل" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: السجل
+        - menuitem "wallet المحفظة" [ref=e43] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e49]: المحفظة
+        - menuitem "fund الأداء" [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: الأداء
+        - separator [ref=e55]
+        - menuitem "setting الإعدادات" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: الإعدادات
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: مغلق
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: مغلق
+    - img "right" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - heading "الفرص الذكية" [level=4] [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e80]: No market selected
+          - generic [ref=e82]: v0.1.0
+          - button "global English" [ref=e84] [cursor=pointer]:
+            - img "global" [ref=e86]:
+              - img [ref=e87]
+            - generic [ref=e89]: English
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - heading "thunderbolt الفرص الذكية" [level=4] [ref=e93]:
+              - img "thunderbolt" [ref=e94]:
+                - img [ref=e95]
+              - text: الفرص الذكية
+            - text: أفضل الفرص اليوم بناءً على 7 محركات تحليل + الأخبار
+            - generic [ref=e97]: "Last updated: 5/1/2026, 12:41:51 AM · 8 stocks scored"
+          - button "reload تحديث" [ref=e98] [cursor=pointer]:
+            - img "reload" [ref=e100]:
+              - img [ref=e101]
+            - generic [ref=e103]: تحديث
+        - generic [ref=e106]:
+          - table [ref=e110]:
+            - rowgroup [ref=e128]:
+              - row "# الرمز الشركة Why التقييم الإشارة filter احتمال MC Expected 5d Change 20d Change Vol Ratio S/R BB Engines" [ref=e129]:
+                - columnheader [ref=e130]
+                - columnheader "#" [ref=e131]
+                - columnheader "الرمز" [ref=e132]
+                - columnheader "الشركة" [ref=e133]
+                - columnheader "Why" [ref=e134]
+                - columnheader "التقييم" [ref=e135] [cursor=pointer]:
+                  - generic [ref=e136]:
+                    - generic [ref=e137]: التقييم
+                    - generic [ref=e139]:
+                      - img [ref=e140]:
+                        - img [ref=e141]
+                      - img [ref=e143]:
+                        - img [ref=e144]
+                - columnheader "الإشارة filter" [ref=e146]:
+                  - generic [ref=e147]:
+                    - generic [ref=e148]: الإشارة
+                    - button "filter" [ref=e149] [cursor=pointer]:
+                      - img "filter" [ref=e150]:
+                        - img [ref=e151]
+                - columnheader "احتمال MC" [ref=e153] [cursor=pointer]:
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: احتمال MC
+                    - generic [ref=e157]:
+                      - img [ref=e158]:
+                        - img [ref=e159]
+                      - img [ref=e161]:
+                        - img [ref=e162]
+                - columnheader "Expected" [ref=e164]
+                - columnheader "5d Change" [ref=e165] [cursor=pointer]:
+                  - generic [ref=e166]:
+                    - generic [ref=e167]: 5d Change
+                    - generic [ref=e169]:
+                      - img [ref=e170]:
+                        - img [ref=e171]
+                      - img [ref=e173]:
+                        - img [ref=e174]
+                - columnheader "20d Change" [ref=e176]
+                - columnheader "Vol Ratio" [ref=e177]
+                - columnheader "S/R" [ref=e178]
+                - columnheader "BB" [ref=e179]
+                - columnheader "Engines" [ref=e180]
+                - columnheader [ref=e181]
+            - rowgroup [ref=e182]:
+              - generic [ref=e183]:
+                - generic [ref=e184]: التقييم
+                - generic [ref=e186]:
+                  - img [ref=e187]:
+                    - img [ref=e188]
+                  - img [ref=e190]:
+                    - img [ref=e191]
+              - generic [ref=e193]:
+                - generic [ref=e194]: الإشارة
+                - button [ref=e195] [cursor=pointer]:
+                  - img [ref=e196]:
+                    - img [ref=e197]
+              - generic [ref=e199]:
+                - generic [ref=e200]: احتمال MC
+                - generic [ref=e202]:
+                  - img [ref=e203]:
+                    - img [ref=e204]
+                  - img [ref=e206]:
+                    - img [ref=e207]
+              - text: Expected
+              - generic [ref=e209]:
+                - generic [ref=e210]: 5d Change
+                - generic [ref=e212]:
+                  - img [ref=e213]:
+                    - img [ref=e214]
+                  - img [ref=e216]:
+                    - img [ref=e217]
+              - text: 20d Change Vol Ratio S/R BB Engines
+              - row "#1 EAST Eastern Company Consumer EGX30 component 55 HOLD 54% +0.9% -2.3% +11.9% 0.3x S:40 / R:43 Normal 1/7 تحليل →" [ref=e219]:
+                - cell [ref=e220]:
+                  - button [ref=e221] [cursor=pointer]
+                - cell "#1" [ref=e222]:
+                  - strong [ref=e224]: "#1"
+                - cell "EAST" [ref=e225]:
+                  - strong [ref=e227]: EAST
+                - cell "Eastern Company Consumer" [ref=e228]:
+                  - generic [ref=e229]:
+                    - generic [ref=e230]: Eastern Company
+                    - text: Consumer
+                - cell "EGX30 component" [ref=e231]
+                - cell "55" [ref=e232]:
+                  - strong [ref=e234]: "55"
+                - cell "HOLD" [ref=e235]:
+                  - generic [ref=e236]: HOLD
+                - cell "54%" [ref=e237]:
+                  - generic [ref=e238]: 54%
+                - cell "+0.9%" [ref=e239]:
+                  - generic [ref=e240]: +0.9%
+                - cell "-2.3%" [ref=e241]:
+                  - generic [ref=e242]: "-2.3%"
+                - cell "+11.9%" [ref=e243]:
+                  - generic [ref=e244]: +11.9%
+                - cell "0.3x" [ref=e245]:
+                  - generic [ref=e246]: 0.3x
+                - cell "S:40 / R:43" [ref=e247]:
+                  - generic [ref=e248]:
+                    - generic [ref=e249]: S:40
+                    - text: /
+                    - generic [ref=e250]: R:43
+                - cell "Normal" [ref=e251]:
+                  - generic [ref=e252]: Normal
+                - cell "1/7" [ref=e253]:
+                  - generic [ref=e254]: 1/7
+                - cell "تحليل →" [ref=e255]:
+                  - button "تحليل →" [ref=e256] [cursor=pointer]:
+                    - generic [ref=e257]: تحليل →
+              - row "#2 ORAS Orascom Construction Construction EGX30 component 54 NEUTRAL 56% +0.0% 0.0% 0.0% — S:71 / R:71 Normal 1/7 تحليل →" [ref=e258]:
+                - cell [ref=e259]:
+                  - button [ref=e260] [cursor=pointer]
+                - cell "#2" [ref=e261]:
+                  - strong [ref=e263]: "#2"
+                - cell "ORAS" [ref=e264]:
+                  - strong [ref=e266]: ORAS
+                - cell "Orascom Construction Construction" [ref=e267]:
+                  - generic [ref=e268]:
+                    - generic [ref=e269]: Orascom Construction
+                    - text: Construction
+                - cell "EGX30 component" [ref=e270]
+                - cell "54" [ref=e271]:
+                  - strong [ref=e273]: "54"
+                - cell "NEUTRAL" [ref=e274]:
+                  - generic [ref=e275]: NEUTRAL
+                - cell "56%" [ref=e276]:
+                  - generic [ref=e277]: 56%
+                - cell "+0.0%" [ref=e278]:
+                  - generic [ref=e279]: +0.0%
+                - cell "0.0%" [ref=e280]:
+                  - generic [ref=e281]: 0.0%
+                - cell "0.0%" [ref=e282]:
+                  - generic [ref=e283]: 0.0%
+                - cell "—" [ref=e284]
+                - cell "S:71 / R:71" [ref=e285]:
+                  - generic [ref=e286]:
+                    - generic [ref=e287]: S:71
+                    - text: /
+                    - generic [ref=e288]: R:71
+                - cell "Normal" [ref=e289]:
+                  - generic [ref=e290]: Normal
+                - cell "1/7" [ref=e291]:
+                  - generic [ref=e292]: 1/7
+                - cell "تحليل →" [ref=e293]:
+                  - button "تحليل →" [ref=e294] [cursor=pointer]:
+                    - generic [ref=e295]: تحليل →
+              - row "#3 FWRY Fawry for Banking Technology Fintech EGX30 component 53 NEUTRAL 64% +2.2% -2.1% +17.8% 0.4x S:17 / R:20 Normal 2/7 تحليل →" [ref=e296]:
+                - cell [ref=e297]:
+                  - button [ref=e298] [cursor=pointer]
+                - cell "#3" [ref=e299]:
+                  - strong [ref=e301]: "#3"
+                - cell "FWRY" [ref=e302]:
+                  - strong [ref=e304]: FWRY
+                - cell "Fawry for Banking Technology Fintech" [ref=e305]:
+                  - generic [ref=e306]:
+                    - generic [ref=e307]: Fawry for Banking Technology
+                    - text: Fintech
+                - cell "EGX30 component" [ref=e308]
+                - cell "53" [ref=e309]:
+                  - strong [ref=e311]: "53"
+                - cell "NEUTRAL" [ref=e312]:
+                  - generic [ref=e313]: NEUTRAL
+                - cell "64%" [ref=e314]:
+                  - generic [ref=e315]: 64%
+                - cell "+2.2%" [ref=e316]:
+                  - generic [ref=e317]: +2.2%
+                - cell "-2.1%" [ref=e318]:
+                  - generic [ref=e319]: "-2.1%"
+                - cell "+17.8%" [ref=e320]:
+                  - generic [ref=e321]: +17.8%
+                - cell "0.4x" [ref=e322]:
+                  - generic [ref=e323]: 0.4x
+                - cell "S:17 / R:20" [ref=e324]:
+                  - generic [ref=e325]:
+                    - generic [ref=e326]: S:17
+                    - text: /
+                    - generic [ref=e327]: R:20
+                - cell "Normal" [ref=e328]:
+                  - generic [ref=e329]: Normal
+                - cell "2/7" [ref=e330]:
+                  - generic [ref=e331]: 2/7
+                - cell "تحليل →" [ref=e332]:
+                  - button "تحليل →" [ref=e333] [cursor=pointer]:
+                    - generic [ref=e334]: تحليل →
+              - row "#4 EMFD Emaar Misr for Development Real Estate EGX30 component 52 NEUTRAL 56% +0.8% +8.9% +17.2% 1.5x ✓ S:9 / R:11 💥 Breakout 3/7 تحليل →" [ref=e335]:
+                - cell [ref=e336]:
+                  - button [ref=e337] [cursor=pointer]
+                - cell "#4" [ref=e338]:
+                  - strong [ref=e340]: "#4"
+                - cell "EMFD" [ref=e341]:
+                  - strong [ref=e343]: EMFD
+                - cell "Emaar Misr for Development Real Estate" [ref=e344]:
+                  - generic [ref=e345]:
+                    - generic [ref=e346]: Emaar Misr for Development
+                    - text: Real Estate
+                - cell "EGX30 component" [ref=e347]
+                - cell "52" [ref=e348]:
+                  - strong [ref=e350]: "52"
+                - cell "NEUTRAL" [ref=e351]:
+                  - generic [ref=e352]: NEUTRAL
+                - cell "56%" [ref=e353]:
+                  - generic [ref=e354]: 56%
+                - cell "+0.8%" [ref=e355]:
+                  - generic [ref=e356]: +0.8%
+                - cell "+8.9%" [ref=e357]:
+                  - generic [ref=e358]: +8.9%
+                - cell "+17.2%" [ref=e359]:
+                  - generic [ref=e360]: +17.2%
+                - cell "1.5x ✓" [ref=e361]:
+                  - generic [ref=e362]: 1.5x ✓
+                - cell "S:9 / R:11" [ref=e363]:
+                  - generic [ref=e364]:
+                    - generic [ref=e365]: S:9
+                    - text: /
+                    - generic [ref=e366]: R:11
+                - cell "💥 Breakout" [ref=e367]:
+                  - generic [ref=e368]: 💥 Breakout
+                - cell "3/7" [ref=e369]:
+                  - generic [ref=e370]: 3/7
+                - cell "تحليل →" [ref=e371]:
+                  - button "تحليل →" [ref=e372] [cursor=pointer]:
+                    - generic [ref=e373]: تحليل →
+              - row "#5 EFIH e-finance for Digital & Financial Investments Fintech EGX30 component 51 NEUTRAL 53% +0.9% -2.7% +14.0% 0.6x S:20 / R:21 Normal 0/7 تحليل →" [ref=e374]:
+                - cell [ref=e375]:
+                  - button [ref=e376] [cursor=pointer]
+                - cell "#5" [ref=e377]:
+                  - strong [ref=e379]: "#5"
+                - cell "EFIH" [ref=e380]:
+                  - strong [ref=e382]: EFIH
+                - cell "e-finance for Digital & Financial Investments Fintech" [ref=e383]:
+                  - generic [ref=e384]:
+                    - generic [ref=e385]: e-finance for Digital & Financial Investments
+                    - text: Fintech
+                - cell "EGX30 component" [ref=e386]
+                - cell "51" [ref=e387]:
+                  - strong [ref=e389]: "51"
+                - cell "NEUTRAL" [ref=e390]:
+                  - generic [ref=e391]: NEUTRAL
+                - cell "53%" [ref=e392]:
+                  - generic [ref=e393]: 53%
+                - cell "+0.9%" [ref=e394]:
+                  - generic [ref=e395]: +0.9%
+                - cell "-2.7%" [ref=e396]:
+                  - generic [ref=e397]: "-2.7%"
+                - cell "+14.0%" [ref=e398]:
+                  - generic [ref=e399]: +14.0%
+                - cell "0.6x" [ref=e400]:
+                  - generic [ref=e401]: 0.6x
+                - cell "S:20 / R:21" [ref=e402]:
+                  - generic [ref=e403]:
+                    - generic [ref=e404]: S:20
+                    - text: /
+                    - generic [ref=e405]: R:21
+                - cell "Normal" [ref=e406]:
+                  - generic [ref=e407]: Normal
+                - cell "0/7" [ref=e408]:
+                  - generic [ref=e409]: 0/7
+                - cell "تحليل →" [ref=e410]:
+                  - button "تحليل →" [ref=e411] [cursor=pointer]:
+                    - generic [ref=e412]: تحليل →
+              - row "#6 EGAL Egypt Aluminum Industrials EGX30 component 50 NEUTRAL 62% +2.4% +5.1% +4.0% 0.8x S:296 / R:309 ⏳ Squeeze 2/7 تحليل →" [ref=e413]:
+                - cell [ref=e414]:
+                  - button [ref=e415] [cursor=pointer]
+                - cell "#6" [ref=e416]:
+                  - strong [ref=e418]: "#6"
+                - cell "EGAL" [ref=e419]:
+                  - strong [ref=e421]: EGAL
+                - cell "Egypt Aluminum Industrials" [ref=e422]:
+                  - generic [ref=e423]:
+                    - generic [ref=e424]: Egypt Aluminum
+                    - text: Industrials
+                - cell "EGX30 component" [ref=e425]
+                - cell "50" [ref=e426]:
+                  - strong [ref=e428]: "50"
+                - cell "NEUTRAL" [ref=e429]:
+                  - generic [ref=e430]: NEUTRAL
+                - cell "62%" [ref=e431]:
+                  - generic [ref=e432]: 62%
+                - cell "+2.4%" [ref=e433]:
+                  - generic [ref=e434]: +2.4%
+                - cell "+5.1%" [ref=e435]:
+                  - generic [ref=e436]: +5.1%
+                - cell "+4.0%" [ref=e437]:
+                  - generic [ref=e438]: +4.0%
+                - cell "0.8x" [ref=e439]:
+                  - generic [ref=e440]: 0.8x
+                - cell "S:296 / R:309" [ref=e441]:
+                  - generic [ref=e442]:
+                    - generic [ref=e443]: S:296
+                    - text: /
+                    - generic [ref=e444]: R:309
+                - cell "⏳ Squeeze" [ref=e445]:
+                  - generic [ref=e446]: ⏳ Squeeze
+                - cell "2/7" [ref=e447]:
+                  - generic [ref=e448]: 2/7
+                - cell "تحليل →" [ref=e449]:
+                  - button "تحليل →" [ref=e450] [cursor=pointer]:
+                    - generic [ref=e451]: تحليل →
+              - row "#7 MFPC Misr Fertilizer Production (MOPCO) Chemicals EGX30 component 48 NEUTRAL 54% +0.9% +2.8% +19.8% 0.5x S:40 / R:48 💥 Breakout 2/7 تحليل →" [ref=e452]:
+                - cell [ref=e453]:
+                  - button [ref=e454] [cursor=pointer]
+                - cell "#7" [ref=e455]:
+                  - strong [ref=e457]: "#7"
+                - cell "MFPC" [ref=e458]:
+                  - strong [ref=e460]: MFPC
+                - cell "Misr Fertilizer Production (MOPCO) Chemicals" [ref=e461]:
+                  - generic [ref=e462]:
+                    - generic [ref=e463]: Misr Fertilizer Production (MOPCO)
+                    - text: Chemicals
+                - cell "EGX30 component" [ref=e464]
+                - cell "48" [ref=e465]:
+                  - strong [ref=e467]: "48"
+                - cell "NEUTRAL" [ref=e468]:
+                  - generic [ref=e469]: NEUTRAL
+                - cell "54%" [ref=e470]:
+                  - generic [ref=e471]: 54%
+                - cell "+0.9%" [ref=e472]:
+                  - generic [ref=e473]: +0.9%
+                - cell "+2.8%" [ref=e474]:
+                  - generic [ref=e475]: +2.8%
+                - cell "+19.8%" [ref=e476]:
+                  - generic [ref=e477]: +19.8%
+                - cell "0.5x" [ref=e478]:
+                  - generic [ref=e479]: 0.5x
+                - cell "S:40 / R:48" [ref=e480]:
+                  - generic [ref=e481]:
+                    - generic [ref=e482]: S:40
+                    - text: /
+                    - generic [ref=e483]: R:48
+                - cell "💥 Breakout" [ref=e484]:
+                  - generic [ref=e485]: 💥 Breakout
+                - cell "2/7" [ref=e486]:
+                  - generic [ref=e487]: 2/7
+                - cell "تحليل →" [ref=e488]:
+                  - button "تحليل →" [ref=e489] [cursor=pointer]:
+                    - generic [ref=e490]: تحليل →
+              - row "#8 ABUK Abu Qir Fertilizers Chemicals EGX30 component 48 NEUTRAL 62% +2.1% +2.9% +13.7% 0.3x S:79 / R:91 Normal 2/7 تحليل →" [ref=e491]:
+                - cell [ref=e492]:
+                  - button [ref=e493] [cursor=pointer]
+                - cell "#8" [ref=e494]:
+                  - strong [ref=e496]: "#8"
+                - cell "ABUK" [ref=e497]:
+                  - strong [ref=e499]: ABUK
+                - cell "Abu Qir Fertilizers Chemicals" [ref=e500]:
+                  - generic [ref=e501]:
+                    - generic [ref=e502]: Abu Qir Fertilizers
+                    - text: Chemicals
+                - cell "EGX30 component" [ref=e503]
+                - cell "48" [ref=e504]:
+                  - strong [ref=e506]: "48"
+                - cell "NEUTRAL" [ref=e507]:
+                  - generic [ref=e508]: NEUTRAL
+                - cell "62%" [ref=e509]:
+                  - generic [ref=e510]: 62%
+                - cell "+2.1%" [ref=e511]:
+                  - generic [ref=e512]: +2.1%
+                - cell "+2.9%" [ref=e513]:
+                  - generic [ref=e514]: +2.9%
+                - cell "+13.7%" [ref=e515]:
+                  - generic [ref=e516]: +13.7%
+                - cell "0.3x" [ref=e517]:
+                  - generic [ref=e518]: 0.3x
+                - cell "S:79 / R:91" [ref=e519]:
+                  - generic [ref=e520]:
+                    - generic [ref=e521]: S:79
+                    - text: /
+                    - generic [ref=e522]: R:91
+                - cell "Normal" [ref=e523]:
+                  - generic [ref=e524]: Normal
+                - cell "2/7" [ref=e525]:
+                  - generic [ref=e526]: 2/7
+                - cell "تحليل →" [ref=e527]:
+                  - button "تحليل →" [ref=e528] [cursor=pointer]:
+                    - generic [ref=e529]: تحليل →
+          - list [ref=e530]:
+            - listitem [ref=e531]: 8 stocks
+            - listitem "Previous Page" [ref=e532]:
+              - button "right" [disabled] [ref=e533]:
+                - img "right" [ref=e534]:
+                  - img [ref=e535]
+            - listitem "1" [ref=e537] [cursor=pointer]:
+              - generic [ref=e538]: "1"
+            - listitem "Next Page" [ref=e539]:
+              - button "left" [disabled] [ref=e540]:
+                - img "left" [ref=e541]:
+                  - img [ref=e542]
+        - generic [ref=e545]:
+          - strong [ref=e549]:
+            - img "search" [ref=e550]:
+              - img [ref=e551]
+            - text: تقييم أي سهم
+          - generic [ref=e553]:
+            - generic [ref=e555] [cursor=pointer]:
+              - generic "EGX" [ref=e556]:
+                - text: EGX
+                - combobox [ref=e557]
+              - img "down" [ref=e559]:
+                - img [ref=e560]
+            - generic [ref=e563]:
+              - img "search" [ref=e565]:
+                - img [ref=e566]
+              - textbox "ETEL, COMI, AAPL..." [ref=e568]
+            - button "تقييم" [ref=e570] [cursor=pointer]:
+              - generic [ref=e571]: تقييم
+        - generic [ref=e573]:
+          - img "warning" [ref=e575]:
+            - img [ref=e576]
+          - heading "تنبيهات الخطر" [level=5] [ref=e579]
+          - generic [ref=e580]: مراقبة مراكزك المفتوحة

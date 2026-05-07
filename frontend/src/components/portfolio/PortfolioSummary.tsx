@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { PortfolioResponse } from '../../types';
+import { ValueFlash } from '../../motion';
 
 interface PortfolioSummaryProps {
   portfolio: PortfolioResponse;
@@ -89,11 +90,15 @@ export default function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
         Portfolio Value
       </div>
-      <div style={currentValueStyle}>${formatMoney(portfolio.total_value)}</div>
+      <div style={currentValueStyle}>
+        $<ValueFlash value={portfolio.total_value} format={formatMoney} />
+      </div>
       <div style={pnlStyle}>
-        {isPositive ? '+' : ''}${formatMoney(portfolio.total_pnl)}{' '}
+        {isPositive ? '+' : ''}$
+        <ValueFlash value={portfolio.total_pnl} format={formatMoney} />{' '}
         <span style={{ fontSize: 14 }}>
-          ({isPositive ? '+' : ''}{portfolio.total_pnl_pct.toFixed(2)}%)
+          ({isPositive ? '+' : ''}
+          <ValueFlash value={portfolio.total_pnl_pct} decimals={2} />%)
         </span>
       </div>
 

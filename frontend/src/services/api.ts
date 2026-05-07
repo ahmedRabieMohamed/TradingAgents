@@ -22,6 +22,8 @@ import type {
   TradeHistoryResponse,
   PortfolioAnalyticsResponse,
   AIComparisonResponse,
+  SmartPicksResponse,
+  EngineScoreResponse,
 } from '../types';
 
 const API_BASE = 'http://localhost:8000/api';
@@ -122,12 +124,12 @@ export function getPriceHistory(ticker: string, marketId: string, period: string
 
 // --- Engines ---
 
-export function getEngineScore(ticker: string, marketId: string, days = 7): Promise<any> {
-  return get<any>(`/engines/score/${encodeURIComponent(ticker)}?market_id=${encodeURIComponent(marketId)}&days=${days}`);
+export function getEngineScore(ticker: string, marketId: string, days = 7): Promise<EngineScoreResponse> {
+  return get<EngineScoreResponse>(`/engines/score/${encodeURIComponent(ticker)}?market_id=${encodeURIComponent(marketId)}&days=${days}`);
 }
 
-export function getSmartPicks(marketId = 'egypt', limit = 10): Promise<any> {
-  return get<any>(`/engines/smart-picks?market_id=${encodeURIComponent(marketId)}&limit=${limit}`);
+export function getSmartPicks(marketId = 'egypt', limit = 10): Promise<SmartPicksResponse> {
+  return get<SmartPicksResponse>(`/engines/smart-picks?market_id=${encodeURIComponent(marketId)}&limit=${limit}`);
 }
 
 export function getDangerAlerts(): Promise<any> {

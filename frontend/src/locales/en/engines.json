@@ -1,11 +1,23 @@
 {
   "title": "Smart Picks",
-  "subtitle": "Today's best chances based on 7 trading engines + news",
+  "subtitle": "Today's best chances based on quantitative engines + news",
   "refresh": "Refresh",
   "loading": "Scoring stocks...",
   "noData": "No strong opportunities detected today — markets are quiet.",
   "score": "Score",
   "signal": "Signal",
+  "regime": {
+    "calm": "Calm",
+    "normal": "Normal",
+    "elevated": "Elevated",
+    "extreme": "Extreme",
+    "calm_tooltip": "Volatility is unusually low. Engine signals are most reliable.",
+    "normal_tooltip": "Volatility is in its typical range.",
+    "elevated_tooltip": "Volatility is elevated. The combined score is dampened toward neutral by 15%.",
+    "extreme_tooltip": "Volatility is extreme. The combined score is dampened toward neutral by 30%."
+  },
+  "regimeLabel": "Regime",
+  "enginesLabel": "Engines",
   "mcProb": "MC Prob",
   "momentum": "Momentum",
   "volumeRatio": "Volume",
@@ -17,15 +29,82 @@
   "scoreBtn": "Score",
   "engineBreakdown": "Engine Breakdown",
   "combinedScore": "Combined Score",
-  "enginesAgree": "{{count}} of 7 engines agree",
-  "engines": {
-    "monteCarlo": "Monte Carlo",
-    "momentum": "Momentum",
-    "volume": "Volume Confirmation",
-    "supportResistance": "Support / Resistance",
-    "meanReversion": "Mean Reversion",
-    "bollinger": "Bollinger Bands",
-    "correlation": "Correlation"
+  "enginesAgree": "{{count}} of 9 engines agree",
+  "education": {
+    "measures": "What it measures",
+    "scoreRange": "Score range",
+    "whyMatters": "Why it matters",
+    "missing": "No description available for this engine."
+  },
+  "monte_carlo": {
+    "label": "Monte Carlo",
+    "category": "Probabilistic",
+    "measures": "Runs 10,000 simulated futures of the next 7 trading days using the stock's recent price behavior.",
+    "scoreRange": "Higher score = more simulations finish above today's price. 50 = roughly even odds.",
+    "whyMatters": "Reduces a noisy short-term forecast into a single probability. The most forward-looking signal in the ensemble."
+  },
+  "momentum": {
+    "label": "Momentum",
+    "category": "Trend",
+    "measures": "How fast the price has been moving over the last 5 and 20 trading days.",
+    "scoreRange": "0–40 = falling. 50 = flat. 60–100 = rising. The further from 50, the stronger the move.",
+    "whyMatters": "Catches stocks that are already moving in your direction. Best on liquid, trending names."
+  },
+  "volume": {
+    "label": "Volume Confirmation",
+    "category": "Volume",
+    "measures": "Whether recent price moves are backed by above-average trading volume.",
+    "scoreRange": "High score = move is confirmed by volume (real). Low score = move is on thin volume (fragile).",
+    "whyMatters": "A breakout without volume usually fails. This engine filters out fake moves."
+  },
+  "support_resistance": {
+    "label": "Support / Resistance",
+    "category": "Price Levels",
+    "measures": "Distance from the nearest historical support floor and resistance ceiling.",
+    "scoreRange": "High score = near support with room to rally. Low score = near resistance with limited upside.",
+    "whyMatters": "Defines the risk/reward of a trade. Helps set stops and targets at meaningful price levels."
+  },
+  "mean_reversion": {
+    "label": "Mean Reversion",
+    "category": "Oscillator",
+    "measures": "How far today's price has stretched away from the 50-day moving average.",
+    "scoreRange": "High score = stretched below average (bounce setup). Low score = stretched above (pullback risk).",
+    "whyMatters": "Identifies overextended moves likely to snap back. The opposite-but-complementary signal to Momentum."
+  },
+  "bollinger": {
+    "label": "Bollinger Bands",
+    "category": "Volatility",
+    "measures": "Whether the bands are squeezed (quiet) or expanding (breakout in progress).",
+    "scoreRange": "High score = breakout direction confirmed. Mid score = squeeze (big move soon, direction unclear).",
+    "whyMatters": "Signals the start of a new trend. Squeeze setups precede the largest moves."
+  },
+  "correlation": {
+    "label": "Sector Correlation",
+    "category": "Statistical",
+    "measures": "Whether sector peers are moving in the same direction as this stock.",
+    "scoreRange": "High score = sector confirms the move (not a one-off). Low score = lone wolf — be cautious.",
+    "whyMatters": "A signal confirmed by peers is more durable than an isolated move that may reverse quickly."
+  },
+  "rsi": {
+    "label": "RSI",
+    "category": "Oscillator",
+    "measures": "Whether recent gains have left the stock overbought, or recent losses have left it oversold (RSI-14).",
+    "scoreRange": "0–30: bullish (oversold rebound setup). 70–100: bearish (overbought pullback risk). 40–60: neutral.",
+    "whyMatters": "Catches stretched moves that often snap back. Most useful as a contrarian filter on top of trend signals."
+  },
+  "macd": {
+    "label": "MACD",
+    "category": "Trend",
+    "measures": "Whether the short-term moving average has crossed above or below the long-term one (12/26/9).",
+    "scoreRange": "High score = bullish crossover with momentum. Low score = bearish crossover. A fresh crossover boosts the score.",
+    "whyMatters": "Classic trend-change confirmation. Pairs well with momentum to confirm a real shift in direction."
+  },
+  "volatility_regime": {
+    "label": "Volatility Regime",
+    "category": "Volatility",
+    "measures": "How turbulent the stock is right now compared with its own trailing 1-year history.",
+    "scoreRange": "Reports a tag (calm / normal / elevated / extreme). Does not vote — instead it dampens the combined score in elevated and extreme regimes.",
+    "whyMatters": "Engine signals are less reliable in chaotic markets. This engine pulls the combined score toward neutral when conditions are unstable."
   },
   "verdicts": {
     "BULLISH": "Bullish",

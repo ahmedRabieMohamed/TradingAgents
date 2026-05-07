@@ -1,0 +1,72 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: AI-Powered Trading Analysis
+      - menu [ref=e16]:
+        - menuitem "dashboard Dashboard" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: Dashboard
+        - menuitem "line-chart New Analysis" [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: New Analysis
+        - menuitem "thunderbolt Smart Picks" [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: Smart Picks
+        - separator [ref=e32]
+        - menuitem "star Watchlist" [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: Watchlist
+        - menuitem "history History" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: History
+        - menuitem "wallet Portfolio 4" [ref=e98] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e48]:
+            - generic [ref=e49]: Portfolio
+            - superscript [ref=e101]:
+              - generic [ref=e103]: "4"
+        - menuitem "fund Performance" [active] [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: Performance
+        - separator [ref=e55]
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: Settings
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: Closed
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: Closed
+    - img "left" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e747]:
+      - generic [ref=e748]:
+        - heading "Performance" [level=4] [ref=e749]
+        - generic [ref=e750]:
+          - generic [ref=e752]: No market selected
+          - generic [ref=e754]: v0.1.0
+          - button "global العربية" [ref=e756] [cursor=pointer]:
+            - img "global" [ref=e758]:
+              - img [ref=e759]
+            - generic [ref=e761]: العربية
+      - generic [ref=e763]:
+        - generic [ref=e764]: 📊
+        - generic [ref=e765]:
+          - heading "No performance data yet. Complete some analyses first!" [level=5] [ref=e766]
+          - generic [ref=e767]: Once your completed analyses pass their trade horizon, you can run simulations to see how predictions performed against actual market data.

@@ -34,12 +34,13 @@ app = FastAPI(
 )
 
 # CORS
+# Use a regex so Vite's automatic port-bumping (5173 → 5174 → 5175 when ports
+# are busy) keeps working without backend reconfiguration. FRONTEND_URL is
+# still honored for an explicit production origin.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        settings.FRONTEND_URL,
-        "http://localhost:5173",
-    ],
+    allow_origins=[settings.FRONTEND_URL],
+    allow_origin_regex=r"^http://localhost:(517[3-9]|518[0-9])$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -487,3 +487,72 @@ export interface AIComparisonResponse {
     message: string;
   };
 }
+
+// --- Smart Picks / Engines ---
+
+export type EngineSignal = 'STRONG BUY' | 'BUY' | 'HOLD' | 'NEUTRAL' | 'SELL' | 'STRONG SELL';
+export type VolatilityRegimeTag = 'calm' | 'normal' | 'elevated' | 'extreme';
+
+export interface EngineResult {
+  score?: number;
+  signal?: EngineSignal;
+  reason?: string;
+  data_sufficient: boolean;
+  weight: number;
+  // Engine-specific extras (any subset may be present):
+  rsi_value?: number;
+  macd_line?: number;
+  signal_line?: number;
+  histogram?: number;
+  crossover_age_bars?: number;
+  realized_vol_annualized?: number;
+  regime_tag?: VolatilityRegimeTag;
+  pull_alpha?: number;
+  // Existing engines also report ad-hoc extras (probability, expected, etc.) — keep open-ended:
+  [extra: string]: unknown;
+}
+
+export interface SmartPick {
+  ticker: string;
+  company_name: string;
+  company_name_ar?: string;
+  sector: string;
+  market_id: string;
+  reason: string;
+  combined_score: number;
+  combined_score_raw: number;
+  signal: EngineSignal;
+  bullish_engines: number;
+  total_engines: number;
+  engines: Record<string, EngineResult>;
+  news_sentiment?: { score: number | null; headline_count?: number };
+  volatility_regime_tag: VolatilityRegimeTag;
+  // Convenience display fields kept for backwards compatibility with the current UI:
+  mc_probability?: number;
+  mc_expected?: number;
+  mc_best_case?: number;
+  mc_worst_case?: number;
+  momentum_score?: number;
+  momentum_roc_5d?: number;
+  momentum_roc_20d?: number;
+  [extra: string]: unknown;
+}
+
+export interface SmartPicksResponse {
+  market_id: string;
+  computed_at: string;
+  total_scored: number;
+  total_failed: number;
+  picks: SmartPick[];
+}
+
+export interface EngineScoreResponse {
+  ticker: string;
+  market_id: string;
+  combined_score: number;
+  combined_score_raw: number;
+  combined_signal: EngineSignal;
+  volatility_regime_tag: VolatilityRegimeTag;
+  engines: Record<string, EngineResult>;
+  news_sentiment?: { score: number | null };
+}

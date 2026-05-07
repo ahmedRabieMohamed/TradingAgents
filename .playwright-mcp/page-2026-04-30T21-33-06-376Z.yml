@@ -1,0 +1,63 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "rise" [ref=e9]:
+            - img [ref=e10]
+          - strong [ref=e14]: TradingAgents
+        - generic [ref=e15]: تحليل تداول مدعوم بالذكاء الاصطناعي
+      - menu [ref=e16]:
+        - menuitem "dashboard لوحة التحكم" [ref=e17] [cursor=pointer]:
+          - img "dashboard" [ref=e18]:
+            - img [ref=e19]
+          - generic [ref=e21]: لوحة التحكم
+        - menuitem "line-chart تحليل جديد" [ref=e22] [cursor=pointer]:
+          - img "line-chart" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]: تحليل جديد
+        - menuitem "thunderbolt الفرص الذكية" [ref=e27] [cursor=pointer]:
+          - img "thunderbolt" [ref=e28]:
+            - img [ref=e29]
+          - generic [ref=e31]: الفرص الذكية
+        - separator [ref=e32]
+        - menuitem "star قائمة المتابعة" [ref=e33] [cursor=pointer]:
+          - img "star" [ref=e34]:
+            - img [ref=e35]
+          - generic [ref=e37]: قائمة المتابعة
+        - menuitem "history السجل" [ref=e38] [cursor=pointer]:
+          - img "history" [ref=e39]:
+            - img [ref=e40]
+          - generic [ref=e42]: السجل
+        - menuitem "wallet المحفظة" [ref=e43] [cursor=pointer]:
+          - img "wallet" [ref=e44]:
+            - img [ref=e45]
+          - generic [ref=e49]: المحفظة
+        - menuitem "fund الأداء" [ref=e50] [cursor=pointer]:
+          - img "fund" [ref=e51]:
+            - img [ref=e52]
+          - generic [ref=e54]: الأداء
+        - separator [ref=e55]
+        - menuitem "setting الإعدادات" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - generic [ref=e60]: الإعدادات
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e64]: US (NYSE/NASDAQ)
+          - generic [ref=e65]: مغلق
+        - generic [ref=e66]:
+          - generic [ref=e68]: Egypt (EGX)
+          - generic [ref=e69]: مغلق
+    - img "right" [ref=e71] [cursor=pointer]:
+      - img [ref=e72]
+  - main [ref=e74]:
+    - generic [ref=e76]:
+      - heading "لوحة التحكم" [level=4] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e80]: No market selected
+        - generic [ref=e82]: v0.1.0
+        - button "global English" [ref=e84] [cursor=pointer]:
+          - img "global" [ref=e86]:
+            - img [ref=e87]
+          - generic [ref=e89]: English

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
+import { AnimatedList } from '../../motion';
 
 interface Message {
   timestamp: string;
@@ -79,15 +80,20 @@ export default function MessageLog({ messages }: MessageLogProps) {
     );
   }
 
+  const items = messages.map((msg, i) => ({
+    key: `${msg.timestamp}-${i}`,
+    content: (
+      <div style={lineStyle}>
+        <span style={timestampStyle}>{formatTime(msg.timestamp)}</span>
+        <span style={agentStyle}>[{msg.agentName}]</span>
+        <span style={contentStyle}>{msg.content}</span>
+      </div>
+    ),
+  }));
+
   return (
     <div style={containerStyle}>
-      {messages.map((msg, i) => (
-        <div key={i} style={lineStyle}>
-          <span style={timestampStyle}>{formatTime(msg.timestamp)}</span>
-          <span style={agentStyle}>[{msg.agentName}]</span>
-          <span style={contentStyle}>{msg.content}</span>
-        </div>
-      ))}
+      <AnimatedList items={items} />
       <div ref={bottomRef} />
     </div>
   );
