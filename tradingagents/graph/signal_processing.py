@@ -1,38 +1,31 @@
-# TradingAgents/graph/signal_processing.py
+"""Extract the 5-tier portfolio rating from the Portfolio Manager's decision.
 
-from langchain_openai import ChatOpenAI
+The Portfolio Manager produces a typed ``PortfolioDecision`` via structured
+output and renders it to markdown that always carries a ``**Rating**: X``
+header (see :func:`tradingagents.agents.schemas.render_pm_decision`).  The
+deterministic heuristic in :mod:`tradingagents.agents.utils.rating` is more
+than sufficient to extract that rating; no extra LLM call is needed.
+
+This module exists for backwards compatibility with callers that expect a
+``SignalProcessor.process_signal(text)`` interface.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from tradingagents.agents.utils.rating import parse_rating
 
 
 class SignalProcessor:
-    """Processes trading signals to extract actionable decisions."""
+    """Read the 5-tier rating out of a Portfolio Manager decision."""
 
-    def __init__(self, quick_thinking_llm: ChatOpenAI):
-        """Initialize with an LLM for processing."""
+    def __init__(self, quick_thinking_llm: Any = None):
+        # The LLM argument is accepted for backwards compatibility but no
+        # longer used: the PM's structured output guarantees the rating is
+        # parseable from the rendered markdown without a second LLM call.
         self.quick_thinking_llm = quick_thinking_llm
 
     def process_signal(self, full_signal: str) -> str:
-        """
-        Process a full trading signal to extract the core decision and confidence.
-
-        Args:
-            full_signal: Complete trading signal text
-
-        Returns:
-            Extracted decision with confidence (e.g., "BUY 85%")
-        """
-        messages = [
-            (
-                "system",
-                "You are an efficient assistant designed to analyze paragraphs or "
-                "financial reports provided by a group of analysts. Your task is to "
-                "extract the investment decision (BUY, SELL, or HOLD) and the "
-                "confidence percentage. Output ONLY in this exact format: "
-                "DECISION XX% (e.g., 'BUY 85%' or 'SELL 60%' or 'HOLD 45%'). "
-                "If no confidence percentage is explicitly stated, estimate one "
-                "based on the conviction and certainty expressed in the text. "
-                "Do not add any other text.",
-            ),
-            ("human", full_signal),
-        ]
-
-        return self.quick_thinking_llm.invoke(messages).content
+        """Return one of Buy / Overweight / Hold / Underweight / Sell."""
+        return parse_rating(full_signal)
